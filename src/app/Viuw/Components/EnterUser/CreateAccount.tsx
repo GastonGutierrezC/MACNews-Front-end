@@ -1,8 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { UserRegistration } from '../../../Model/Entities/User';
+import { useCreateUser } from '@/app/Controller/Hooks/useCreateUser';
 
 const CreateAccount = () => {
+  const router = useRouter();
+  const { registerUser, loading, error, success } = useCreateUser(); 
+
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -14,9 +20,29 @@ const CreateAccount = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    console.log('Datos ingresados:', formData);
+  const handleSubmit = async () => {
+    const userData: UserRegistration = {
+      user: {
+        UserFirstName: formData.nombre,
+        UserLastName: formData.apellido,
+        UserEmail: formData.email,
+        UserImageURL: 'https://cdn-icons-png.flaticon.com/512/861/861533.png',
+      },
+      password: {
+        PasswordUser: formData.password,
+      },
+    };
+
+    await registerUser(userData); 
   };
+
+
+  useEffect(() => {
+    if (success) {
+      console.log('Usuario creado con éxito');
+      router.push('/pages'); 
+    }
+  }, [success, router]); 
 
   const renderField = (name: keyof typeof formData, label: string, type = 'text') => {
     const isActive = formData[name] !== '';
@@ -29,23 +55,21 @@ const CreateAccount = () => {
             {label}
           </span>
         )}
-
-       
         <div
           className="p-1 rounded"
           style={{
             backgroundColor: bgColor,
             width: '100%',
             border: '14px solid #B8D1E7',
-            borderRadius: '8px', 
+            borderRadius: '8px',
           }}
         >
           <div
             className="p-1 rounded"
             style={{
               backgroundColor: 'transparent',
-              border: '2px solid black', 
-              borderRadius: '6px', 
+              border: '2px solid black',
+              borderRadius: '6px',
             }}
           >
             <input
@@ -68,19 +92,23 @@ const CreateAccount = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mx-auto p-4  rounded shadow" style={{ width: '25rem' }}>
+    <div className="flex flex-col justify-center items-center mx-auto p-4 rounded shadow" style={{ width: '25rem' }}>
       <h2 className="text-5xl font-bold mb-4 text-center">Crea Tu Cuenta</h2>
       {renderField('nombre', 'Nombre')}
       {renderField('apellido', 'Apellido')}
       {renderField('email', 'Email')}
       {renderField('password', 'Contraseña', 'password')}
-      
+
       <button
         className="w-fit mx-auto bg-[#B8D1E7] text-[#2271B3] py-2 px-4 rounded border-2 border-[#063346] text-[24px] font-black hover:bg-[#2271B3] hover:text-[#B8D1E7] hover:border-[#063346] transition-all"
         onClick={handleSubmit}
+        disabled={loading}
       >
-        Iniciar Sesión
+        {loading ? 'Cargando...' : 'Crear Cuenta'}
       </button>
+
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {success && <p className="text-green-500 mt-4">Usuario creado con éxito</p>}
     </div>
   );
 };

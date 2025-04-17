@@ -1,13 +1,13 @@
+// src/app/pages/enterUser/page.tsx
 'use client';
 
 import React from 'react';
-import Layout from '@/app/Viuw/Components/Layout/Layout';
-import Home from '@/app/Viuw/Pages/Home';
+import EnterUser from '@/app/Viuw/Components/EnterUser/EnterUser';
 
 const Page = () => {
   return (
     <div>
-      <Home />
+      <EnterUser />
     </div>
   );
 };
