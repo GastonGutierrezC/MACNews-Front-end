@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
+  images: {
+    domains: ['cdn-icons-png.flaticon.com'],  // Agrega aquí el dominio que quieres permitir
+  },
 };
 
 export default nextConfig;

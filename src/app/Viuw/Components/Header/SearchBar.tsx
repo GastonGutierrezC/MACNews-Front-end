@@ -1,5 +1,5 @@
 
-'use client'; // Agrega esta línea
+'use client'; 
 
 import React, { useState } from 'react';
 import { MdSearch } from 'react-icons/md';

@@ -1,6 +1,6 @@
 // src/app/Viuw/Components/CategoriesDropdown.tsx
 
-'use client'; // Agrega esta línea
+'use client'; 
 
 import React, { useState } from 'react';
 
