@@ -8,33 +8,60 @@ import { useTopNews } from '@/app/Controller/Hooks/useTopNews';
 import TopNews from './TopNews';
 import Image from 'next/image';
 import WordNews from '../../../Images/wordNews.png';
+import { useUser } from '@/app/Controller/Context/UserContext';
+import { useRecommendationsNews } from '@/app/Controller/Hooks/useRecommendationsNews';
+
 
 export const ShowNews: React.FC = () => {
-  const { news, loading, error } = useNews();
-  const { news: topNews, loading: loadingTop, error: errorTop } = useTopNews();
+  const { user } = useUser();
 
-  if (loading) return <p>Cargando noticias...</p>;
-  if (error) return <p>Error: {error || errorTop}</p>;
+  const {
+    news: defaultNews,
+    loading: loadingDefault,
+    error: errorDefault
+  } = useNews();
+
+  // Verificamos si user?.id existe antes de llamar al hook
+  const {
+    news: recommendedNews,
+    loading: loadingRecommended,
+    error: errorRecommended
+  } = user?.id ? useRecommendationsNews(user.id) : {
+    news: [],
+    loading: false,
+    error: null
+  };
+
+  const newsToShow = user?.id ? recommendedNews : defaultNews;
+
+  const {
+    news: topNews,
+    loading: loadingTop,
+    error: errorTop
+  } = useTopNews();
+
+  const isLoading = loadingDefault || loadingTop || (user?.id && loadingRecommended);
+  const hasError = errorDefault || errorTop || (user?.id && errorRecommended);
+
+  if (isLoading) return <p>Cargando noticias...</p>;
+  if (hasError) return <p>Ocurrió un error al cargar noticias</p>;
 
   return (
     <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
-
-      {/* ⭐ Noticia especial */}
-      {news.length > 0 && (
+      {newsToShow.length > 0 && (
         <SpecialNews
           imageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
-          category={news[0].Categories}
-          title={news[0].Title}
-          channelName={news[0].Channel.ChannelName}
+          category={newsToShow[0].Categories}
+          title={newsToShow[0].Title}
+          channelName={newsToShow[0].Channel.ChannelName}
           channelImageUrl="https://pxcdn.reduno.com.bo/reduno/122017/1544505888786.png"
-          publicationDate={news[0].PublicationDate}
-          visitCount={news[0].VisitCount}
+          publicationDate={newsToShow[0].PublicationDate}
+          visitCount={newsToShow[0].VisitCount}
         />
       )}
 
-      {/* 📰 Siguientes 3 noticias */}
       <div className="flex flex-col gap-5">
-        {news.slice(1, 4).map((item) => (
+        {newsToShow.slice(1, 4).map((item) => (
           <NewsCard
             key={item.NewsId}
             newsImageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
@@ -48,9 +75,8 @@ export const ShowNews: React.FC = () => {
         ))}
       </div>
 
-      {/* 📚 Resto de las noticias */}
       <div className="flex flex-col gap-5 pt-20">
-        {news.slice(4).map((item) => (
+        {newsToShow.slice(4).map((item) => (
           <NewsCard
             key={item.NewsId}
             newsImageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
@@ -66,10 +92,7 @@ export const ShowNews: React.FC = () => {
 
       {topNews.length > 0 && (
         <div className="flex flex-col gap-5 pt-20 pl-25">
-          {/* Título de la sección */}
           <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares</h2>
-
-          {/* Mapeo de las noticias */}
           {topNews.map((item, index) => (
             <TopNews
               key={item.NewsId || index}
@@ -78,8 +101,6 @@ export const ShowNews: React.FC = () => {
               NewsImageURL="https://abi.bo/images/Noticias/Sociedad/sep-22/CMNSC.jpg"
             />
           ))}
-
-          {/* Imagen debajo de las noticias */}
           <Image
             src={WordNews}
             alt="Logo"
@@ -90,7 +111,6 @@ export const ShowNews: React.FC = () => {
           />
         </div>
       )}
-
     </div>
   );
 };
