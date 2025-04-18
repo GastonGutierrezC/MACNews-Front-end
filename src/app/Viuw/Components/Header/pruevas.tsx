@@ -1,89 +1,80 @@
-'use client';
+import React from 'react';
 
-import React, { useState } from 'react';
+interface SpecialNewsProps {
+  imageUrl: string;
+  category: string;
+  title: string;
+  channelName: string;
+  channelImageUrl: string;
+  publicationDate: string;
+  visitCount: number;
+}
 
-const CreateAccount = () => {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = () => {
-    console.log('Datos ingresados:', formData);
-  };
-
-  const renderField = (name: keyof typeof formData, label: string, type = 'text') => {
-    const isActive = formData[name] !== '';
-    const bgColor = isActive ? '#C2D2E9' : '#B8D1E7';
-
-    return (
-      <div className="relative mb-9" style={{ width: '25rem' }}>
-        {isActive && (
-          <span className="absolute -top-0 left-2 bg-[#B8D1E7] px-1 text-sm font-bold text-[#EA580C]">
-            {label}
-          </span>
-        )}
-
-       
-        <div
-          className="p-1 rounded"
-          style={{
-            backgroundColor: bgColor,
-            width: '100%',
-            border: '14px solid #B8D1E7',
-            borderRadius: '8px', 
-          }}
-        >
-          <div
-            className="p-1 rounded"
-            style={{
-              backgroundColor: 'transparent',
-              border: '2px solid black', 
-              borderRadius: '6px', 
-            }}
-          >
-            <input
-              name={name}
-              type={type}
-              placeholder={label}
-              value={formData[name]}
-              onChange={handleChange}
-              className="py-2 rounded border-none bg-transparent"
-              style={{
-                width: '100%',
-                paddingLeft: '1.25rem',
-                paddingRight: '1.25rem',
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
-
+export const SpecialNews: React.FC<SpecialNewsProps> = ({
+  imageUrl,
+  category,
+  title,
+  channelName,
+  channelImageUrl,
+  publicationDate,
+  visitCount,
+}) => {
   return (
-    <div className="flex flex-col justify-center items-center mx-auto p-4  rounded shadow" style={{ width: '25rem' }}>
-      <h2 className="text-5xl font-bold mb-4 text-center">Crea Tu Cuenta</h2>
-      {renderField('nombre', 'Nombre')}
-      {renderField('apellido', 'Apellido')}
-      {renderField('email', 'Email')}
-      {renderField('password', 'Contraseña', 'password')}
-      
-      <button
-        className="w-fit mx-auto bg-[#B8D1E7] text-[#2271B3] py-2 px-4 rounded border-2 border-[#063346] text-[24px] font-black hover:bg-[#2271B3] hover:text-[#B8D1E7] hover:border-[#063346] transition-all"
-        onClick={handleSubmit}
+<div className="relative w-219 h-190 rounded-xl overflow-hidden shadow-lg group">
+  {/* Fondo de la imagen con efecto de oscurecimiento al hacer hover */}
+  <div
+    className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:brightness-75"
+    style={{ backgroundImage: `url(${imageUrl})` }}
+  />
+
+  {/* Contenido por encima de la imagen */}
+  <div className="relative z-10">
+    {/* Categoría en esquina superior derecha */}
+    <div className="px-5 py-5 absolute flex">
+      <span className="text-white bg-[#0A79B0] px-2 py-2 rounded-l-full text-ls font-medium">
+        Categoria:
+      </span>
+      <span className="bg-[#AEE1F4] text-black px-2 py-2 rounded-r-full text-ls font-medium">
+        {category}
+      </span>
+    </div>
+
+    {/* Título en el centro */}
+    <div className="absolute inset-0 flex items-center justify-center px-4 text-center translate-y-12">
+      <h2 className="text-white text-4xl font-bold drop-shadow-lg">{title}</h2>
+    </div>
+
+    {/* Info inferior izquierda */}
+    <div className="absolute bottom-5 left-5 flex flex-col items-start gap-1">
+      <div
+        className="bg-[#AEE1F4] text-[#0A4B7B] px-1 py-1 rounded-full pl-23"
+        style={{ border: '6px solid #0A4B7B' }}
       >
-        Iniciar Sesión
+        <span className="text-[25px] font-bold font-[League Spartan], sans-serif">
+          {channelName}
+        </span>
+      </div>
+      <img
+        src={channelImageUrl}
+        alt="Channel"
+        className="w-25 h-25 rounded-full -mt-25"
+      />
+    </div>
+
+    {/* Info inferior derecha */}
+    <div className="absolute bottom-7 right-6 flex flex-row items-center gap-12 text-right">
+      <div className="bg-[#AEE1F4] text-black px-3 py-1 rounded-full text-xl">
+        {publicationDate}
+      </div>
+      <div className="bg-[#AEE1F4] text-black px-3 py-1 rounded-full text-xl">
+        {visitCount} vistas
+      </div>
+      <button className="bg-[#B8D1E7] text-[#2271B3] border-[#063346] border-4 px-4 py-1.5 rounded-md text-xl font-semibold hover:bg-[#2271B3] hover:text-[#B8D1E7] transition">
+        Suscribirse
       </button>
     </div>
+  </div>
+</div>
+
   );
 };
-
-export default CreateAccount;
-
