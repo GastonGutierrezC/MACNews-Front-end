@@ -1,6 +1,6 @@
 
   export interface NewsTopEntity {
-    NewsId: string;
+    NewsID: string;
     Title: string;
     NewsImageURL: string;
   }

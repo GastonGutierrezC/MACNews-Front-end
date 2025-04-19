@@ -14,7 +14,7 @@ export const useNews = () => {
       try {
         const data = await getAllNews();
 
-        // Ordenamos por VisitCount de mayor a menor
+        
         const sortedNews = data.sort((a, b) => b.VisitCount - a.VisitCount);
 
         setNews(sortedNews);

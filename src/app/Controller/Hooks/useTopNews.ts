@@ -13,7 +13,8 @@ export const useTopNews = () => {
     const fetchTopNews = async () => {
       try {
         const data = await getTopNews();
-        setNews(data);
+        const topTen = data.slice(0, 10); 
+        setNews(topTen);
       } catch (err: any) {
         setError(err.message);
       } finally {

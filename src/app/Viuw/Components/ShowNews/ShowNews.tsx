@@ -21,16 +21,13 @@ export const ShowNews: React.FC = () => {
     error: errorDefault
   } = useNews();
 
-  // Verificamos si user?.id existe antes de llamar al hook
+
   const {
     news: recommendedNews,
     loading: loadingRecommended,
     error: errorRecommended
-  } = user?.id ? useRecommendationsNews(user.id) : {
-    news: [],
-    loading: false,
-    error: null
-  };
+  } = useRecommendationsNews(user?.id);
+  
 
   const newsToShow = user?.id ? recommendedNews : defaultNews;
 
@@ -43,18 +40,19 @@ export const ShowNews: React.FC = () => {
   const isLoading = loadingDefault || loadingTop || (user?.id && loadingRecommended);
   const hasError = errorDefault || errorTop || (user?.id && errorRecommended);
 
-  if (isLoading) return <p>Cargando noticias...</p>;
-  if (hasError) return <p>Ocurrió un error al cargar noticias</p>;
+  if (isLoading) return <p className="pt-65">Cargando noticias...</p>;
+  if (hasError) return <p className="pt-65">Ocurrió un error al cargar noticias</p>;
+  
 
   return (
     <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
       {newsToShow.length > 0 && (
         <SpecialNews
-          imageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
+          imageUrl={newsToShow[0].NewsImageURL}
           category={newsToShow[0].Categories}
           title={newsToShow[0].Title}
           channelName={newsToShow[0].Channel.ChannelName}
-          channelImageUrl="https://pxcdn.reduno.com.bo/reduno/122017/1544505888786.png"
+          channelImageUrl={newsToShow[0].Channel.ChannelImageURL}
           publicationDate={newsToShow[0].PublicationDate}
           visitCount={newsToShow[0].VisitCount}
         />
@@ -64,8 +62,8 @@ export const ShowNews: React.FC = () => {
         {newsToShow.slice(1, 4).map((item) => (
           <NewsCard
             key={item.NewsId}
-            newsImageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
-            channelImageUrl="https://pxcdn.reduno.com.bo/reduno/122017/1544505888786.png"
+            newsImageUrl={item.NewsImageURL}
+            channelImageUrl={item.Channel.ChannelImageURL}
             channelName={item.Channel.ChannelName}
             category={item.Categories}
             title={item.Title}
@@ -79,8 +77,8 @@ export const ShowNews: React.FC = () => {
         {newsToShow.slice(4).map((item) => (
           <NewsCard
             key={item.NewsId}
-            newsImageUrl="https://www.noticiasfides.com/images/news/2024/07/c-dolares-americanos-foto-internet_1721510875.jpg"
-            channelImageUrl="https://pxcdn.reduno.com.bo/reduno/122017/1544505888786.png"
+            newsImageUrl={item.NewsImageURL}
+            channelImageUrl={item.Channel.ChannelImageURL}
             channelName={item.Channel.ChannelName}
             category={item.Categories}
             title={item.Title}
@@ -91,26 +89,30 @@ export const ShowNews: React.FC = () => {
       </div>
 
       {topNews.length > 0 && (
-        <div className="flex flex-col gap-5 pt-20 pl-25">
-          <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares</h2>
-          {topNews.map((item, index) => (
-            <TopNews
-              key={item.NewsId || index}
-              NewsID={item.NewsId}
-              Title={item.Title}
-              NewsImageURL="https://abi.bo/images/Noticias/Sociedad/sep-22/CMNSC.jpg"
-            />
-          ))}
-          <Image
-            src={WordNews}
-            alt="Logo"
-            layout="responsive"
-            width={180}
-            height={180}
-            className="object-contain"
-          />
-        </div>
-      )}
+  <div className="flex flex-col gap-5 pt-20 pl-25">
+    <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares</h2>
+    {topNews.map((item, index) => {
+      console.log("ESTO "+item.NewsID);  
+      return (
+        <TopNews
+          key={item.NewsID || index}
+          NewsID={item.NewsID}
+          Title={item.Title}
+          NewsImageURL={item.NewsImageURL}
+        />
+      );
+    })}
+    <Image
+      src={WordNews}
+      alt="Logo"
+      layout="responsive"
+      width={180}
+      height={180}
+      className="object-contain"
+    />
+  </div>
+)}
+
     </div>
   );
 };
