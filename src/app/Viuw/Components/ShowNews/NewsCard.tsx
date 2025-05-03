@@ -12,6 +12,7 @@ interface NewsCardProps {
   title: string;
   publicationDate: string;
   visitCount: number;
+  NewsID: string;
 }
 
 export const NewsCard: React.FC<NewsCardProps> = ({
@@ -22,6 +23,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
   title,
   publicationDate,
   visitCount,
+  NewsID,
 }) => {
   return (
     <div className="flex items-center border rounded-xl shadow-md min-w-[550px] bg-white">
@@ -30,6 +32,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
         newsImageUrl={newsImageUrl}
         channelImageUrl={channelImageUrl}
         channelName={channelName}
+        NewsID={NewsID}
       />
       <NewsDetails
         category={category}

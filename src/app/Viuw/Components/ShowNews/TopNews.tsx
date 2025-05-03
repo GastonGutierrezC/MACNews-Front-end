@@ -26,7 +26,6 @@ const TopNews: React.FC<NewsTopProps> = ({ NewsID, Title, NewsImageURL }) => {
     }, 100); 
   };
   
-
   return (
     <div>
       <div

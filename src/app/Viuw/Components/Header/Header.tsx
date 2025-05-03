@@ -7,6 +7,7 @@ import FormIcon from './FormIcon';
 import LogoIcon from './LogoIcon';
 import SearchBar from './SearchBar';
 import UserIcon from './UserIcon'; 
+import SpecialtyDropdown from './SpecialtyDropdown';
 
 const Header = () => {
   return (
@@ -18,6 +19,8 @@ const Header = () => {
         <div className="flex items-center justify-between w-full flex-wrap sm:flex-nowrap">
           <div className="flex items-center gap-7 sm:gap-14 w-full sm:w-auto justify-between">
             <LogoIcon />
+            <SpecialtyDropdown />
+            <CategoriesDropdown />
           </div>
 
           <div className="flex-grow mx-8 w-full max-w-full">
@@ -31,9 +34,6 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <CategoriesDropdown />
-        </div>
       </div>
     </header>
   );

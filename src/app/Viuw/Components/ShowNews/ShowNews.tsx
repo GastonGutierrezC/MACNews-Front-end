@@ -55,6 +55,7 @@ export const ShowNews: React.FC = () => {
           channelImageUrl={newsToShow[0].Channel.ChannelImageURL}
           publicationDate={newsToShow[0].PublicationDate}
           visitCount={newsToShow[0].VisitCount}
+          NewsID={newsToShow[0].NewsId}
         />
       )}
 
@@ -69,6 +70,7 @@ export const ShowNews: React.FC = () => {
             title={item.Title}
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
+            NewsID={item.NewsId}
           />
         ))}
       </div>
@@ -84,13 +86,14 @@ export const ShowNews: React.FC = () => {
             title={item.Title}
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
+            NewsID={item.NewsId}
           />
         ))}
       </div>
 
       {topNews.length > 0 && (
   <div className="flex flex-col gap-5 pt-20 pl-25">
-    <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares</h2>
+    <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares xd</h2>
     {topNews.map((item, index) => {
       console.log("ESTO "+item.NewsID);  
       return (
