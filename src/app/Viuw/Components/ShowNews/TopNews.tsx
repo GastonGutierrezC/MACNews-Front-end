@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface NewsTopProps {
   NewsID: string;
@@ -7,22 +10,33 @@ interface NewsTopProps {
 }
 
 const TopNews: React.FC<NewsTopProps> = ({ NewsID, Title, NewsImageURL }) => {
-  return (
-    
-    <div>
-      {/* Título de la sección */}
+  const router = useRouter();
 
+  const handleClick = () => {
+   
+    localStorage.setItem('selectedNewsId', NewsID);
+  
+    
+    const savedId = localStorage.getItem('selectedNewsId');
+    console.log('ID guardado en localStorage:', savedId);
+  
+    
+    setTimeout(() => {
+      router.push('/pages/news'); 
+    }, 100); 
+  };
+  
+  return (
+    <div>
       <div
         key={NewsID}
-        className="relative w-150 h-32 rounded-xl overflow-hidden shadow-lg group"
+        onClick={handleClick}
+        className="cursor-pointer relative w-150 h-32 rounded-xl overflow-hidden shadow-lg group"
       >
-        {/* Imagen de fondo */}
         <div
           className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:brightness-75"
           style={{ backgroundImage: `url(${NewsImageURL})` }}
         />
-
-        {/* Título centrado */}
         <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
           <h3 className="text-white text-3xl font-bold drop-shadow-lg">
             {Title}

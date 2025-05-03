@@ -13,3 +13,4 @@ export const findUserByCredentials = async (email: string, password: string): Pr
     throw error.response?.data || { message: 'Unknown error' };
   }
 };
+

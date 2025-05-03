@@ -13,28 +13,28 @@ import {
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
 
-const categorias = ['Política', 'Medicina', 'Economía'];
+const specialty = ['Investigación', 'Entrevistas', 'Opinión'];
 
-const CategoriesDropdown = () => {
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = React.useState('Política');
+const SpecialtyDropdown = () => {
+  const [specialtySeleccionada, setSpecialtySeleccionada] = React.useState('Investigación');
 
   const handleChange = (value: string) => {
-    console.log('Categoría seleccionada:', value);
-    setCategoriaSeleccionada(value);
+    console.log('Specialty seleccionada:', value);
+    setSpecialtySeleccionada(value);
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="bluehover">
-          Categorías
+          Especialidades
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Selecciona una categoría</DropdownMenuLabel>
+        <DropdownMenuLabel>Selecciona una especialidad</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={categoriaSeleccionada} onValueChange={handleChange}>
-          {categorias.map((categoria) => (
+        <DropdownMenuRadioGroup value={specialtySeleccionada} onValueChange={handleChange}>
+          {specialty.map((categoria) => (
             <DropdownMenuRadioItem key={categoria} value={categoria}>
               {categoria}
             </DropdownMenuRadioItem>
@@ -45,4 +45,4 @@ const CategoriesDropdown = () => {
   );
 };
 
-export default CategoriesDropdown;
+export default SpecialtyDropdown;
