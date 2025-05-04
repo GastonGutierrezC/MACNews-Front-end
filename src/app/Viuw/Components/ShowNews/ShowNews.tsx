@@ -10,15 +10,17 @@ import Image from 'next/image';
 import WordNews from '../../../Images/wordNews.png';
 import { useUser } from '@/app/Controller/Context/UserContext';
 import { useRecommendationsNews } from '@/app/Controller/Hooks/useRecommendationsNews';
-
+import { Button } from '@/components/ui/button'; 
 
 export const ShowNews: React.FC = () => {
   const { user } = useUser();
 
   const {
     news: defaultNews,
-    loading: loadingDefault,
-    error: errorDefault
+    loadingInitial,
+    loadingMore,
+    error,
+    loadMore
   } = useNews();
 
 
@@ -28,21 +30,19 @@ export const ShowNews: React.FC = () => {
     error: errorRecommended
   } = useRecommendationsNews(user?.id);
   
-
-  const newsToShow = user?.id ? recommendedNews : defaultNews;
-
   const {
     news: topNews,
     loading: loadingTop,
     error: errorTop
   } = useTopNews();
 
-  const isLoading = loadingDefault || loadingTop || (user?.id && loadingRecommended);
-  const hasError = errorDefault || errorTop || (user?.id && errorRecommended);
+  const newsToShow = user?.id ? recommendedNews : defaultNews;
+  const isLoading = loadingInitial || loadingTop || (user?.id && loadingRecommended);
+  const hasError = error || errorTop || (user?.id && errorRecommended);
 
   if (isLoading) return <p className="pt-65">Cargando noticias...</p>;
   if (hasError) return <p className="pt-65">Ocurrió un error al cargar noticias</p>;
-  
+
 
   return (
     <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
@@ -89,6 +89,13 @@ export const ShowNews: React.FC = () => {
             NewsID={item.NewsId}
           />
         ))}
+
+        {!user?.id && (
+          <div className="flex justify-center pt-10">
+            <Button variant="bluehover"  onClick={loadMore}>Ver más noticias</Button>
+          </div>
+        )}
+
       </div>
 
       {topNews.length > 0 && (
