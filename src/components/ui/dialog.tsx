@@ -12,10 +12,24 @@ function Dialog({
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
-function DialogTrigger({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
+const variants = {
+  bluehover:
+    "h-11 bg-[#B8D1E7] text-[#2271B3] border-[#063346] border-4 px-6 py-1 rounded-md text-xl font-extrabold transition hover:bg-[#2271B3] hover:text-[#B8D1E7]",
+  // Aquí podrías agregar más variantes luego
+};
+
+type DialogTriggerProps = React.ComponentProps<typeof DialogPrimitive.Trigger> & {
+  variant?: keyof typeof variants;
+};
+
+function DialogTrigger({ variant, className, ...props }: DialogTriggerProps) {
+  return (
+    <DialogPrimitive.Trigger
+      data-slot="dialog-trigger"
+      className={cn(variant ? variants[variant] : "", className)}
+      {...props}
+    />
+  );
 }
 
 function DialogPortal({
