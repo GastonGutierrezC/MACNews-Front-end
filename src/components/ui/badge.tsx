@@ -24,7 +24,11 @@ const badgeVariants = cva(
         "bg-[#AEE1F4] text-black px-4 py-2 text-md rounded-full",
         title:
            "inset-0 flex items-center justify-center bg-[#B8D1E7] text-4xl font-extrabold tracking-tight px-4 py-2 rounded-full",   
-          
+        userData:
+           "bg-[#AEE1F4] rounded-lg p-4 w-full text-right text-xs md:text-xl space-y-2",
+        text:
+           "rounded-lg p-4 w-full text-right text-xs md:text-xl space-y-2",
+                  
         }
         ,
     },
