@@ -8,63 +8,65 @@ import React, {
   useEffect
 } from 'react';
 
-interface User {
+export interface User {
   id: string;
   UserFirstName: string;
   UserLastName: string;
   UserEmail: string;
   UserImageURL: string;
-  PasswordUser: string; 
+  PasswordUser: string;
 }
 
-interface RawUserFromBackend {
+export interface RawUserFromBackend {
   UserID: string;
   UserFirstName: string;
   UserLastName: string;
   UserEmail: string;
   UserImageURL: string;
-  PasswordUser: string; 
+  PasswordUser: string;
 }
+
+type NormalizableUser = User | RawUserFromBackend;
 
 interface UserContextProps {
   user: User | null;
-  setUser: (user: User | RawUserFromBackend | null) => void;
+  setUser: (user: NormalizableUser | null) => void;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
+      const parsedUser: User = JSON.parse(storedUser);
       console.log('[UserContext] Usuario cargado desde localStorage:', parsedUser);
-      setUser(parsedUser);
+      setUserState(parsedUser);
     }
   }, []);
 
-  const updateUser = (userData: User | RawUserFromBackend | null) => {
+  const setUser = (userData: NormalizableUser | null) => {
     if (userData === null) {
-      setUser(null);
+      setUserState(null);
       localStorage.removeItem('user');
       return;
     }
 
-    console.log('[UserContext] Datos recibidos para guardar:', userData);
-
     let normalizedUser: User;
 
     if ('UserID' in userData) {
-     
+      // Es un RawUserFromBackend
+      console.log('[UserContext] Normalizando usuario del backend:', userData);
+
       const {
         UserID,
         UserFirstName,
         UserLastName,
         UserEmail,
         UserImageURL,
-        PasswordUser 
+        PasswordUser
       } = userData;
 
       normalizedUser = {
@@ -73,19 +75,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         UserLastName: UserLastName ?? '',
         UserEmail: UserEmail ?? '',
         UserImageURL: UserImageURL ?? '',
-        PasswordUser: PasswordUser ?? '' 
+        PasswordUser: PasswordUser ?? ''
       };
     } else {
+      // Ya es un User
       normalizedUser = userData;
+      console.log('[UserContext] Usuario ya normalizado:', normalizedUser);
     }
 
-    setUser(normalizedUser);
+    setUserState(normalizedUser);
     localStorage.setItem('user', JSON.stringify(normalizedUser));
     console.log('[UserContext] Usuario guardado en contexto y localStorage:', normalizedUser);
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser: updateUser }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
