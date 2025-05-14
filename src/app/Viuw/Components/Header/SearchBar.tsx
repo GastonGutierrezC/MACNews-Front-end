@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,19 +12,49 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/app/Controller/Context/UserContext';
+import { useSaveSearchHistory } from '@/app/Controller/Hooks/useSaveSearchHistory';
+import { useSearchHistory } from '@/app/Controller/Hooks/useSearchHistory';
 
 const SearchBar = ({ className }: { className?: string }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [history, setHistory] = useState<string[]>(['películas', 'noticias', 'ejercicio']);
+  const [history, setHistory] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
+  const router = useRouter(); 
+
+  const { user } = useUser(); 
+  const postSearch = useSaveSearchHistory();
+
+  const { history: userHistory, loading } = useSearchHistory(user?.id ?? null);
+
+  useEffect(() => {
+    if (user && user.id && userHistory.length > 0) {
+      const uniqueHistory = [...new Set(userHistory.map((item) => item.SearchWord))].slice(0, 10);
+      setHistory(uniqueHistory);
+    } else if (!user || history.length === 0) {
+      setHistory(['noticias']);
+    }
+  }, [user, userHistory]);
 
   const handleSearchClick = () => {
-    if (!searchQuery.trim()) return;
-    console.log('Texto buscado:', searchQuery);
-    if (!history.includes(searchQuery)) {
-      setHistory([searchQuery, ...history].slice(0, 5));
+    const trimmedQuery = searchQuery.trim();
+    if (!trimmedQuery) return;
+
+    if (!history.includes(trimmedQuery)) {
+      setHistory([trimmedQuery, ...history].slice(0, 10));
     }
+
+    const encodedQuery = encodeURIComponent(trimmedQuery);
+    router.push(`/pages/search/${encodedQuery}`);
+
     setIsFocused(false);
+
+    if (user && user.id) {
+      postSearch.saveSearchHistory({ UserID: user.id, SearchWord: trimmedQuery });
+    } else {
+      console.log('[SearchBar] Usuario no logueado, no se guarda búsqueda.');
+    }
   };
 
   const handleSelectHistory = (value: string) => {

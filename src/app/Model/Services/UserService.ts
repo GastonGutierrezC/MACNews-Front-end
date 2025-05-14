@@ -17,5 +17,6 @@ export const createUser = async (userData: UserRegistration): Promise<any> => {
   }
 };
 
-// http://localhost:3002/applicationForm/evaluate-with-agent
+// http://localhost:3002/searchHistory
+// http://localhost:3002/searchHistory/user/{id}
 
