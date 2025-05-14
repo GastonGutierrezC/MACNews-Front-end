@@ -18,5 +18,5 @@ export const createUser = async (userData: UserRegistration): Promise<any> => {
 };
 
 // http://localhost:3002/searchHistory
-// http://localhost:3002/searchHistory/user/{id}
+// http://localhost:3002/news/category/{category}
 
