@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,28 +13,60 @@ import {
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
 
-const categorias = ['Política', 'Medicina', 'Economía'];
+// Español que ve el usuario
+const categoriasES = [
+  'Política',
+  'Economía',
+  'Entretenimiento',
+  'Tecnología',
+  'Salud',
+  'Ciencia',
+  'Internacional',
+  'Sociedad',
+  'Seguridad',
+];
+
+// Mapeo: Español → Inglés (usado en la ruta del backend)
+const categoriaMap: Record<string, string> = {
+  'Política': 'Politics',
+  'Economía': 'Economy',
+  'Entretenimiento': 'Entertainment',
+  'Tecnología': 'Technology',
+  'Salud': 'Health',
+  'Ciencia': 'Science',
+  'Internacional': 'International',
+  'Sociedad': 'Society',
+  'Seguridad': 'Security',
+};
 
 const CategoriesDropdown = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = React.useState('Política');
+  const router = useRouter();
 
   const handleChange = (value: string) => {
-    console.log('Categoría seleccionada:', value);
     setCategoriaSeleccionada(value);
+
+    const categoriaIngles = categoriaMap[value];
+    if (categoriaIngles) {
+      router.push(`/pages/category/${categoriaIngles}`);
+    } else {
+      console.warn(`No se encontró traducción para la categoría: ${value}`);
+    }
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="bluehover">
-          Categorías
-        </Button>
+        <Button variant="bluehover">Categorías</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Selecciona una categoría</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={categoriaSeleccionada} onValueChange={handleChange}>
-          {categorias.map((categoria) => (
+        <DropdownMenuRadioGroup
+          value={categoriaSeleccionada}
+          onValueChange={handleChange}
+        >
+          {categoriasES.map((categoria) => (
             <DropdownMenuRadioItem key={categoria} value={categoria}>
               {categoria}
             </DropdownMenuRadioItem>
@@ -46,3 +78,7 @@ const CategoriesDropdown = () => {
 };
 
 export default CategoriesDropdown;
+
+
+
+//http://localhost:3001/pages/category/Politics
