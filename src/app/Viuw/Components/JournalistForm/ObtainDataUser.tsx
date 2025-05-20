@@ -113,15 +113,16 @@ export function ObtainDataUser() {
 
         console.log("Enviando solicitud al backend:", applicationData)
 
-        await submitApplication(applicationData)
+        const response = await submitApplication(applicationData)
 
-        if (result?.VerificationStatus === "Approved") {  //"Approved"
+        if (response?.VerificationStatus === "Approved") {
           setDialogType("approved")
-        } else if(result?.VerificationStatus === "Rejected") {    // "Rejected"
+        } else if(response?.VerificationStatus === "Rejected") {
           setDialogType("rejected")
-        }else{
-            setDialogType("error")
+        } else {
+          setDialogType("error")
         }
+        
         
 
       } else {

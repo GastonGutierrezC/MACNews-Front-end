@@ -16,6 +16,7 @@ import {
 // Español que ve el usuario
 const categoriasES = [
   'Política',
+  'Deportes',
   'Economía',
   'Entretenimiento',
   'Tecnología',
@@ -29,6 +30,7 @@ const categoriasES = [
 // Mapeo: Español → Inglés (usado en la ruta del backend)
 const categoriaMap: Record<string, string> = {
   'Política': 'Politics',
+  'Deportes': 'Sports',
   'Economía': 'Economy',
   'Entretenimiento': 'Entertainment',
   'Tecnología': 'Technology',
