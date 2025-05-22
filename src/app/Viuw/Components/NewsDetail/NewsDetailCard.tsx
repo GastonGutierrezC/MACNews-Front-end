@@ -51,6 +51,7 @@ const NewsDetailCard = ({ news }: Props) => {
   <Badge variant="split">Categoria: {news.Categories}</Badge>
   <Badge variant="data"> {news.PublicationDate}</Badge>
 </div>
+<Badge variant="title">{news.ShortDescription}</Badge>
     <p className="text-gray-800 text-lg leading-relaxed">{news.Content}</p>
     </div>
 

@@ -10,6 +10,7 @@ interface NewsCardProps {
   channelName: string;
   category: string;
   title: string;
+  
   publicationDate: string;
   visitCount: number;
   NewsID: string;

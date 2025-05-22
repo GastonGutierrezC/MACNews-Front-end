@@ -9,6 +9,7 @@ export interface Channel {
   export interface NewsDetail {
     NewsId: string;
     Title: string;
+    ShortDescription: string;
     Content: string;
     PublicationDate: string;
     NewsStatus: string;

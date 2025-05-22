@@ -1,3 +1,5 @@
+// UserContext.tsx
+
 'use client';
 
 import React, {
@@ -30,20 +32,30 @@ type NormalizableUser = User | RawUserFromBackend;
 
 interface UserContextProps {
   user: User | null;
+  journalistID: string | null;
   setUser: (user: NormalizableUser | null) => void;
+  setJournalist: (data: { JournalistID: string }) => void;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
+  const [journalistID, setJournalistID] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
+    const storedJournalist = localStorage.getItem('journalistID');
+
     if (storedUser) {
       const parsedUser: User = JSON.parse(storedUser);
-      console.log('[UserContext] Usuario cargado desde localStorage:', parsedUser);
       setUserState(parsedUser);
+      console.log('[UserContext] Usuario cargado desde localStorage:', parsedUser);
+    }
+
+    if (storedJournalist) {
+      setJournalistID(storedJournalist);
+      console.log('[UserContext] JournalistID cargado desde localStorage:', storedJournalist);
     }
   }, []);
 
@@ -57,9 +69,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     let normalizedUser: User;
 
     if ('UserID' in userData) {
-      // Es un RawUserFromBackend
-      console.log('[UserContext] Normalizando usuario del backend:', userData);
-
       const {
         UserID,
         UserFirstName,
@@ -78,9 +87,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         PasswordUser: PasswordUser ?? ''
       };
     } else {
-      // Ya es un User
       normalizedUser = userData;
-      console.log('[UserContext] Usuario ya normalizado:', normalizedUser);
     }
 
     setUserState(normalizedUser);
@@ -88,8 +95,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     console.log('[UserContext] Usuario guardado en contexto y localStorage:', normalizedUser);
   };
 
+  const setJournalist = ({ JournalistID }: { JournalistID: string }) => {
+    setJournalistID(JournalistID);
+    localStorage.setItem('journalistID', JournalistID);
+    console.log('[UserContext] JournalistID guardado en contexto y localStorage:', JournalistID);
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, journalistID, setUser, setJournalist }}>
       {children}
     </UserContext.Provider>
   );
