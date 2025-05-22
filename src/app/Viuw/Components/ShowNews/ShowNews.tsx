@@ -36,7 +36,10 @@ export const ShowNews: React.FC = () => {
     error: errorTop
   } = useTopNews();
 
-  const newsToShow = user?.id ? recommendedNews : defaultNews;
+  const newsToShow = user?.id && recommendedNews.length > 0
+  ? recommendedNews
+  : defaultNews;
+
   const isLoading = loadingInitial || loadingTop || (user?.id && loadingRecommended);
   const hasError = error || errorTop || (user?.id && errorRecommended);
 

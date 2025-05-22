@@ -20,6 +20,7 @@ import { SeeRegulations} from "./SeeRegulations"
 import { useEvaluateApplicationForm } from "@/app/Controller/Hooks/useEvaluateApplicationForm"
 import { useUser } from "@/app/Controller/Context/UserContext"
 import { ApplicationFormAlertDialog } from "./ApplicationFormAlerts"
+import { useRouter } from 'next/navigation';
 
 
 
@@ -51,11 +52,14 @@ export function ObtainDataUser() {
     setDialogType(type)
     setDialogOpen(true)
   }
-
+  const router = useRouter();
   const closeDialog = () => {
     setDialogOpen(false)
     setDialogType(null)
   }
+  const handleClickCreateChannel = () => {
+    router.push('/pages/creation-channel');
+  };
   
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -102,7 +106,6 @@ export function ObtainDataUser() {
           return
         }
 
-        // Armamos el objeto para el backend
         const applicationData = {
           UserID: user.id,
           BirthDate: values.birthDate,
@@ -146,7 +149,7 @@ export function ObtainDataUser() {
       type={dialogType ?? "loading"}
       onClose={closeDialog}
       onCreateChannel={() => {
-        closeDialog()
+        handleClickCreateChannel()
         // lógica para redireccionar o abrir modal de creación de canal
       }}
       onManualReview={() => {
