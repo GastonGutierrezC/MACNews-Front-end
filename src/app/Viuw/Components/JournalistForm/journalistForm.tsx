@@ -14,12 +14,7 @@ export const JournalistForm: React.FC = () => {
       <div className="flex justify-center">
         <Badge variant="title">Formulario para Solicitar ser Periodista</Badge>
       </div>
-
-
-
       <ObtainDataUser/>
-
-
     </div>
   );
 };

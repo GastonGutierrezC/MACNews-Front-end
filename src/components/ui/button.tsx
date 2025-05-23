@@ -24,6 +24,8 @@ const buttonVariants = cva(
           "h-11 bg-[#B8D1E7] text-[#2271B3] border-[#063346] border-4 px-6 py-1 rounded-md text-xl font-extrabold transition hover:bg-[#2271B3] hover:text-[#B8D1E7]",
         redhover:
           "h-11 bg-[#FDECEC] text-[#D64545] border-[#B33A3A] border-4 px-6 py-1 rounded-md text-xl font-extrabold transition hover:bg-[#D64545] hover:text-[#FDECEC]",
+        bluehover3:
+          "h-11   px-6 py-1 rounded-md text-xl font-extrabold transition  hover:text-[#5E83BA]",
 
         bluehover2:
           "absolute bottom-4 right-4 bg-[#B8D1E7] text-[#2271B3] border-[#063346] border-4 px-6 py-1 rounded-md text-xl font-extrabold transition hover:bg-[#2271B3] hover:text-[#B8D1E7]",

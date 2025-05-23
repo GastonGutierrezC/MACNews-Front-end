@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { createJournalist } from '../../Model/Services/JournalistService';
 import { JournalistRequest } from '../../Model/Entities/Journalist';
 import { useUser } from '@/app/Controller/Context/UserContext';
+import { getUserById } from '@/app/Model/Services/UserService';
 
 export const useCreateJournalist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const { user, setJournalist } = useUser();
+  const { user, setJournalist, setUser } = useUser();
 
   const registerJournalist = async (specialty: string, experience: string) => {
     setLoading(true);
@@ -35,6 +36,13 @@ export const useCreateJournalist = () => {
       }
 
       setJournalist({ JournalistID: response.JournalistID });
+
+      // 🔄 Actualizamos el contexto del usuario con la versión más reciente del backend
+      const updatedUser = await getUserById(user.id);
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
+
       setSuccess(true);
     } catch (error: any) {
       setError(error.message || 'Error al crear el periodista');
