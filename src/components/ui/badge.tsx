@@ -19,15 +19,24 @@ const badgeVariants = cva(
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         split:
         "border-none bg-gradient-to-r from-[#0A79B0] to-[#AEE1F4] text-black font-semibold text-lg",
-        
+        split2:
+         "border-none bg-gradient-to-r from-[#0A79B0] via-[#AEE1F4] to-[#AEE1F4] text-black font-semibold text-xl",
+        channel:
+        "h-14 bg-[#AEE1F4] text-[#0A4B7B] px-4 py-2 rounded-full text-2xl font-bold font-[League Spartan], sans-serif border-6 border-[#0A4B7B] pl-8",
         data:
         "bg-[#AEE1F4] text-black px-4 py-2 text-md rounded-full",
         title:
            "inset-0 flex items-center justify-center bg-[#B8D1E7] text-4xl font-extrabold tracking-tight px-4 py-2 rounded-full",   
         userData:
            "bg-[#AEE1F4] rounded-lg p-4 w-full text-right text-xs md:text-xl space-y-2",
+        userData2:
+       "bg-[#AEE1F4] text-black px-4 py-2 text-base sm:text-lg md:text-xl lg:text-2xl rounded-full",
+        userData3:
+        "text-black px-3 py-1 text-base sm:px-4 sm:py-2 sm:text-lg md:text-lg lg:text-xl rounded-full",
+        userData4:
+           "bg-[#AEE1F4] text-black px-4 py-2 text-2xl rounded-full",   
         text:
-           "rounded-lg p-4 w-full text-right text-xs md:text-xl space-y-2",
+           "rounded-lg p-4 w-full text-right text-xl md:text-xl space-y-2",
                   
         }
         ,

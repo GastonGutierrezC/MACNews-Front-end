@@ -17,6 +17,7 @@ export interface User {
   UserEmail: string;
   UserImageURL: string;
   PasswordUser: string;
+  RoleAssigned: string;
 }
 
 export interface RawUserFromBackend {
@@ -26,6 +27,7 @@ export interface RawUserFromBackend {
   UserEmail: string;
   UserImageURL: string;
   PasswordUser: string;
+  RoleAssigned: string;
 }
 
 type NormalizableUser = User | RawUserFromBackend;
@@ -75,7 +77,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         UserLastName,
         UserEmail,
         UserImageURL,
-        PasswordUser
+        PasswordUser,
+        RoleAssigned
       } = userData;
 
       normalizedUser = {
@@ -84,7 +87,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         UserLastName: UserLastName ?? '',
         UserEmail: UserEmail ?? '',
         UserImageURL: UserImageURL ?? '',
-        PasswordUser: PasswordUser ?? ''
+        PasswordUser: PasswordUser ?? '',
+        RoleAssigned: RoleAssigned ?? ''
       };
     } else {
       normalizedUser = userData;

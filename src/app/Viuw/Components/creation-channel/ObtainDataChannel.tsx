@@ -5,6 +5,7 @@ import { useForm, Controller, FormProvider } from "react-hook-form"
 import { z } from "zod"
 import { useEffect, useRef, useState } from "react"
 import { FaPencilAlt } from "react-icons/fa"
+import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -54,6 +55,7 @@ export function ChannelForm() {
   const [imageURL, setImageURL] = useState(defaultImage)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -82,7 +84,7 @@ export function ChannelForm() {
     console.log("Datos completos del formulario:", values)
     const especialitisTrasform = values.Specialties.map(s => specialtyMap[s])
     await registerChannel(values.ChannelName, values.DescriptionChannel, especialitisTrasform,values.ChannelImageURL);
-
+    router.push('/pages/channel-journalist');
   }
 
   const onSubmitImage = async (file: File) => {

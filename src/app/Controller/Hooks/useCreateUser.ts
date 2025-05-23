@@ -18,7 +18,7 @@ export const useCreateUser = () => {
       const response = await createUser(userData);
       console.log("Respuesta del backend:", response);
 
-      const { UserID, UserFirstName, UserLastName, UserEmail, UserImageURL, PasswordUser } = response;
+      const { UserID, UserFirstName, UserLastName, UserEmail, UserImageURL, PasswordUser, RoleAssigned} = response;
       
       console.log("Datos que se enviarán al contexto:", {
         id: UserID,
@@ -26,7 +26,8 @@ export const useCreateUser = () => {
         UserLastName,
         UserEmail,
         UserImageURL,
-        PasswordUser
+        PasswordUser,
+        RoleAssigned
       });
 
       setUser({
@@ -36,6 +37,7 @@ export const useCreateUser = () => {
         UserEmail,
         UserImageURL,
         PasswordUser,
+        RoleAssigned
       });
 
       setSuccess(true);

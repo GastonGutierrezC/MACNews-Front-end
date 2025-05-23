@@ -31,7 +31,8 @@ export const useUpdateUser = () => {
         UserLastName: response.user.UserLastName,
         UserEmail: response.user.UserEmail,
         UserImageURL: response.user.UserImageURL,
-        PasswordUser: response.password.PasswordUser,  // Si necesitas la contraseña también
+        PasswordUser: response.password.PasswordUser,
+        RoleAssigned: response.password.RoleAssigned,  // Si necesitas la contraseña también
       };
 
       // Pasamos el objeto con la estructura correcta al contexto

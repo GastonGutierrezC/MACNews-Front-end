@@ -1,24 +1,41 @@
 'use client';
 
 import React from 'react';
-import { MdAssignmentInd } from 'react-icons/md';
+import { MdAssignmentInd, MdMic } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/app/Controller/Context/UserContext';
+import { GiNewspaper } from "react-icons/gi";
 const FormIcon = () => {
-
-  
-  const iconClassName = 'text-5xl sm:text-6xl md:text-7xl cursor-pointer text-white'; 
-
+  const { user } = useUser(); // Usa el contexto, no localStorage directamente
   const router = useRouter();
 
+  const iconClassName = 'text-5xl sm:text-6xl md:text-7xl cursor-pointer text-white';
+
   const handleClick = () => {
-    router.push('/pages/journalistForm');
+    if (user?.RoleAssigned === 'Journalist') {
+      router.push('/pages/channel-journalist');
+    } else {
+      router.push('/pages/journalistForm');
+    }
   };
 
-  return (
+  const isJournalist = user?.RoleAssigned === 'Journalist';
+
+  return isJournalist ? (
+    <GiNewspaper
+      className={iconClassName}
+      title="Micrófono"
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+    />
+  ) : (
     <MdAssignmentInd
       className={iconClassName}
       title="Formulario"
       onClick={handleClick}
+      role="button"
+      tabIndex={0}
     />
   );
 };
