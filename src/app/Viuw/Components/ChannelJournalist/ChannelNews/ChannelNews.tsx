@@ -40,6 +40,7 @@ function ChannelNews({ channelId }: ChannelNewsProps) {
           publicationDate={item.PublicationDate}
           visitCount={item.VisitCount}
           NewsID={item.NewsId}
+          ChannelID={item.Channel.ChannelID}
         />
       ))}
     </div>

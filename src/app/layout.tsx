@@ -4,6 +4,7 @@ import Header from './Viuw/Components/Header/Header';
 import Footer from './Viuw/Components/Footer/Footer';
 import './Styles/globals.css'; // O cualquier otro CSS global
 import { UserProvider } from './Controller/Context/UserContext';
+import { UserChannelsSheet } from './Viuw/Components/ShowFollowChannels/UserChannelsSheet';
 
 
 export const metadata = {
@@ -18,13 +19,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {/* Puedes agregar más elementos <head> aquí si es necesario */}
-      </head>
+      <head />
       <body>
-        <UserProvider> {/* 👈 Envolvés todo con el UserProvider */}
+        <UserProvider>
           <Header />
+
+
+          <div className="fixed top-60 left-6 z-50">
+            <UserChannelsSheet />
+          </div>
+
           <div className="mx-[100px]">{children}</div>
+
           <Footer />
         </UserProvider>
       </body>

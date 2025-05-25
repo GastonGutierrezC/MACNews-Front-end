@@ -14,3 +14,5 @@ export const findUserByCredentials = async (email: string, password: string): Pr
   }
 };
 
+// http://localhost:3002/followChannels/user/{userId}
+

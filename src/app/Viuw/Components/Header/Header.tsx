@@ -8,6 +8,7 @@ import LogoIcon from './LogoIcon';
 import SearchBar from './SearchBar';
 import UserIcon from './UserIcon'; 
 import SpecialtyDropdown from './SpecialtyDropdown';
+import { UserChannelsSheet } from '../ShowFollowChannels/UserChannelsSheet';
 
 const Header = () => {
   return (
@@ -33,9 +34,10 @@ const Header = () => {
             <UserIcon />
           </div>
         </div>
-
+        
       </div>
     </header>
+    
   );
 };
 

@@ -74,6 +74,7 @@ export const ShowNews: React.FC = () => {
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
+            ChannelID={item.Channel.ChannelID}
           />
         ))}
       </div>
@@ -90,6 +91,7 @@ export const ShowNews: React.FC = () => {
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
+            ChannelID={item.Channel.ChannelID}
           />
         ))}
 
