@@ -1,12 +1,16 @@
 // src/Components/ChannelJournalist.tsx
+'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import ChannelInformation from './ChannelInformation';
 import { useChannelByJournalist } from '@/app/Controller/Hooks/useChannelByJournalist';
 import { Button } from '@/components/ui/button';
+import CreationNews from './CreationNews/CreationNews';
+
 
 const ChannelJournalist: React.FC = () => {
   const { channelData, loading, error } = useChannelByJournalist();
+  const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
 
   if (loading) return <p>Cargando información del canal...</p>;
   if (error) return <p>Error al obtener el canal: {error}</p>;
@@ -17,22 +21,30 @@ const ChannelJournalist: React.FC = () => {
       <ChannelInformation channel={channelData} />
 
       <div className="flex space-x-4 mt-6">
-        <Button variant="bluehover3">
+        <Button variant="bluehover3" onClick={() => setSelectedView('news')}>
           Noticias
         </Button>
-        <Button variant="bluehover3">
+        <Button variant="bluehover3" onClick={() => setSelectedView('comments')}>
           Post de Comentarios
         </Button>
-        <Button variant="bluehover3">
+        <Button variant="bluehover3" onClick={() => setSelectedView('metrics')}>
           Métricas del Canal
         </Button>
-        <Button variant="bluehover3">
+        <Button variant="bluehover3" onClick={() => setSelectedView('create')}>
           Crear una nueva Noticia
         </Button>
-
       </div>
 
       <hr className="mt-4 border-t-2 border-black" />
+
+      <div className="mt-8">
+        {selectedView === 'news' && <p className="text-lg">Aquí se mostrarán las noticias del canal.</p>}
+        {selectedView === 'comments' && <p className="text-lg">Aquí se mostrarán los comentarios.</p>}
+        {selectedView === 'metrics' && <p className="text-lg">Aquí se mostrarán las métricas del canal.</p>}
+        {selectedView === 'create' && (
+          <CreationNews channelID={channelData.ChannelId} />
+        )}
+      </div>
     </div>
   );
 };
