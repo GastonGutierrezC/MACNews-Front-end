@@ -6,6 +6,7 @@ import ChannelInformation from './ChannelInformation';
 import { useChannelByJournalist } from '@/app/Controller/Hooks/useChannelByJournalist';
 import { Button } from '@/components/ui/button';
 import CreationNews from './CreationNews/CreationNews';
+import ChannelNews from './ChannelNews/ChannelNews';
 
 
 const ChannelJournalist: React.FC = () => {
@@ -38,7 +39,9 @@ const ChannelJournalist: React.FC = () => {
       <hr className="mt-4 border-t-2 border-black" />
 
       <div className="mt-8">
-        {selectedView === 'news' && <p className="text-lg">Aquí se mostrarán las noticias del canal.</p>}
+        {selectedView === 'news' && (
+          <ChannelNews channelId={channelData.ChannelId} />
+        )}
         {selectedView === 'comments' && <p className="text-lg">Aquí se mostrarán los comentarios.</p>}
         {selectedView === 'metrics' && <p className="text-lg">Aquí se mostrarán las métricas del canal.</p>}
         {selectedView === 'create' && (
