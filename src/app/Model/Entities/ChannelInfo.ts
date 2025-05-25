@@ -8,5 +8,7 @@ export interface ChannelInfo {
     creatorFullName: string;
     followers: number;
     NumberNews: number;
+    ChannelId: string;
+   
   }
   
