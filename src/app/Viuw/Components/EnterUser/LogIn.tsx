@@ -1,35 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Logo from '../../../Images/news.png';
-import { useFindUser } from '@/app/Controller/Hooks/useFindUser';
-import { useUser } from '@/app/Controller/Context/UserContext'; 
-import { useRouter } from 'next/navigation'; 
+import { useLoginForm } from '@/app/Controller/Hooks/User/useLoginForm';
 
 const LogIn = () => {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-  });
-
-  const { fetchUser, loading, error } = useFindUser();
-  const { user } = useUser(); 
-  const router = useRouter(); 
-
-  useEffect(() => {
-    if (user) {
-      router.push('/pages'); 
-    }
-  }, [user, router]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
-    await fetchUser(credentials.email, credentials.password);
-  };
+  const {
+    credentials,
+    handleChange,
+    handleSubmit,
+    loading,
+    error,
+  } = useLoginForm();
 
   const renderField = (name: keyof typeof credentials, label: string, type = 'text') => {
     const isActive = credentials[name] !== '';

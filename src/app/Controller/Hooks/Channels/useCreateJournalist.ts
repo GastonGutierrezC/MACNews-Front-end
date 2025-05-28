@@ -1,8 +1,8 @@
 // src/Hooks/useCreateJournalist.ts
 
 import { useState } from 'react';
-import { createJournalist } from '../../Model/Services/JournalistService';
-import { JournalistRequest } from '../../Model/Entities/Journalist';
+import { createJournalist } from '../../../Model/Services/JournalistService';
+import { JournalistRequest } from '../../../Model/Entities/Journalist';
 import { useUser } from '@/app/Controller/Context/UserContext';
 import { getUserById } from '@/app/Model/Services/UserService';
 

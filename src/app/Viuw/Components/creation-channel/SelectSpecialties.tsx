@@ -66,7 +66,7 @@ export function SelectSpecialties({ value, onChange }: SelectSpecialtiesProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
+            variant="bluehover"
             role="combobox"
             className={cn(
               "w-[300px] justify-between",
@@ -74,7 +74,7 @@ export function SelectSpecialties({ value, onChange }: SelectSpecialtiesProps) {
             )}
           >
             {value.length > 0
-              ? `${value.length} especialidad(es) seleccionada(s)`
+              ? `${value.length} especialidad(es) `
               : "Selecciona hasta 5 especialidades"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -110,7 +110,7 @@ export function SelectSpecialties({ value, onChange }: SelectSpecialtiesProps) {
   {value.map((item) => (
     <Badge
       key={item}
-      variant="secondary"
+      variant="data"
       className="flex items-center gap-1"
     >
       {item}

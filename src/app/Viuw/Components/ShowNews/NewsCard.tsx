@@ -1,5 +1,3 @@
-// app/Views/Components/NewsCard.tsx
-
 import React from 'react';
 import { NewsImage } from './NewsImage';
 import { NewsDetails } from './NewsDetails';
@@ -10,10 +8,10 @@ interface NewsCardProps {
   channelName: string;
   category: string;
   title: string;
-  
   publicationDate: string;
   visitCount: number;
   NewsID: string;
+  ChannelID: string;
 }
 
 export const NewsCard: React.FC<NewsCardProps> = ({
@@ -25,10 +23,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({
   publicationDate,
   visitCount,
   NewsID,
+  ChannelID,
 }) => {
   return (
-    <div className="flex items-center border rounded-xl shadow-md min-w-[550px] bg-white">
-        
+    <div className="flex flex-col lg:flex-row items-center border rounded-xl shadow-md min-w-[300px] bg-white">
       <NewsImage
         newsImageUrl={newsImageUrl}
         channelImageUrl={channelImageUrl}
@@ -40,6 +38,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
         title={title}
         publicationDate={publicationDate}
         visitCount={visitCount}
+        ChannelID={ChannelID}
       />
     </div>
   );

@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import ChannelInformation from './ChannelInformation';
-import { useChannelByJournalist } from '@/app/Controller/Hooks/useChannelByJournalist';
+import { useChannelByJournalist } from '@/app/Controller/Hooks/Channels/useChannelByJournalist';
 import { Button } from '@/components/ui/button';
 import CreationNews from './CreationNews/CreationNews';
 import ChannelNews from './ChannelNews/ChannelNews';

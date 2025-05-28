@@ -26,7 +26,7 @@ const badgeVariants = cva(
         data:
         "bg-[#AEE1F4] text-black px-4 py-2 text-md rounded-full",
         title:
-           "inset-0 flex items-center justify-center bg-[#B8D1E7] text-4xl font-extrabold tracking-tight px-4 py-2 rounded-full",   
+        "inset-0 flex items-center justify-center bg-[#B8D1E7] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight px-3 sm:px-4 py-1 sm:py-2 rounded-full",
         userData:
            "bg-[#AEE1F4] rounded-lg p-4 w-full text-right text-xs md:text-xl space-y-2",
         userData2:
@@ -35,7 +35,10 @@ const badgeVariants = cva(
         "text-black px-3 py-1 text-base sm:px-4 sm:py-2 sm:text-lg md:text-lg lg:text-xl rounded-full",
         userData4:
            "bg-[#AEE1F4] text-black px-4 py-2 text-2xl rounded-full",   
-        text:
+        userData5:
+           "bg-[#AEE1F4] text-black px-4 py-2 text-base sm:text-lg md:text-xl lg:text-xl rounded-full",
+    
+           text:
            "rounded-lg p-4 w-full text-right text-xl md:text-xl space-y-2",
                   
         }

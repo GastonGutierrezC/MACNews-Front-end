@@ -1,4 +1,4 @@
-import { useNewsByChannel } from '@/app/Controller/Hooks/useNewsByChannel';
+import { useNewsByChannel } from '@/app/Controller/Hooks/Channels/useNewsByChannel';
 import { NewsCard } from '../../ShowNews/NewsCard';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -40,6 +40,7 @@ function ChannelNews({ channelId }: ChannelNewsProps) {
           publicationDate={item.PublicationDate}
           visitCount={item.VisitCount}
           NewsID={item.NewsId}
+          ChannelID={item.Channel.ChannelID}
         />
       ))}
     </div>

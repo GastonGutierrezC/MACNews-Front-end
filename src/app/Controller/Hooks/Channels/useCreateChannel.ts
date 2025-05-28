@@ -1,8 +1,8 @@
 // src/Hooks/useCreateChannel.ts
 
 import { useState } from 'react';
-import { createChannel } from '../../Model/Services/ChannelService';
-import { ChannelRequest } from '../../Model/Entities/Channel';
+import { createChannel } from '../../../Model/Services/ChannelService';
+import { ChannelRequest } from '../../../Model/Entities/Channel';
 import { useUser } from '@/app/Controller/Context/UserContext';
 
 export const useCreateChannel = () => {

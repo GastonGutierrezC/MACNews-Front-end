@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,49 +11,11 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
+import { useCategoryLogic } from '@/app/Controller/Hooks/FilterNews/useCategoryLogic';
 
-// Español que ve el usuario
-const categoriasES = [
-  'Política',
-  'Deportes',
-  'Economía',
-  'Entretenimiento',
-  'Tecnología',
-  'Salud',
-  'Ciencia',
-  'Internacional',
-  'Sociedad',
-  'Seguridad',
-];
-
-// Mapeo: Español → Inglés (usado en la ruta del backend)
-const categoriaMap: Record<string, string> = {
-  'Política': 'Politics',
-  'Deportes': 'Sports',
-  'Economía': 'Economy',
-  'Entretenimiento': 'Entertainment',
-  'Tecnología': 'Technology',
-  'Salud': 'Health',
-  'Ciencia': 'Science',
-  'Internacional': 'International',
-  'Sociedad': 'Society',
-  'Seguridad': 'Security',
-};
 
 const CategoriesDropdown = () => {
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = React.useState('Política');
-  const router = useRouter();
-
-  const handleChange = (value: string) => {
-    setCategoriaSeleccionada(value);
-
-    const categoriaIngles = categoriaMap[value];
-    if (categoriaIngles) {
-      router.push(`/pages/category/${categoriaIngles}`);
-    } else {
-      console.warn(`No se encontró traducción para la categoría: ${value}`);
-    }
-  };
+  const { selected, handleSelect, categoriasES } = useCategoryLogic();
 
   return (
     <DropdownMenu>
@@ -65,8 +26,8 @@ const CategoriesDropdown = () => {
         <DropdownMenuLabel>Selecciona una categoría</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
-          value={categoriaSeleccionada}
-          onValueChange={handleChange}
+          value={selected}
+          onValueChange={handleSelect}
         >
           {categoriasES.map((categoria) => (
             <DropdownMenuRadioItem key={categoria} value={categoria}>
@@ -81,6 +42,3 @@ const CategoriesDropdown = () => {
 
 export default CategoriesDropdown;
 
-
-
-//http://localhost:3001/pages/category/Politics

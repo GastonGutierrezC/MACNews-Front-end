@@ -2,18 +2,17 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { useTopNews } from '@/app/Controller/Hooks/useTopNews';
+import { useTopNews } from '@/app/Controller/Hooks/ShowNews/useTopNews';
 import { NewsCard } from '../ShowNews/NewsCard';
 import TopNews from '../ShowNews/TopNews';
 import WordNews from '../../../Images/wordNews.png';
-import { useNewsBySpeciality } from '@/app/Controller/Hooks/useNewsBySpeciality';
+import { useNewsBySpeciality } from '@/app/Controller/Hooks/FilterNews/useNewsBySpeciality';
 import { Button } from '@/components/ui/button';
 
 interface SpecialityNewsProps {
     speciality: string;
 }
-// Speciality  [speciality]
-// speciality
+
 export const SpecialityNews: React.FC<SpecialityNewsProps> = ({ speciality }) => {
   const {
     news,
@@ -58,6 +57,7 @@ export const SpecialityNews: React.FC<SpecialityNewsProps> = ({ speciality }) =>
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
+            ChannelID={item.Channel.ChannelID}
           />
         ))}
 

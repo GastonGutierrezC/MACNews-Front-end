@@ -1,8 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
-
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,48 +11,12 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
+import { useSpecialtyLogic } from '@/app/Controller/Hooks/FilterNews/useSpecialtyLogic';
 
-const specialtyES = [
-  'Investigación',
-   'Entrevista', 
-   'Opinión', 
-   'Interpretación', 
-   'Datos', 
-   'Social',
-    'Política', 
-    'Científica', 
-    'Espectáculo', 
-    'Negocios'
-  ];
-
-  const specialtyMap: Record<string, string> = {
-    'Investigación': 'Investigative',
-    'Entrevista': 'Interview',
-    'Opinión': 'Opinion',
-    'Interpretación': 'Interpretive',
-    'Datos': 'Data',
-    'Social': 'Social',
-    'Política': 'Political',
-    'Científica': 'Scientific',
-    'Espectáculo': 'Entertainment',
-    'Negocios': 'Business',
-  };
 
 
 const SpecialtyDropdown = () => {
-  const [specialtySeleccionada, setSpecialtySeleccionada] = React.useState('Investigación');
-  const router = useRouter();
-  const handleChange = (value: string) => {
-    console.log('Specialty seleccionada:', value);
-    setSpecialtySeleccionada(value);
-
-    const specialtyIngles = specialtyMap[value];
-    if (specialtyIngles) {
-      router.push(`/pages/speciality/${specialtyIngles}`);
-    } else {
-      console.warn(`No se encontró traducción para la categoría: ${value}`);
-    }
-  };
+  const { selected, handleSelect, specialtyES } = useSpecialtyLogic();
 
   return (
     <DropdownMenu>
@@ -66,9 +28,8 @@ const SpecialtyDropdown = () => {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Selecciona una especialidad</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={specialtySeleccionada} onValueChange={handleChange}>
+        <DropdownMenuRadioGroup value={selected} onValueChange={handleSelect}>
           {specialtyES.map((categoria) => (
-
             <DropdownMenuRadioItem key={categoria} value={categoria}>
               {categoria}
             </DropdownMenuRadioItem>
