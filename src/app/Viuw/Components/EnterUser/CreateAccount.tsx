@@ -1,48 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { UserRegistration } from '../../../Model/Entities/User';
-import { useCreateUser } from '@/app/Controller/Hooks/useCreateUser';
+import { useCreateAccountForm } from '@/app/Controller/Hooks/User/useCreateAccountForm';
+import React from 'react';
+
 
 const CreateAccount = () => {
-  const router = useRouter();
-  const { registerUser, loading, error, success } = useCreateUser(); 
-
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
-    const userData: UserRegistration = {
-      user: {
-        UserFirstName: formData.nombre,
-        UserLastName: formData.apellido,
-        UserEmail: formData.email,
-        UserImageURL: 'https://cdn-icons-png.flaticon.com/512/861/861533.png',
-      },
-      password: {
-        PasswordUser: formData.password,
-      },
-    };
-
-    await registerUser(userData); 
-  };
-
-
-  useEffect(() => {
-    if (success) {
-      console.log('Usuario creado con éxito');
-      router.push('/pages'); 
-    }
-  }, [success, router]); 
+  const {
+    formData,
+    handleChange,
+    handleSubmit,
+    loading,
+    error,
+    success,
+  } = useCreateAccountForm();
 
   const renderField = (name: keyof typeof formData, label: string, type = 'text') => {
     const isActive = formData[name] !== '';
@@ -94,6 +64,7 @@ const CreateAccount = () => {
   return (
     <div className="flex flex-col justify-center items-center mx-auto p-4 rounded shadow" style={{ width: '25rem' }}>
       <h2 className="text-5xl font-bold mb-4 text-center">Crea Tu Cuenta</h2>
+
       {renderField('nombre', 'Nombre')}
       {renderField('apellido', 'Apellido')}
       {renderField('email', 'Email')}
@@ -114,4 +85,3 @@ const CreateAccount = () => {
 };
 
 export default CreateAccount;
-

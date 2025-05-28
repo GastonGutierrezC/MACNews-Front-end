@@ -1,10 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useEffect } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,46 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useCreateJournalist } from "@/app/Controller/Hooks/useCreateJournalist";
+import { useJournalistForm } from "@/app/Controller/Hooks/JournalistForm/useJournalistForm";
 
-
-const formSchema = z.object({
-  Specialty: z.string().min(2, {
-    message: "Specialty must be at least 2 characters.",
-  }),
-  JournalisticExperience: z.string().min(2, {
-    message: "Experience must be at least 2 characters.",
-  }),
-});
-
-type FormData = z.infer<typeof formSchema>;
 
 export function JounalistForm({ onComplete }: { onComplete: () => void }) {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      Specialty: "",
-      JournalisticExperience: "",
-    },
-  });
-
-  const {
-    registerJournalist,
-    loading,
-    error,
-    success
-  } = useCreateJournalist();
-
-  const onSubmit = async (values: FormData) => {
-    await registerJournalist(values.Specialty, values.JournalisticExperience);
-  };
-
-  // Llama a onComplete cuando el registro sea exitoso
-  useEffect(() => {
-    if (success) {
-      onComplete();
-    }
-  }, [success, onComplete]);
+  const { form, onSubmit, loading, error } = useJournalistForm(onComplete);
 
   return (
     <Form {...form}>
@@ -71,7 +31,7 @@ export function JounalistForm({ onComplete }: { onComplete: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>¿En qué tipo de noticias te especializas?</FormLabel>
-              <FormControl>
+              <FormControl variant="blueBackground">
                 <Input placeholder="Política, deportes, cultura..." {...field} />
               </FormControl>
               <FormDescription>Tu área de enfoque periodístico.</FormDescription>
@@ -86,7 +46,7 @@ export function JounalistForm({ onComplete }: { onComplete: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tu experiencia como periodista</FormLabel>
-              <FormControl>
+              <FormControl variant="blueBackground">
                 <Input placeholder="Trabajé 5 años en TV nacional..." {...field} />
               </FormControl>
               <FormDescription>

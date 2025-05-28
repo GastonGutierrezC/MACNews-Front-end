@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     domains: ['cdn-icons-png.flaticon.com',
 
       'res.cloudinary.com', // ✅ Agregado para permitir imágenes desde Cloudinary
-    ],  // Agrega aquí el dominio que quieres permitir
+    ],  
   },
 };
 

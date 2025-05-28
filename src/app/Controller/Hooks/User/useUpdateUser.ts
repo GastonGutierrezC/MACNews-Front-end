@@ -1,6 +1,6 @@
 // app/Hooks/useUpdateUser.ts
 import { useState } from 'react';
-import { UserUpdate } from '../../Model/Entities/UserUpdate';
+import { UserUpdate } from '../../../Model/Entities/UserUpdate';
 import { useUser } from '@/app/Controller/Context/UserContext';
 import { updateUser } from '@/app/Model/Services/UserUpdateService';
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { createUser } from '../../Model/Services/UserService';
-import { UserRegistration } from '../../Model/Entities/User';
+import { createUser } from '../../../Model/Services/UserService';
+import { UserRegistration } from '../../../Model/Entities/User';
 import { useUser } from '@/app/Controller/Context/UserContext';
 
 export const useCreateUser = () => {

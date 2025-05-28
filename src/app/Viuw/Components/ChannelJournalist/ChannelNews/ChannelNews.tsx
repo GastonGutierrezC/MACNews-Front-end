@@ -1,4 +1,4 @@
-import { useNewsByChannel } from '@/app/Controller/Hooks/useNewsByChannel';
+import { useNewsByChannel } from '@/app/Controller/Hooks/Channels/useNewsByChannel';
 import { NewsCard } from '../../ShowNews/NewsCard';
 import { Skeleton } from '@/components/ui/skeleton';
 

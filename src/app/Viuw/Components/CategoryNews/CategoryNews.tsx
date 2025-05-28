@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { useNewsByCategory } from '@/app/Controller/Hooks/useNewsByCategory';
-import { useTopNews } from '@/app/Controller/Hooks/useTopNews';
+import { useNewsByCategory } from '@/app/Controller/Hooks/FilterNews/useNewsByCategory';
+import { useTopNews } from '@/app/Controller/Hooks/ShowNews/useTopNews';
 import { NewsCard } from '../ShowNews/NewsCard';
 import TopNews from '../ShowNews/TopNews';
 import WordNews from '../../../Images/wordNews.png';
@@ -29,7 +29,6 @@ export const CategoryNews: React.FC<CategoryNewsProps> = ({ category }) => {
   } = useTopNews();
 
   useEffect(() => {
-    // Esto asegura que la categoría se decodifique correctamente si viene de una URL
     decodeURIComponent(category);
   }, [category]);
 
@@ -57,6 +56,7 @@ export const CategoryNews: React.FC<CategoryNewsProps> = ({ category }) => {
             publicationDate={item.PublicationDate}
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
+            ChannelID={item.Channel.ChannelID}
           />
         ))}
 
