@@ -26,20 +26,27 @@ export const NewsCard: React.FC<NewsCardProps> = ({
   ChannelID,
 }) => {
   return (
-    <div className="flex flex-col lg:flex-row items-center border rounded-xl shadow-md min-w-[300px] bg-white">
-      <NewsImage
-        newsImageUrl={newsImageUrl}
-        channelImageUrl={channelImageUrl}
-        channelName={channelName}
-        NewsID={NewsID}
-      />
-      <NewsDetails
-        category={category}
-        title={title}
-        publicationDate={publicationDate}
-        visitCount={visitCount}
-        ChannelID={ChannelID}
-      />
+    <div className="flex flex-col w-[460px] h-[360px] rounded-xl overflow-hidden shadow-md bg-white">
+      {/* Imagen y detalles comparten mitad del alto */}
+      <div className="flex-1">
+        <NewsImage
+          newsImageUrl={newsImageUrl}
+          channelImageUrl={channelImageUrl}
+          channelName={channelName}
+          title={title}
+          publicationDate={publicationDate}
+          NewsID={NewsID}
+        />
+      </div>
+      <div className="flex-1">
+        <NewsDetails
+          category={category}
+          title={title}
+          publicationDate={publicationDate}
+          visitCount={visitCount}
+          ChannelID={ChannelID}
+        />
+      </div>
     </div>
   );
 };

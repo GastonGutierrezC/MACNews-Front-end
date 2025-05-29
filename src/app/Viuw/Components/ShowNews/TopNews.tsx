@@ -7,16 +7,17 @@ interface NewsTopProps {
   NewsID: string;
   Title: string;
   NewsImageURL: string;
+  date: string;
 }
 
-const TopNews: React.FC<NewsTopProps> = ({ NewsID, Title, NewsImageURL }) => {
+const TopNews: React.FC<NewsTopProps> = ({ NewsID, Title, NewsImageURL,date }) => {
   const { handleTopNewsClick } = useHandleTopNewsClick();
 
   return (
     <div>
       <div
         key={NewsID}
-        onClick={() => handleTopNewsClick(NewsID)}
+        onClick={() => handleTopNewsClick(Title,date)}
         className="cursor-pointer relative  w-full h-30 sm:h-40 md:h-48 lg:h-30 xl:h-30 rounded-xl overflow-hidden shadow-lg group"
       >
         <div

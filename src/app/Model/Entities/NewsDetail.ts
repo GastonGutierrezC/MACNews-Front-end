@@ -2,7 +2,7 @@ export interface Channel {
     ChannelID: string;
     ChannelName: string;
     DescriptionChannel: string;
-    Categories: string;
+    Specialties: string[];
     ChannelImageURL: string;
   }
   

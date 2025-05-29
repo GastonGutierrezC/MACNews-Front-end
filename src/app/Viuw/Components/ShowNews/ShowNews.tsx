@@ -9,6 +9,7 @@ import Image from 'next/image';
 import WordNews from '../../../Images/wordNews.png';
 import { Button } from '@/components/ui/button';
 import { useShowNews } from '@/app/Controller/Hooks/ShowNews/useShowNews';
+import TopChannelsList from './TopChannelsList';
 
 export const ShowNews: React.FC = () => {
   const {
@@ -24,8 +25,8 @@ export const ShowNews: React.FC = () => {
   if (hasError) return <p className="pt-65">Ocurrió un error al cargar noticias</p>;
 
   return (
-    <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
-      {newsToShow.length > 0 && (
+<div className="min-h-screen p-6 flex flex-wrap gap-5 justify-center items-start pt-24">
+{newsToShow.length > 0 && (
         <SpecialNews
           imageUrl={newsToShow[0].NewsImageURL}
           category={newsToShow[0].Categories}
@@ -38,25 +39,17 @@ export const ShowNews: React.FC = () => {
         />
       )}
 
-      <div className="flex flex-col gap-5">
-        {newsToShow.slice(1, 4).map((item) => (
-          <NewsCard
-            key={item.NewsId}
-            newsImageUrl={item.NewsImageURL}
-            channelImageUrl={item.Channel.ChannelImageURL}
-            channelName={item.Channel.ChannelName}
-            category={item.Categories}
-            title={item.Title}
-            publicationDate={item.PublicationDate}
-            visitCount={item.VisitCount}
-            NewsID={item.NewsId}
-            ChannelID={item.Channel.ChannelID}
-          />
-        ))}
-      </div>
+      
 
-      <div className="flex flex-col gap-5 pt-20">
-        {newsToShow.slice(4).map((item) => (
+<div className="flex flex-col gap-2 w-full max-w-2xl ">
+  <TopChannelsList />
+</div>
+
+
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-20">
+
+        {newsToShow.slice(1).map((item) => (
           <NewsCard
             key={item.NewsId}
             newsImageUrl={item.NewsImageURL}
@@ -87,6 +80,7 @@ export const ShowNews: React.FC = () => {
               NewsID={item.NewsID}
               Title={item.Title}
               NewsImageURL={item.NewsImageURL}
+              date={item.PublicationDate}
             />
           ))}
           <Image

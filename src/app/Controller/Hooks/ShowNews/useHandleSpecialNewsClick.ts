@@ -7,9 +7,10 @@ import { useRouter } from 'next/navigation';
 export const useHandleSpecialNewsClick = () => {
   const router = useRouter();
 
-  const handleSpecialNewsClick = (NewsID: string) => {
-    localStorage.setItem('selectedNewsId', NewsID);
-    router.push('/pages/news');
+  const handleSpecialNewsClick = (title: string, date: string) => {
+    const encodedTitle = encodeURIComponent(title);
+    const encodedDate = encodeURIComponent(date);
+    router.push(`/pages/news/${encodedTitle}/${encodedDate}`);
   };
 
   return { handleSpecialNewsClick };

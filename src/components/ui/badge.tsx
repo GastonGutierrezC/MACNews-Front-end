@@ -18,7 +18,7 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         split:
-        "border-none bg-gradient-to-r from-[#0A79B0] to-[#AEE1F4] text-black font-semibold text-lg",
+        "border-none bg-[#AEE1F4] text-black font-semibold text-lg",
         split2:
          "border-none bg-gradient-to-r from-[#0A79B0] via-[#AEE1F4] to-[#AEE1F4] text-black font-semibold text-xl",
         channel:

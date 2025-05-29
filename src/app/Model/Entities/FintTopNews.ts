@@ -3,5 +3,6 @@
     NewsID: string;
     Title: string;
     NewsImageURL: string;
+    PublicationDate: string;
   }
   
