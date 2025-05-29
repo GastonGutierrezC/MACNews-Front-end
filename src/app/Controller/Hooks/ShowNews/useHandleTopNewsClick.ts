@@ -5,15 +5,11 @@ import { useRouter } from 'next/navigation';
 export const useHandleTopNewsClick = () => {
   const router = useRouter();
 
-  const handleTopNewsClick = (newsId: string) => {
-    localStorage.setItem('selectedNewsId', newsId);
+  const handleTopNewsClick = (title: string, date: string) => {
+    const encodedTitle = encodeURIComponent(title);
+    const encodedDate = encodeURIComponent(date);
+    router.push(`/pages/news/${encodedTitle}/${encodedDate}`);
 
-    const savedId = localStorage.getItem('selectedNewsId');
-    console.log('ID guardado en localStorage:', savedId);
-
-    setTimeout(() => {
-      router.push('/pages/news');
-    }, 100);
   };
 
   return { handleTopNewsClick };

@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 import { NewsDetail } from '@/app/Model/Entities/NewsDetail';
 import { getNewsDetail } from '@/app/Model/Services/GetNewsDetailService';
 
-export const useNewsDetail = (newsId: string | null) => {
+export const useNewsDetail = (title: string | null, date: string | null) => {
   const [news, setNews] = useState<NewsDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!newsId) return;
+    if (!title || !date) return;
 
     const fetchNews = async () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getNewsDetail(newsId);
+        const data = await getNewsDetail(title, date);
         setNews(data);
       } catch (err: any) {
         setError(err.message || 'Error al obtener la noticia');
@@ -24,7 +24,7 @@ export const useNewsDetail = (newsId: string | null) => {
     };
 
     fetchNews();
-  }, [newsId]);
+  }, [title, date]);
 
   return {
     news,

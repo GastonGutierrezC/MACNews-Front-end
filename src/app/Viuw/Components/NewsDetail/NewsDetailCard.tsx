@@ -6,14 +6,19 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useFollowChannel } from '@/app/Controller/Hooks/User/useFollowChannel';
+import NewsByChannelAndCategory from './NewsByChannelAndCategory';
 
 interface Props {
   news: NewsDetail;
 }
 
 const NewsDetailCard = ({ news }: Props) => {
-  const { follow, loading, error } = useFollowChannel(news.Channel.ChannelID); // 👈 canal ID
+  const channelId = news?.Channel?.ChannelID ?? null;
+  const { follow, loading, error } = useFollowChannel(channelId);
 
+  if (!news) {
+    return <p>No hay información de la noticia.</p>;
+  }
   return (
     <div className="pt-64 max-w-6xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-6">
       
@@ -61,9 +66,23 @@ const NewsDetailCard = ({ news }: Props) => {
 
       <p className="text-gray-800 text-lg leading-relaxed">{news.Content}</p>
 
+      <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-white py-16 px-6">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
+    Noticias Relacionadas
+  </h2>
+  <NewsByChannelAndCategory
+    channelId={news.Channel.ChannelID}
+    category={news.Categories}
+  />
+</div>
+
+
+
       {/* Mostrar error si lo hay */}
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
+
+    
   );
 };
 

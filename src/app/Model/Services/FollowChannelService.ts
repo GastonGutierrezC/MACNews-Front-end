@@ -12,3 +12,5 @@ export const followChannel = async (payload: FollowChannelPayload): Promise<void
     throw new Error(error.response?.data?.message || 'Error al seguir el canal.');
   }
 };
+
+//http://localhost:3002/channels/top

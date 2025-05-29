@@ -34,7 +34,7 @@ export const SpecialityNews: React.FC<SpecialityNewsProps> = ({ speciality }) =>
   }, [speciality]);
 
   return (
-    <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
+    <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-14">
       {/* Noticias por categoría */}
       <div className="flex flex-col gap-5 pt-20">
         <h2 className="text-3xl font-bold mb-6">Noticias de la especialidad: {speciality}</h2>
@@ -45,6 +45,7 @@ export const SpecialityNews: React.FC<SpecialityNewsProps> = ({ speciality }) =>
         {!loadingInitial && news.length === 0 && (
           <p className="text-gray-500">No se encontraron noticias para esta categoría.</p>
         )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-20">
 
         {news.map((item) => (
           <NewsCard
@@ -60,7 +61,7 @@ export const SpecialityNews: React.FC<SpecialityNewsProps> = ({ speciality }) =>
             ChannelID={item.Channel.ChannelID}
           />
         ))}
-
+ </div>
         {news.length > 0 && (
              <div className="flex justify-center pt-10">
           <Button

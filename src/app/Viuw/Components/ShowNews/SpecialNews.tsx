@@ -51,23 +51,34 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
         flex-col
       "
     >
-      <Button
-        variant="imagebg"
-        onClick={() => handleSpecialNewsClick(NewsID)}
-        style={{ backgroundImage: `url(${imageUrl})` }}
-        className="flex items-center justify-center text-white font-bold p-4 bg-black bg-opacity-30text-lg sm:text-xl md:text-2xlh-fullw-full"
-      >
-        {title}
-      </Button>
+<Button
+  onClick={() => handleSpecialNewsClick(title,publicationDate)}
+  variant="imagebg"
+>
+  {/* Fondo con imagen y efecto brillo al hacer hover */}
+  <span
+    className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:brightness-75"
+    style={{ backgroundImage: `url(${imageUrl})` }}
+  ></span>
+
+  {/* Texto encima, sin afectarse */}
+  <span className="relative z-10 text-white text-4xl font-bold drop-shadow-lg">
+    {title}
+  </span>
+</Button>
+
+
+
+
 
       <div className="absolute top-4 left-4 flex">
-        <Badge variant="split" className="text-xs sm:text-sm">
-          Categoria: {category}
+        <Badge variant="userData5" className="text-xs sm:text-sm">
+          {category}
         </Badge>
       </div>
 
       <div
-        className="absolute bottom-15 left-5 flex flex-col items-start gap-1 sm:gap-2"
+        className="absolute bottom-5 left-5 flex flex-col items-start gap-1 sm:gap-2"
       >
         <Button
           variant="channel"
@@ -88,14 +99,14 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
           <AvatarImage src={channelImageUrl} alt={channelName} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
+
+        <div className="flex items-center gap-x-2 mt-2">
+  <Badge variant="data">{publicationDate}</Badge>
+  <Badge variant="data">vistas: {visitCount}</Badge>
+</div>
+
       </div>
 
-      <div
-        className="absolute bottom-6 right-6 flex flex-row items-center gap-2 sm:gap-4 text-righttext-xs sm:text-sm"
-      >
-        <Badge variant="data">{publicationDate}</Badge>
-        <Badge variant="data">{visitCount} vistas</Badge>
-      </div>
     </Card>
   );
 };
