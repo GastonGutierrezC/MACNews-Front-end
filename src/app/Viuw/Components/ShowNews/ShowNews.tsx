@@ -36,6 +36,7 @@ export const ShowNews: React.FC = () => {
           publicationDate={newsToShow[0].PublicationDate}
           visitCount={newsToShow[0].VisitCount}
           NewsID={newsToShow[0].NewsId}
+          creatorFullName={newsToShow[0].CreatorFullName}
         />
       )}
 
@@ -61,6 +62,8 @@ export const ShowNews: React.FC = () => {
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
             ChannelID={item.Channel.ChannelID}
+            creatorFullName={item.CreatorFullName}
+            
           />
         ))}
 

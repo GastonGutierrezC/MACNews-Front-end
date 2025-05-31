@@ -56,6 +56,7 @@ const NewsByChannelAndCategory: React.FC<NewsByChannelAndCategoryProps> = ({ cha
                 visitCount={item.VisitCount}
                 NewsID={item.NewsId}
                 ChannelID={item.Channel.ChannelID}
+                creatorFullName={item.CreatorFullName}
               />
             </CarouselItem>
           ))}

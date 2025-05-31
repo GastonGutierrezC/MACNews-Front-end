@@ -57,6 +57,7 @@ export const CategoryNews: React.FC<CategoryNewsProps> = ({ category }) => {
             visitCount={item.VisitCount}
             NewsID={item.NewsId}
             ChannelID={item.Channel.ChannelID}
+            creatorFullName={item.CreatorFullName}
           />
         ))}
 </div>
@@ -84,6 +85,7 @@ export const CategoryNews: React.FC<CategoryNewsProps> = ({ category }) => {
               NewsID={item.NewsID}
               Title={item.Title}
               NewsImageURL={item.NewsImageURL}
+              date={item.PublicationDate}
             />
           ))}
 

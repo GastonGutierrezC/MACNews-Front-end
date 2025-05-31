@@ -9,13 +9,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import Image from "next/image";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'; // <-- import Avatar
 import { useFollowedChannels } from "@/app/Controller/Hooks/User/useFollowedChannels";
 import { TiThMenu } from "react-icons/ti";
 import Logo from '../../../Images/logo.png';
 import UserIcon from '../Header/UserIcon';
 import FormIcon from "../Header/FormIcon";
 import { useCheckAuth } from "@/app/Controller/Hooks/Channels/useCheckAuth";
+import { useRouter } from 'next/navigation';
 
 export function UserChannelsSheet() {
   const { isAuthenticated } = useCheckAuth();
@@ -28,21 +29,26 @@ export function UserChannelsSheet() {
     }
   }, [open]);
 
+  const router = useRouter();
+
+  const handleChannelClick = (channelName: string, creatorFullName: string) => {
+    const encodedChannel = encodeURIComponent(channelName);
+    const encodedCreator = encodeURIComponent(creatorFullName);
+    router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
+  };
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="bluehover"><TiThMenu /></Button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="w-80 bg-[#B8D1E7]">
+      <SheetContent side="left" className="w-60 bg-[#B8D1E7]">
         <SheetHeader className="bg-[#063346]">
-          <Image
-            src={Logo}
+          <img
+            src={Logo.src}
             alt="Logo"
-            layout="responsive"
-            width={180}
-            height={180}
-            className="object-contain"
+            className="object-contain w-full h-auto"
           />
         </SheetHeader>
 
@@ -69,15 +75,13 @@ export function UserChannelsSheet() {
               {channels.map((channel) => (
                 <div
                   key={channel.ChannelID}
-                  className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-100 transition-colors"
+                  onClick={() => handleChannelClick(channel.ChannelName, channel.CreatorFullName)}
+                  className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
                 >
-                  <Image
-                    src={channel.ChannelImageURL}
-                    alt={channel.ChannelName}
-                    width={40}
-                    height={40}
-                    className="rounded-full object-cover"
-                  />
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage src={channel.ChannelImageURL} alt={channel.ChannelName} />
+                    <AvatarFallback>{channel.ChannelName.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <span className="font-medium">{channel.ChannelName}</span>
                 </div>
               ))}

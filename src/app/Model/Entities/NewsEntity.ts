@@ -16,5 +16,6 @@ export interface Channel {
     Categories: string;
     Channel: Channel;
     VisitCount: number;
+    CreatorFullName:string;
   }
   

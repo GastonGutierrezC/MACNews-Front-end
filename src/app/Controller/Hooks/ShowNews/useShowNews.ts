@@ -1,5 +1,5 @@
 // app/Controller/Hooks/ShowNews/useShowNews.ts
-import { useNews } from '@/app/Controller/Hooks/User/useNews';
+import { useNews } from '@/app/Controller/Hooks/ShowNews/useNews';
 import { useTopNews } from '@/app/Controller/Hooks/ShowNews/useTopNews';
 import { useRecommendationsNews } from '@/app/Controller/Hooks/ShowNews/useRecommendationsNews';
 import { useUser } from '@/app/Controller/Context/UserContext';

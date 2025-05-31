@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import React from 'react';
 import { useHandleSpecialNewsClick } from '@/app/Controller/Hooks/ShowNews/useHandleSpecialNewsClick';
-
+import { useRouter } from 'next/navigation';
 interface SpecialNewsProps {
   imageUrl: string;
   category: string;
@@ -16,6 +16,7 @@ interface SpecialNewsProps {
   publicationDate: string;
   visitCount: number;
   NewsID: string;
+  creatorFullName: string; // <--- Nuevo
 }
 
 export const SpecialNews: React.FC<SpecialNewsProps> = ({
@@ -26,9 +27,19 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
   channelImageUrl,
   publicationDate,
   visitCount,
+  creatorFullName,
   NewsID,
 }) => {
   const { handleSpecialNewsClick } = useHandleSpecialNewsClick();
+
+  const router = useRouter();
+
+const handleChannelClick = () => {
+  const encodedChannel = encodeURIComponent(channelName);
+  const encodedCreator = encodeURIComponent(creatorFullName);
+  router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
+};
+
 
   return (
     <Card
@@ -82,6 +93,7 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
       >
         <Button
           variant="channel"
+          onClick={handleChannelClick}
           style={{ paddingLeft: '93px' }}
           className="text-sm sm:text-base"
         >
@@ -89,7 +101,8 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
         </Button>
 
         <Avatar
-          className="border-4"
+          className="border-4 cursor-pointer"
+          onClick={handleChannelClick}
           style={{
             width: 95,
             height: 95,
