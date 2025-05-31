@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import React from 'react';
 import { useHandleNewsImageClick } from '@/app/Controller/Hooks/ShowNews/useHandleNewsImageClick';
+import { useRouter } from 'next/navigation';
 
 interface NewsImageProps {
   newsImageUrl: string;
@@ -12,6 +13,7 @@ interface NewsImageProps {
   title: string;
   publicationDate: string;
   NewsID: string;
+  creatorFullName: string; // <--- Nuevo
 }
 
 export const NewsImage: React.FC<NewsImageProps> = ({
@@ -20,9 +22,19 @@ export const NewsImage: React.FC<NewsImageProps> = ({
   channelName,
   title,
   publicationDate,
+  creatorFullName,
   NewsID,
 }) => {
   const { handleNewsImageClick } = useHandleNewsImageClick();
+
+  const router = useRouter();
+
+const handleChannelClick = () => {
+  const encodedChannel = encodeURIComponent(channelName);
+  const encodedCreator = encodeURIComponent(creatorFullName);
+  router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
+};
+
 
   return (
     <div className="relative w-110 h-60 rounded-xl overflow-hidden shadow-md group">
@@ -39,6 +51,7 @@ export const NewsImage: React.FC<NewsImageProps> = ({
       >
         <Button
           variant="channel2"
+          onClick={handleChannelClick}
           style={{ paddingLeft: '73px' }}
           className="text-sm sm:text-base"
         >
@@ -46,7 +59,8 @@ export const NewsImage: React.FC<NewsImageProps> = ({
         </Button>
 
         <Avatar
-          className="border-4"
+          onClick={handleChannelClick}
+          className="border-4 cursor-pointer"
           style={{
             width: 75,
             height: 75,

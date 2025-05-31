@@ -25,9 +25,6 @@ export default function RootLayout({
           <Header />
 
 
-          <div className="fixed top-60 left-6 z-50">
-            <UserChannelsSheet />
-          </div>
 
           <div className="mx-[100px]">{children}</div>
 

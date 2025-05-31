@@ -1,16 +1,19 @@
-// src/Components/ChannelJournalist.tsx
 'use client';
 
 import React, { useState } from 'react';
-import ChannelInformation from './ChannelInformation';
-import { useChannelByJournalist } from '@/app/Controller/Hooks/Channels/useChannelByJournalist';
+
 import { Button } from '@/components/ui/button';
-import CreationNews from './CreationNews/CreationNews';
-import ChannelNews from './ChannelNews/ChannelNews';
+import ChannelInformation from '../ChannelJournalist/ChannelInformation';
+import ChannelNews from '../ChannelJournalist/ChannelNews/ChannelNews';
+import { useChannelByNameAndCreator } from '@/app/Controller/Hooks/Channels/useChannelDetail';
 
+interface ChannelViewProps {
+  channelName: string;
+  creatorFullName: string;
+}
 
-const ChannelJournalist: React.FC = () => {
-  const { channelData, loading, error } = useChannelByJournalist();
+const ChannelView: React.FC<ChannelViewProps> = ({ channelName, creatorFullName }) => {
+  const { channelData, loading, error } = useChannelByNameAndCreator(channelName, creatorFullName);
   const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
 
   if (loading) return <p>Cargando información del canal...</p>;
@@ -28,12 +31,6 @@ const ChannelJournalist: React.FC = () => {
         <Button variant="bluehover3" onClick={() => setSelectedView('comments')}>
           Post de Comentarios
         </Button>
-        <Button variant="bluehover3" onClick={() => setSelectedView('metrics')}>
-          Métricas del Canal
-        </Button>
-        <Button variant="bluehover3" onClick={() => setSelectedView('create')}>
-          Crear una nueva Noticia
-        </Button>
       </div>
 
       <hr className="mt-4 border-t-2 border-black" />
@@ -43,13 +40,9 @@ const ChannelJournalist: React.FC = () => {
           <ChannelNews channelId={channelData.ChannelId} />
         )}
         {selectedView === 'comments' && <p className="text-lg">Aquí se mostrarán los comentarios.</p>}
-        {selectedView === 'metrics' && <p className="text-lg">Aquí se mostrarán las métricas del canal.</p>}
-        {selectedView === 'create' && (
-          <CreationNews channelID={channelData.ChannelId} />
-        )}
       </div>
     </div>
   );
 };
 
-export default ChannelJournalist;
+export default ChannelView;

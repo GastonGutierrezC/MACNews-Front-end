@@ -6,12 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRouter } from 'next/navigation';
 
 export default function TopChannelsList() {
   const { channels, loading, error } = useTopChannels();
 
   if (loading) return <p>Cargando canales...</p>;
   if (error) return <p>Error al cargar canales: {error}</p>;
+
+    const router = useRouter();
+  
+  const handleChannelClick = ( channelName :string,creatorFullName:string) => {
+    const encodedChannel = encodeURIComponent(channelName);
+    const encodedCreator = encodeURIComponent(creatorFullName);
+    router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
+  };
 
   return (
     <div className="p-9 space-y-1 w-full max-w-xl mx-auto flex flex-col items-center">
@@ -23,10 +32,14 @@ export default function TopChannelsList() {
             className="bg-[#B8D1E7] w-full hover:shadow-lg transition duration-300"
           >
             <CardHeader className="flex flex-row items-center gap-6">
-              <Avatar className="w-16 h-16">
-                <AvatarImage src={channel.channelImageUrl} alt={channel.channelName} />
-                <AvatarFallback>{channel.channelName.slice(0, 2)}</AvatarFallback>
-              </Avatar>
+            <Avatar
+  onClick={() => handleChannelClick(channel.channelName, channel.CreatorFullName)}
+  className="w-16 h-16 cursor-pointer hover:opacity-80 transition"
+>
+  <AvatarImage src={channel.channelImageUrl} alt={channel.channelName} />
+  <AvatarFallback>{channel.channelName.slice(0, 2)}</AvatarFallback>
+</Avatar>
+
               <div>
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-lg font-semibold">

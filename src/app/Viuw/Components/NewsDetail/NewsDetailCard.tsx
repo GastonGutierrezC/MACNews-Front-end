@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useFollowChannel } from '@/app/Controller/Hooks/User/useFollowChannel';
 import NewsByChannelAndCategory from './NewsByChannelAndCategory';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   news: NewsDetail;
@@ -16,11 +17,21 @@ const NewsDetailCard = ({ news }: Props) => {
   const channelId = news?.Channel?.ChannelID ?? null;
   const { follow, loading, error } = useFollowChannel(channelId);
 
+  const router = useRouter();
+
+const handleChannelClick = () => {
+  const encodedChannel = encodeURIComponent(news.Channel.ChannelName);
+  const encodedCreator = encodeURIComponent(news.CreatorFullName);
+  router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
+};
+
   if (!news) {
     return <p>No hay información de la noticia.</p>;
   }
+
+
   return (
-    <div className="pt-64 max-w-6xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-6">
+    <div className="pt-24 max-w-6xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-6">
       
       <div className="flex justify-center">
         <Badge variant="title">{news.Title}</Badge>
@@ -41,11 +52,11 @@ const NewsDetailCard = ({ news }: Props) => {
         {/* Canal: nombre + avatar */}
         <div className="absolute bottom-1 left-1 flex flex-col items-start gap-1">
           <div>
-            <Button variant="channel" className="pl-23">
+            <Button onClick={handleChannelClick} variant="channel" className="pl-23">
               {news.Channel.ChannelName}
             </Button>
           </div>
-          <Avatar className="w-25 h-25 -mt-25 border-4">
+          <Avatar onClick={handleChannelClick} className="w-25 h-25 -mt-25 border-4">
             <AvatarImage
               src={news.Channel.ChannelImageURL}
               alt={news.Channel.ChannelName}
@@ -58,9 +69,10 @@ const NewsDetailCard = ({ news }: Props) => {
       <div className="flex items-center gap-2">
         <Badge variant="split">Categoria: {news.Categories}</Badge>
         <Badge variant="data">{news.PublicationDate}</Badge>
+        <Badge variant="data">{news.CreatorFullName}</Badge>
       </div>
 
-      <Badge variant="title" className="max-w-full break-words whitespace-normal">
+      <Badge variant="text" className="max-w-full break-words whitespace-normal">
         {news.ShortDescription}
       </Badge>
 

@@ -29,6 +29,7 @@ export const NewsDetails: React.FC<NewsDetailsProps> = ({
       <span className="text-sm text-gray-600">
         {visitCount.toLocaleString()} vistas • {publicationDate}
       </span>
+      
     </div>
   );
 };

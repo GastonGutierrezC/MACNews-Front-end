@@ -14,4 +14,5 @@ export interface NewsByChannelCategoryEntity {
   Categories: string;
   Channel: ChannelEntity;
   VisitCount: number;
+  CreatorFullName:string;
 }

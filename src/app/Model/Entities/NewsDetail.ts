@@ -16,5 +16,6 @@ export interface Channel {
     NewsImageURL: string;
     Categories: string;
     Channel: Channel;
+    CreatorFullName:string;
   }
   

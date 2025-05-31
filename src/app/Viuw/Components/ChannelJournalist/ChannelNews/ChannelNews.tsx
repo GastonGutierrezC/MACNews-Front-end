@@ -41,6 +41,7 @@ function ChannelNews({ channelId }: ChannelNewsProps) {
           visitCount={item.VisitCount}
           NewsID={item.NewsId}
           ChannelID={item.Channel.ChannelID}
+          creatorFullName={item.CreatorFullName}
         />
       ))}
     </div>

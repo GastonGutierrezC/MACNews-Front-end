@@ -1,6 +1,11 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { FaInfoCircle } from 'react-icons/fa';
 import React from 'react';
+import { useFollowChannel } from '@/app/Controller/Hooks/User/useFollowChannel';
 
 interface ChannelInformationProps {
   channel: {
@@ -13,65 +18,73 @@ interface ChannelInformationProps {
     creatorFullName: string;
     followers: number;
     NumberNews: number;
+    ChannelId: string
   };
 }
 
 const ChannelInformation: React.FC<ChannelInformationProps> = ({ channel }) => {
+  
+    const { follow, loading, error } = useFollowChannel(channel.ChannelId);
+  
+  
   return (
-    <div className="w-full p-4 rounded-xl shadow-md bg-white">
+    <div className="w-full p-6 rounded-xl shadow-md bg-white">
+      {/* Cabecera + Descripción en fila en pantallas grandes */}
+      <div className="flex flex-col lg:flex-row gap-6 items-start">
 
-      {/* Grid responsive */}
-      <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6 items-start">
+        {/* Cabecera */}
+        <div className="flex flex-col sm:flex-row sm:items-start gap-6 ">
+          <Avatar className="w-52 h-52 sm:w-52 sm:h-52 border-4">
+            <AvatarImage src={channel.ChannelImageURL} alt={channel.ChannelName} />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
 
-        {/* Columna 1: Avatar + Nombre del canal */}
-        <div className="flex flex-col items-center justify-center gap-2">
-  <Avatar className="w-60 h-60 sm:w-80 sm:h-80 md:w-80 md:h-80 border-4">
-    <AvatarImage src={channel.ChannelImageURL} alt={channel.ChannelImageURL} />
-    <AvatarFallback>CN</AvatarFallback>
-  </Avatar>
-  <Badge variant="channel" className="text-center">
-    {channel.ChannelName}
-  </Badge>
-</div>
+          <div className="flex-1 space-y-2">
+            <h1 className="text-2xl font-bold">{channel.ChannelName}</h1>
+            <p className="text-gray-600">{channel.creatorFullName}</p>
+            <p className="text-gray-500 text-sm">
+              {channel.followers} suscriptores • {channel.NumberNews} noticias
+            </p>
 
+            {/* Botón + Popover */}
+            <div className="flex items-center gap-4 pt-2">
+            <Button variant="bluehover" onClick={follow} disabled={loading}>
+          {loading ? 'Suscribiendo...' : 'Suscribirse'}
+        </Button>
 
-        {/* Columna 2: Información del canal */}
-        <div className="space-y-4 mt-6 lg:mt-0 ">
-        <p className="flex justify-center">
-  <Badge className="text-center" variant="userData2">
-    {channel.creatorFullName} - {channel.followers} suscriptores - {channel.NumberNews} noticias
-  </Badge>
-</p>
+              <Popover >
+                <PopoverTrigger  asChild>
+                  <div className="cursor-pointer text-orange-600 hover:text-orange-800">
+                    <FaInfoCircle size={22} title="Ver información del periodista" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent
+  side="bottom"
+  sideOffset={8}
+  className="w-80 p-4 shadow-lg rounded-xl overflow-y-auto z-10"
+  align="start"
+>
+  <div className="space-y-2">
+    <h3 className="font-semibold text-sm text-gray-700">Especialidad principal</h3>
+    <p className="text-sm text-gray-600 whitespace-pre-line">{channel.Specialty}</p>
+    <hr />
+    <h3 className="font-semibold text-sm text-gray-700">Sobre el periodista</h3>
+    <p className="text-sm text-gray-600 whitespace-pre-line">{channel.JournalisticExperience}</p>
+  </div>
+</PopoverContent>
 
-
-          <p>
-  <Badge
-    variant="text"
-    className="block text-justify w-full break-words whitespace-pre-line"
-  >
-    {channel.DescriptionChannel}
-  </Badge>
-</p>
-
-
-          <p className="flex flex-wrap gap-2">
-            <Badge variant="userData5">Este Canal Se Dedica a:</Badge>
-
-            <Badge className="block text-justify w-full break-words whitespace-pre-line" variant="userData3">{channel.Specialty}</Badge>
-          </p>
-
-          <p className="flex flex-wrap gap-2">
-            <Badge variant="userData5">Sobre el Periodista:</Badge>
-            <Badge className="block text-justify w-full break-words whitespace-pre-line" variant="userData3">{channel.JournalisticExperience}</Badge>
-          </p>
-
-          <p>
-            <Badge className="block text-justify break-words whitespace-pre-line" variant="split2">
-              Especialidades: {channel.Specialties.join(' - ')}
-            </Badge>
-          </p>
+              </Popover>
+            </div>
+          </div>
         </div>
 
+        {/* Descripción del canal */}
+        <div className="flex-1">
+          <h2 className="text-lg font-semibold mb-2">Descripción del canal</h2>
+          <p className="text-justify text-gray-700 whitespace-pre-line">
+            {channel.DescriptionChannel}
+          </p>
+        </div>
       </div>
     </div>
   );

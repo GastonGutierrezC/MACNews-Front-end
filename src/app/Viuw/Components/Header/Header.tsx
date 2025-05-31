@@ -7,6 +7,9 @@ import LogoIcon from './LogoIcon';
 import SearchBar from './SearchBar';
 import UserIcon from './UserIcon'; 
 import SpecialtyDropdown from './SpecialtyDropdown';
+import { Button } from '@/components/ui/button';
+import LastNewsRedirectButton from './Last-news';
+import { UserChannelsSheet } from '../ShowFollowChannels/UserChannelsSheet';
 
 const Header = () => {
   return (
@@ -35,12 +38,44 @@ const Header = () => {
         </div>
       </header>
 
-      <div className="fixed top-[100px] left-0 w-full sm:top-[170px] z-40 bg-white py-2 shadow">
-        <div className="flex justify-center gap-4">
-          <SpecialtyDropdown />
-          <CategoriesDropdown />
-        </div>
-      </div>
+      <div className="fixed top-[100px] sm:top-[170px] left-0 w-full z-40 bg-white py-2 shadow">
+  {/* Versión para pantallas grandes */}
+  <div className="relative hidden sm:flex justify-center items-center">
+    {/* Botón a la izquierda */}
+    <div className="absolute left-4">
+      <UserChannelsSheet />
+    </div>
+
+    {/* Botones centrados */}
+    <div className="flex gap-4">
+      <LastNewsRedirectButton />
+      <SpecialtyDropdown />
+      <CategoriesDropdown />
+    </div>
+  </div>
+
+  {/* Versión para pantallas pequeñas */}
+  <div className="flex flex-col items-center gap-3 sm:hidden">
+    {/* Botones centrados */}
+    <div className="flex gap-4">
+      
+      <SpecialtyDropdown />
+      <CategoriesDropdown />
+    </div>
+
+    <div className="flex gap-8">
+    <UserChannelsSheet />
+    <LastNewsRedirectButton />
+    
+    </div>
+
+    {/* Botón debajo */}
+
+  </div>
+</div>
+
+
+
       <div className="pt-[160px]" />
     </>
   );

@@ -6,5 +6,6 @@ export interface TopChannelEntity {
     channelImageUrl: string;
     specialties: string[];
     followers: number;
+    CreatorFullName:string;
   }
   
