@@ -1,4 +1,3 @@
-// src/Components/ChannelJournalist.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -7,10 +6,15 @@ import { useChannelByJournalist } from '@/app/Controller/Hooks/Channels/useChann
 import { Button } from '@/components/ui/button';
 import CreationNews from './CreationNews/CreationNews';
 import ChannelNews from './ChannelNews/ChannelNews';
-
+import { CommentsList } from './ChannelPostComments/ChannelComments';
+import { useUser } from '@/app/Controller/Context/UserContext';
+import ChannelMetrics from './ChannelMetricts/ChannelMetrics';
 
 const ChannelJournalist: React.FC = () => {
-  const { channelData, loading, error } = useChannelByJournalist();
+  const { user } = useUser();
+  const userId = user?.id ?? null;  // Aquí sacamos el userId del contexto
+
+  const { channelData, loading, error } = useChannelByJournalist(); // por ejemplo, si tu hook acepta el userId
   const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
 
   if (loading) return <p>Cargando información del canal...</p>;
@@ -42,8 +46,8 @@ const ChannelJournalist: React.FC = () => {
         {selectedView === 'news' && (
           <ChannelNews channelId={channelData.ChannelId} />
         )}
-        {selectedView === 'comments' && <p className="text-lg">Aquí se mostrarán los comentarios.</p>}
-        {selectedView === 'metrics' && <p className="text-lg">Aquí se mostrarán las métricas del canal.</p>}
+        {selectedView === 'comments' && <CommentsList channelId={channelData.ChannelId} userId={userId} />}
+        {selectedView === 'metrics' &&   <ChannelMetrics channelId={channelData.ChannelId} />}
         {selectedView === 'create' && (
           <CreationNews channelID={channelData.ChannelId} />
         )}
