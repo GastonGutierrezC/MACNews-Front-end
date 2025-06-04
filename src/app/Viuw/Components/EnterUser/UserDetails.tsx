@@ -1,27 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useUser } from '@/app/Controller/Context/UserContext';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { UpdateUserData } from './UpdateUserData';
+import { useUserDetailsLogic } from '@/app/Controller/Hooks/User/useUserDetailsLogic';
+
+
 
 const UserDetails = () => {
-  const { user, setUser } = useUser();
-  const router = useRouter();
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const {
+    user,
+    passwordVisible,
+    togglePasswordVisibility,
+    handleLogout,
+  } = useUserDetailsLogic();
 
   if (!user) {
     return (
@@ -31,20 +32,13 @@ const UserDetails = () => {
     );
   }
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    router.push('/pages');
-  };
-
   return (
     <div className="min-h-screen flex justify-center items-center pt-60 pb-30">
       <Card className="w-full max-w-xl bg-[#B8D1E7] p-6 space-y-6">
-    
-      <div className="flex justify-center">
-        <Badge variant="title">Datos del Usuario</Badge>
-      </div>
 
+        <div className="flex justify-center">
+          <Badge variant="title">Datos del Usuario</Badge>
+        </div>
 
         <CardContent className="flex flex-col items-center space-y-6">
           <div className="text-center">
@@ -63,26 +57,26 @@ const UserDetails = () => {
           <Badge variant="userData">Email: {user.UserEmail}</Badge>
           <Badge variant="userData">Contraseña:
             <Input
-                type={passwordVisible ? 'text' : 'password'}
-                value={user.PasswordUser}
-                readOnly
-                className="w-40"
-                />
-                <Button
-                variant="ghost"
-                onClick={() => setPasswordVisible(!passwordVisible)}
-                className="p-2"
-                >
-                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                </Button>
-           </Badge>
+              type={passwordVisible ? 'text' : 'password'}
+              value={user.PasswordUser}
+              readOnly
+              className="w-40"
+            />
+            <Button
+              variant="ghost"
+              onClick={togglePasswordVisibility}
+              className="p-2"
+            >
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+            </Button>
+          </Badge>
         </CardContent>
 
         <CardFooter className="flex justify-center space-x-6">
           <Button onClick={handleLogout} variant="redhover">
             Logout
           </Button>
-          <UpdateUserData/>
+          <UpdateUserData />
         </CardFooter>
       </Card>
     </div>
