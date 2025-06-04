@@ -36,7 +36,9 @@ interface UserContextProps {
   user: User | null;
   journalistID: string | null;
   setUser: (user: NormalizableUser | null) => void;
-  setJournalist: (data: { JournalistID: string }) => void;
+
+  setJournalist: (data: { JournalistID: string } | null) => void;  // <-- aquí
+
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -99,11 +101,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     console.log('[UserContext] Usuario guardado en contexto y localStorage:', normalizedUser);
   };
 
-  const setJournalist = ({ JournalistID }: { JournalistID: string }) => {
-    setJournalistID(JournalistID);
-    localStorage.setItem('journalistID', JournalistID);
-    console.log('[UserContext] JournalistID guardado en contexto y localStorage:', JournalistID);
-  };
+const setJournalist = (data: { JournalistID: string } | null) => {
+  if (data === null) {
+    setJournalistID(null);
+    localStorage.removeItem('journalistID');
+    console.log('[UserContext] JournalistID eliminado del contexto y localStorage');
+    return;
+  }
+  setJournalistID(data.JournalistID);
+  localStorage.setItem('journalistID', data.JournalistID);
+  console.log('[UserContext] JournalistID guardado en contexto y localStorage:', data.JournalistID);
+};
+
 
   return (
     <UserContext.Provider value={{ user, journalistID, setUser, setJournalist }}>
