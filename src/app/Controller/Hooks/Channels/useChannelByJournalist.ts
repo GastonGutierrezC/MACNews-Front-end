@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { ChannelInfo } from '@/app/Model/Entities/ChannelInfo';
 import { useUser } from '@/app/Controller/Context/UserContext';
@@ -7,7 +9,7 @@ export const useChannelByJournalist = () => {
   const [channelData, setChannelData] = useState<ChannelInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const { journalistID } = useUser();
+  const { user } = useUser(); // accedemos al usuario completo
 
   useEffect(() => {
     const fetchChannel = async () => {
@@ -15,7 +17,8 @@ export const useChannelByJournalist = () => {
       setError(null);
 
       try {
-        if (!journalistID || !journalistID) {
+        const journalistID = user?.JournalistID;
+        if (!journalistID) {
           throw new Error('No se encontró el ID del periodista en el contexto');
         }
 
@@ -34,7 +37,7 @@ export const useChannelByJournalist = () => {
     };
 
     fetchChannel();
-  }, [journalistID]);
+  }, [user]);
 
   return { channelData, loading, error };
 };

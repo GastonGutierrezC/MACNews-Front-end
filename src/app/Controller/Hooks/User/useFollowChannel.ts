@@ -8,7 +8,7 @@ import { useUser } from '@/app/Controller/Context/UserContext';
 
 
 export const useFollowChannel = (channelId: string) => {
-  const { user, setJournalist, setUser } = useUser();
+  const { user, setUser } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -25,6 +25,10 @@ export const useLoginForm = () => {
 
   useEffect(() => {
     if (user) {
+      console.log('[useLoginForm] Usuario recibido:', user);
+
+      // Ya no es necesario llamar a setJournalist porque JournalistID está en user
+
       router.push('/pages');
     }
   }, [user, router]);
