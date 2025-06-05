@@ -1,5 +1,3 @@
-// UserContext.tsx
-
 'use client';
 
 import React, {
@@ -7,9 +5,10 @@ import React, {
   useState,
   useContext,
   ReactNode,
-  useEffect
+  useEffect,
 } from 'react';
 
+// Interface User
 export interface User {
   id: string;
   UserFirstName: string;
@@ -18,6 +17,7 @@ export interface User {
   UserImageURL: string;
   PasswordUser: string;
   RoleAssigned: string;
+  JournalistID?: string;
 }
 
 export interface RawUserFromBackend {
@@ -28,101 +28,94 @@ export interface RawUserFromBackend {
   UserImageURL: string;
   PasswordUser: string;
   RoleAssigned: string;
+  JournalistID?: string;
 }
 
 type NormalizableUser = User | RawUserFromBackend;
 
 interface UserContextProps {
   user: User | null;
-  journalistID: string | null;
   setUser: (user: NormalizableUser | null) => void;
-
-  setJournalist: (data: { JournalistID: string } | null) => void;  // <-- aquí
-
+  // Eliminamos promoteToJournalist para evitar confusión, usamos solo setJournalistAndPromote
+  setJournalistAndPromote: (journalist: { JournalistID: string }) => void;
+  journalistID?: string;
 }
 
+// Crear contexto
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
+// Provider
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
-  const [journalistID, setJournalistID] = useState<string | null>(null);
 
+  // Normalizar user (backend -> frontend)
+  const normalizeUser = (rawUser: RawUserFromBackend): User => ({
+    id: rawUser.UserID,
+    UserFirstName: rawUser.UserFirstName,
+    UserLastName: rawUser.UserLastName,
+    UserEmail: rawUser.UserEmail,
+    UserImageURL: rawUser.UserImageURL,
+    PasswordUser: rawUser.PasswordUser,
+    RoleAssigned: rawUser.RoleAssigned,
+    JournalistID: rawUser.JournalistID ?? undefined,
+  });
+
+  // setUser que normaliza y sincroniza localStorage
+  const setUser = (userData: NormalizableUser | null) => {
+    if (userData) {
+      const normalizedUser = 'UserID' in userData ? normalizeUser(userData) : userData;
+      setUserState(normalizedUser);
+      localStorage.setItem('user', JSON.stringify(normalizedUser));
+      console.log('[UserContext] Usuario guardado:', normalizedUser);
+    } else {
+      setUserState(null);
+      localStorage.removeItem('user');
+      console.log('[UserContext] Usuario limpiado');
+    }
+  };
+
+  // Función combinada que actualiza JournalistID y cambia rol a Journalist
+  const setJournalistAndPromote = (journalist: { JournalistID: string }) => {
+    if (user) {
+      const updatedUser = {
+        ...user,
+        JournalistID: journalist.JournalistID,
+        RoleAssigned: 'Journalist',
+      };
+      setUser(updatedUser);
+    }
+  };
+
+  // Cargar usuario guardado en localStorage al montar
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    const storedJournalist = localStorage.getItem('journalistID');
-
     if (storedUser) {
-      const parsedUser: User = JSON.parse(storedUser);
-      setUserState(parsedUser);
-      console.log('[UserContext] Usuario cargado desde localStorage:', parsedUser);
-    }
-
-    if (storedJournalist) {
-      setJournalistID(storedJournalist);
-      console.log('[UserContext] JournalistID cargado desde localStorage:', storedJournalist);
+      try {
+        const parsedUser: User = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (err) {
+        console.error('[UserContext] Error parsing stored user:', err);
+      }
     }
   }, []);
 
-  const setUser = (userData: NormalizableUser | null) => {
-    if (userData === null) {
-      setUserState(null);
-      localStorage.removeItem('user');
-      return;
-    }
-
-    let normalizedUser: User;
-
-    if ('UserID' in userData) {
-      const {
-        UserID,
-        UserFirstName,
-        UserLastName,
-        UserEmail,
-        UserImageURL,
-        PasswordUser,
-        RoleAssigned
-      } = userData;
-
-      normalizedUser = {
-        id: UserID,
-        UserFirstName: UserFirstName ?? '',
-        UserLastName: UserLastName ?? '',
-        UserEmail: UserEmail ?? '',
-        UserImageURL: UserImageURL ?? '',
-        PasswordUser: PasswordUser ?? '',
-        RoleAssigned: RoleAssigned ?? ''
-      };
-    } else {
-      normalizedUser = userData;
-    }
-
-    setUserState(normalizedUser);
-    localStorage.setItem('user', JSON.stringify(normalizedUser));
-    console.log('[UserContext] Usuario guardado en contexto y localStorage:', normalizedUser);
-  };
-
-const setJournalist = (data: { JournalistID: string } | null) => {
-  if (data === null) {
-    setJournalistID(null);
-    localStorage.removeItem('journalistID');
-    console.log('[UserContext] JournalistID eliminado del contexto y localStorage');
-    return;
-  }
-  setJournalistID(data.JournalistID);
-  localStorage.setItem('journalistID', data.JournalistID);
-  console.log('[UserContext] JournalistID guardado en contexto y localStorage:', data.JournalistID);
-};
-
-
   return (
-    <UserContext.Provider value={{ user, journalistID, setUser, setJournalist }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        setJournalistAndPromote,
+        journalistID: user?.JournalistID,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useUser = () => {
+// Hook personalizado
+export const useUser = (): UserContextProps => {
   const context = useContext(UserContext);
-  if (!context) throw new Error('useUser debe usarse dentro de <UserProvider>');
+  if (!context) throw new Error('useUser must be used within a UserProvider');
   return context;
 };

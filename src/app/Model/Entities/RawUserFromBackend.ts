@@ -1,4 +1,4 @@
-export interface User {
+export interface RawUserFromBackend {
   UserID: string;
   UserFirstName: string;
   UserLastName: string;
@@ -6,7 +6,5 @@ export interface User {
   UserImageURL: string;
   PasswordUser: string;
   RoleAssigned: string;
-  JournalistID?: string; // Opcional, porque no todos serán periodistas
+  JournalistID?: string;
 }
-
-// JournalistID
