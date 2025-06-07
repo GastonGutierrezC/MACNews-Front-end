@@ -1,13 +1,13 @@
-// app/Controller/Hooks/JournalistForm/useJournalistApplicationForm.ts
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useEvaluateApplicationForm } from "./useEvaluateApplicationForm"
 import { useUser } from "@/app/Controller/Context/UserContext"
 import { useRouter } from "next/navigation"
+import { ROUTES } from "@/app/Utils/LinksNavigation/routes"
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Debe ingresar su nombre completo." }),
@@ -44,6 +44,11 @@ export function useJournalistApplicationForm() {
   const { user } = useUser()
   const router = useRouter()
 
+  // Prefetch para la ruta CHANNEL_CREATION
+  useEffect(() => {
+    router.prefetch(ROUTES.CHANNEL_CREATION)
+  }, [router])
+
   const openDialog = (type: typeof dialogType) => {
     setDialogType(type)
     setDialogOpen(true)
@@ -55,7 +60,7 @@ export function useJournalistApplicationForm() {
   }
 
   const handleClickCreateChannel = () => {
-    router.push('/pages/creation-channel')
+    router.push(ROUTES.CHANNEL_CREATION)
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

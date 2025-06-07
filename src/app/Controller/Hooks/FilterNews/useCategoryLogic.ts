@@ -1,7 +1,8 @@
 'use client';
 
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const categoriasES = [
   'Política',
@@ -33,12 +34,20 @@ export const useCategoryLogic = () => {
   const [selected, setSelected] = useState('Política');
   const router = useRouter();
 
+  // Prefetch cuando cambia la categoría seleccionada
+  useEffect(() => {
+    const translated = categoriaMap[selected];
+    if (translated) {
+      router.prefetch(ROUTES.CATEGORY(translated));
+    }
+  }, [selected, router]);
+
   const handleSelect = (value: string) => {
     setSelected(value);
 
     const translated = categoriaMap[value];
     if (translated) {
-      router.push(`/pages/category/${translated}`);
+      router.push(ROUTES.CATEGORY(translated));
     } else {
       console.warn(`No se encontró traducción para la categoría: ${value}`);
     }

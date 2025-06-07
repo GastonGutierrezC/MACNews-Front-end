@@ -1,4 +1,3 @@
-// app/Controller/Hooks/useSearchLogic.ts
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -6,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/Controller/Context/UserContext';
 import { useSaveSearchHistory } from '@/app/Controller/Hooks/SearchNews/useSaveSearchHistory';
 import { useSearchHistory } from '@/app/Controller/Hooks/SearchNews/useSearchHistory';
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 
 export const useSearchLogic = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,6 +26,14 @@ export const useSearchLogic = () => {
     }
   }, [user, userHistory]);
 
+  // Prefetch de la ruta de búsqueda (puedes hacerlo para la búsqueda actual o un patrón general)
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const encodedQuery = encodeURIComponent(searchQuery.trim());
+      router.prefetch(ROUTES.SEARCH(encodedQuery));
+    }
+  }, [searchQuery, router]);
+
   const handleSearchClick = () => {
     const trimmedQuery = searchQuery.trim();
     if (!trimmedQuery) return;
@@ -35,7 +43,7 @@ export const useSearchLogic = () => {
     }
 
     const encodedQuery = encodeURIComponent(trimmedQuery);
-    router.push(`/pages/search/${encodedQuery}`);
+    router.push(ROUTES.SEARCH(encodedQuery));
     setIsFocused(false);
 
     if (user && user.id) {

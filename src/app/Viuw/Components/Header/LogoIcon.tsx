@@ -2,20 +2,17 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import Logo from '../../../Images/logo.png';
+import { useLogoRedirect } from '@/app/Controller/Hooks/ShowNews/useLogoRedirect';
+
 
 const LogoIcon = () => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push('/pages');
-  };
+  const { redirectToHome } = useLogoRedirect();
 
   return (
     <div
       className="w-24 sm:w-32 md:w-40 lg:w-48 xl:w-52 cursor-pointer"
-      onClick={handleClick}
+      onClick={redirectToHome}
     >
       <Image
         src={Logo}

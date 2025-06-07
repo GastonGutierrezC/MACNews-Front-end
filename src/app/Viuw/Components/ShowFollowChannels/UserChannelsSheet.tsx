@@ -9,14 +9,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'; // <-- import Avatar
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useFollowedChannels } from "@/app/Controller/Hooks/User/useFollowedChannels";
 import { TiThMenu } from "react-icons/ti";
 import Logo from '../../../Images/logo.png';
 import UserIcon from '../Header/UserIcon';
 import FormIcon from "../Header/FormIcon";
 import { useCheckAuth } from "@/app/Controller/Hooks/Channels/useCheckAuth";
-import { useRouter } from 'next/navigation';
+import { useChannelNavigation } from '@/app/Controller/Hooks/ShowNews/useChannelNavigation';
 
 export function UserChannelsSheet() {
   const { isAuthenticated } = useCheckAuth();
@@ -29,13 +29,7 @@ export function UserChannelsSheet() {
     }
   }, [open]);
 
-  const router = useRouter();
-
-  const handleChannelClick = (channelName: string, creatorFullName: string) => {
-    const encodedChannel = encodeURIComponent(channelName);
-    const encodedCreator = encodeURIComponent(creatorFullName);
-    router.push(`/pages/channel-news/${encodedChannel}/${encodedCreator}`);
-  };
+  const { navigateToChannel } = useChannelNavigation();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -75,7 +69,7 @@ export function UserChannelsSheet() {
               {channels.map((channel) => (
                 <div
                   key={channel.ChannelID}
-                  onClick={() => handleChannelClick(channel.ChannelName, channel.CreatorFullName)}
+                  onClick={() => navigateToChannel(channel.ChannelName, channel.CreatorFullName)}
                   className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   <Avatar className="w-12 h-12">

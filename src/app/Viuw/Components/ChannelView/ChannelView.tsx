@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import ChannelInformation from '../ChannelJournalist/ChannelInformation';
 import ChannelNews from '../ChannelJournalist/ChannelNews/ChannelNews';
 import { useChannelByNameAndCreator } from '@/app/Controller/Hooks/Channels/useChannelDetail';
+import { CommentsList } from '../ChannelJournalist/ChannelPostComments/ChannelComments';
+import { useUser } from '@/app/Controller/Context/UserContext';
 
 interface ChannelViewProps {
   channelName: string;
@@ -15,7 +17,8 @@ interface ChannelViewProps {
 const ChannelView: React.FC<ChannelViewProps> = ({ channelName, creatorFullName }) => {
   const { channelData, loading, error } = useChannelByNameAndCreator(channelName, creatorFullName);
   const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
-
+  const { user } = useUser();
+  const userId = user?.id ?? null; 
   if (loading) return <p>Cargando información del canal...</p>;
   if (error) return <p>Error al obtener el canal: {error}</p>;
   if (!channelData) return <p>No se encontró información del canal.</p>;
@@ -39,7 +42,9 @@ const ChannelView: React.FC<ChannelViewProps> = ({ channelName, creatorFullName 
         {selectedView === 'news' && (
           <ChannelNews channelId={channelData.ChannelId} />
         )}
-        {selectedView === 'comments' && <p className="text-lg">Aquí se mostrarán los comentarios.</p>}
+        {selectedView === 'comments' && <CommentsList channelId={channelData.ChannelId} userId={userId} />}
+      
+      
       </div>
     </div>
   );

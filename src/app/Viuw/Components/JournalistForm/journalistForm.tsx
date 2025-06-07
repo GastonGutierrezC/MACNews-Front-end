@@ -4,7 +4,6 @@
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 
-import { SeeRegulations } from './SeeRegulations';
 import { ObtainDataUser } from './ObtainDataUser';
   
 

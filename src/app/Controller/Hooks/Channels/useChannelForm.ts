@@ -6,6 +6,8 @@ import { z } from "zod"
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from 'next/navigation';
 import { useCreateChannel } from "@/app/Controller/Hooks/Channels/useCreateChannel"
+import { ROUTES } from "@/app/Utils/LinksNavigation/routes"
+
 
 export const formSchema = z.object({
   ChannelImageURL: z.string().url({ message: "Debe ser una URL válida de imagen." }),
@@ -38,6 +40,11 @@ export function useChannelForm() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
+
+  useEffect(() => {
+    router.prefetch(ROUTES.CHANNEL_JOURNALIST)
+  }, [router])
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +74,8 @@ export function useChannelForm() {
       specialtiesTransform,
       values.ChannelImageURL
     )
-    router.push("/pages/channel-journalist")
+ 
+    router.push(ROUTES.CHANNEL_JOURNALIST)
   }
 
   const onSubmitImage = async (file: File) => {
