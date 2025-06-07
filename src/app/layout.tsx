@@ -5,6 +5,7 @@ import Footer from './Viuw/Components/Footer/Footer';
 import './Styles/globals.css'; // O cualquier otro CSS global
 import { UserProvider } from './Controller/Context/UserContext';
 import { UserChannelsSheet } from './Viuw/Components/ShowFollowChannels/UserChannelsSheet';
+import RouteProgress from './Utils/LinksNavigation/RouteProgress';
 
 
 export const metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
         <UserProvider>
           <Header />
 
-
+ <RouteProgress />
 
           <div className="mx-[100px]">{children}</div>
 

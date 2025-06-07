@@ -1,7 +1,8 @@
 'use client';
 
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const specialtyES = [
   'Investigación',
@@ -33,13 +34,21 @@ export const useSpecialtyLogic = () => {
   const [selected, setSelected] = useState('Investigación');
   const router = useRouter();
 
+  // Prefetch al cambiar la especialidad seleccionada
+  useEffect(() => {
+    const translated = specialtyMap[selected];
+    if (translated) {
+      router.prefetch(ROUTES.SPECIALITY(translated));
+    }
+  }, [selected, router]);
+
   const handleSelect = (value: string) => {
     console.log('Specialty seleccionada:', value);
     setSelected(value);
 
     const translated = specialtyMap[value];
     if (translated) {
-      router.push(`/pages/speciality/${translated}`);
+      router.push(ROUTES.SPECIALITY(translated));
     } else {
       console.warn(`No se encontró traducción para la categoría: ${value}`);
     }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserRegistration } from '@/app/Model/Entities/User';
 import { useCreateUser } from '../Channels/useCreateUser';
-
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 
 export function useCreateAccountForm() {
   const router = useRouter();
@@ -37,12 +37,14 @@ export function useCreateAccountForm() {
     await registerUser(userData);
   };
 
-  useEffect(() => {
-    if (success) {
-      console.log('Usuario creado con éxito');
-      router.push('/pages');
-    }
-  }, [success, router]);
+useEffect(() => {
+  if (success) {
+    console.log('Usuario creado con éxito');
+    router.prefetch(ROUTES.HOME);
+    router.push(ROUTES.HOME);
+  }
+}, [success, router]);
+
 
   return {
     formData,

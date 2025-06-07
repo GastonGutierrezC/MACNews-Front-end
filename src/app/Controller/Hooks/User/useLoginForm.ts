@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFindUser } from '@/app/Controller/Hooks/User/useFindUser';
 import { useUser } from '@/app/Controller/Context/UserContext';
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 
 export const useLoginForm = () => {
   const [credentials, setCredentials] = useState({
@@ -23,15 +24,15 @@ export const useLoginForm = () => {
     await fetchUser(credentials.email, credentials.password);
   };
 
-  useEffect(() => {
-    if (user) {
-      console.log('[useLoginForm] Usuario recibido:', user);
+useEffect(() => {
+  if (user) {
+    console.log('[useLoginForm] Usuario recibido:', user);
 
-      // Ya no es necesario llamar a setJournalist porque JournalistID está en user
+    router.prefetch(ROUTES.HOME);
+    router.push(ROUTES.HOME);
+  }
+}, [user, router]);
 
-      router.push('/pages');
-    }
-  }, [user, router]);
 
   return {
     credentials,

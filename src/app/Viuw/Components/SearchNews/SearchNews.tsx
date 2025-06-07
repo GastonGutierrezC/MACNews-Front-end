@@ -43,6 +43,7 @@ export const SearchNews: React.FC<SearchResultsProps> = ({ term }) => {
             visitCount={news.VisitCount}
             NewsID={news.NewsId}
             ChannelID={news.Channel.ChannelID}
+            creatorFullName={news.CreatorFullName}
           />
         ))}
       </div>
@@ -60,6 +61,8 @@ export const SearchNews: React.FC<SearchResultsProps> = ({ term }) => {
               NewsID={item.NewsID}
               Title={item.Title}
               NewsImageURL={item.NewsImageURL}
+              date={item.PublicationDate}
+              
             />
           ))}
 
