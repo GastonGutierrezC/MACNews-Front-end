@@ -1,7 +1,6 @@
 // src/Entities/Journalist.ts
 
 export interface JournalistRequest {
-    UserID: string;
     Specialty: string;
     JournalisticExperience: string;
   }

@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFindUser } from '@/app/Controller/Hooks/User/useFindUser';
-import { useUser } from '@/app/Controller/Context/UserContext';
 import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
+import { useToken } from '../../Context/UserContext';
+import { useLogin } from './useFindUser';
 
 export const useLoginForm = () => {
   const [credentials, setCredentials] = useState({
@@ -12,8 +12,8 @@ export const useLoginForm = () => {
     password: '',
   });
 
-  const { fetchUser, loading, error } = useFindUser();
-  const { user } = useUser();
+  const { login, loading, error } = useLogin();
+  const { token } = useToken(); // solo manejamos token
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,18 +21,16 @@ export const useLoginForm = () => {
   };
 
   const handleSubmit = async () => {
-    await fetchUser(credentials.email, credentials.password);
+    await login(credentials.email, credentials.password);
   };
 
-useEffect(() => {
-  if (user) {
-    console.log('[useLoginForm] Usuario recibido:', user);
-
-    router.prefetch(ROUTES.HOME);
-    router.push(ROUTES.HOME);
-  }
-}, [user, router]);
-
+  useEffect(() => {
+    if (token) {
+      console.log('[useLoginForm] Token recibido, redirigiendo...');
+      router.prefetch(ROUTES.HOME);
+      router.push(ROUTES.HOME);
+    }
+  }, [token, router]);
 
   return {
     credentials,

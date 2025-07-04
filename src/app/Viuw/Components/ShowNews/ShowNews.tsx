@@ -17,6 +17,7 @@ export const ShowNews: React.FC = () => {
     newsToShow,
     topNews,
     isLoading,
+    recommendedNews,
     hasError,
     loadMore
   } = useShowNews();
@@ -26,6 +27,13 @@ export const ShowNews: React.FC = () => {
 
   return (
 <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-center items-start pt-24">
+{user?.id && newsToShow === recommendedNews && recommendedNews.length > 0 && (
+  <h2 className="text-3xl font-semibold w-full text-center">
+    Tus noticias recomendadas
+  </h2>
+)}
+
+
 {newsToShow.length > 0 && (
         <SpecialNews
           imageUrl={newsToShow[0].NewsImageURL}

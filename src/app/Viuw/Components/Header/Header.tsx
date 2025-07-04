@@ -38,12 +38,12 @@ const Header = () => {
         </div>
       </header>
 
-      <div className="fixed top-[100px] sm:top-[170px] left-0 w-full z-40 bg-white py-2 shadow">
+      <div className="fixed top-[80px] sm:top-[125px] left-0 w-full z-40 bg-white py-2 shadow">
   {/* Versión para pantallas grandes */}
   <div className="relative hidden sm:flex justify-center items-center">
     {/* Botón a la izquierda */}
     <div className="absolute left-4">
-      <UserChannelsSheet />
+  <UserChannelsSheet />
     </div>
 
     {/* Botones centrados */}
@@ -64,7 +64,7 @@ const Header = () => {
     </div>
 
     <div className="flex gap-8">
-    <UserChannelsSheet />
+  <UserChannelsSheet />
     <LastNewsRedirectButton />
     
     </div>
@@ -76,7 +76,7 @@ const Header = () => {
 
 
 
-      <div className="pt-[160px]" />
+      <div className="pt-[90px]" />
     </>
   );
 };

@@ -1,5 +1,3 @@
-// src/Model/Hooks/useEvaluateApplicationForm.ts
-
 import { useState } from 'react';
 import { ApplicationFormEvaluation } from '@/app/Model/Entities/ApplicationFormEvaluation';
 import { evaluateApplicationForm } from '@/app/Model/Services/ApplicationFormService';
@@ -16,9 +14,11 @@ export const useEvaluateApplicationForm = () => {
 
     try {
       const response = await evaluateApplicationForm(formData);
+      console.log('[useEvaluateApplicationForm] Evaluación completada:', response);
       setResult(response);
       return response;
     } catch (err: any) {
+      console.error('[useEvaluateApplicationForm] Error:', err);
       setError(err.message || 'Error desconocido');
       setResult(null);
       return null;

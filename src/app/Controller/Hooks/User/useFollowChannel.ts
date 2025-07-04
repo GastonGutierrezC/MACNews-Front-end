@@ -3,26 +3,22 @@
 import { useState, useContext } from 'react';
 import { followChannel } from '@/app/Model/Services/FollowChannelService';
 import { FollowChannelPayload } from '@/app/Model/Entities/FollowChannelPayload';
-import { useUser } from '@/app/Controller/Context/UserContext';
+
 
 
 
 export const useFollowChannel = (channelId: string) => {
-  const { user, setUser } = useUser();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const follow = async () => {
-    if (!user?.id) {
-      setError('Usuario no autenticado.');
-      return;
-    }
 
     setLoading(true);
     setError(null);
 
     const payload: FollowChannelPayload = {
-      UserID: user.id,
+
       ChannelID: channelId,
     };
 

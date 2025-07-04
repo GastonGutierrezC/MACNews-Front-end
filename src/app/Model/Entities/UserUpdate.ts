@@ -5,8 +5,5 @@ export interface UserUpdate {
       UserEmail: string;
       UserImageURL: string;
     };
-    password: {
-      PasswordUser: string;
-    };
   }
   

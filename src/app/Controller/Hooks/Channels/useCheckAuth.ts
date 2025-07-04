@@ -1,15 +1,11 @@
 // app/Controller/Hooks/Auth/useCheckAuth.ts
-"use client";
-
-import { useUser } from "../../Context/UserContext";
-
-
+'use client';
 
 export const useCheckAuth = () => {
-  const { user } = useUser();
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
   return {
-    isAuthenticated: !!user, // true si hay usuario, false si no
-    user, // por si lo necesitas luego
+    isAuthenticated: !!token, // true si hay token, false si no
+    token, // por si lo necesitas luego
   };
 };

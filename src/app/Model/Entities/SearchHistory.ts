@@ -1,6 +1,5 @@
 export interface SearchHistory {
     SearchWord: string;
-    UserID: string;
   }
   
 // models/SearchHistory.ts

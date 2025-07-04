@@ -1,5 +1,3 @@
-// src/Model/Services/ApplicationFormService.ts
-
 import { ApplicationFormEvaluation } from '../Entities/ApplicationFormEvaluation';
 import { ApplicationFormEvaluationResult } from '../Entities/ApplicationFormEvaluationResult';
 
@@ -9,10 +7,14 @@ export const evaluateApplicationForm = async (
   formData: ApplicationFormEvaluation
 ): Promise<ApplicationFormEvaluationResult> => {
   try {
+    const token = localStorage.getItem('token'); // ✅ Obtenemos el token
+    if (!token) throw new Error('Token no encontrado');
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // ✅ Token incluido aquí
       },
       body: JSON.stringify(formData),
     });
@@ -24,12 +26,10 @@ export const evaluateApplicationForm = async (
 
     const data: ApplicationFormEvaluationResult = await response.json();
 
-    console.log("Formulario de evaluación enviado:", formData);
-    console.log("Respuesta del backend:", data);
-
+    console.log("✅ Formulario evaluado correctamente:", data);
     return data;
   } catch (error: any) {
-    console.error("❌ Error al enviar el formulario de evaluación con fetch:", error.message || error);
-    throw new Error("No se pudo evaluar el formulario (fetch)");
+    console.error("❌ Error al enviar el formulario:", error.message || error);
+    throw new Error("No se pudo evaluar el formulario (token)");
   }
 };

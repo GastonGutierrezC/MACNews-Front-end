@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react';
 import { NewsRecommendations } from '@/app/Model/Entities/NewsRecommendations';
 import { getAllRecommendationsNews } from '@/app/Model/Services/GetAllRecommendationsService';
+import { useToken } from '../../Context/UserContext';
 
-export const useRecommendationsNews = (userId?: string) => {
+
+export const useRecommendationsNews = () => {
   const [news, setNews] = useState<NewsRecommendations[]>([]);
-  const [loading, setLoading] = useState<boolean>(!!userId);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { token } = useToken();
+
   useEffect(() => {
-    if (!userId) {
+    if (!token) {
       setLoading(false);
-      setError('ID de usuario no proporcionado');
+      setError('Token no disponible, no autenticado');
       return;
     }
 
     const fetchRecommendations = async () => {
       try {
-        const data = await getAllRecommendationsNews(userId);
-        console.log(data)
+        const data = await getAllRecommendationsNews(token);
+        console.log('[useRecommendationsNews] Datos recibidos:', data);
         setNews(data);
+        setError(null);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -27,7 +32,7 @@ export const useRecommendationsNews = (userId?: string) => {
     };
 
     fetchRecommendations();
-  }, [userId]);
+  }, [token]);
 
   return {
     news,
@@ -35,4 +40,3 @@ export const useRecommendationsNews = (userId?: string) => {
     error,
   };
 };
-

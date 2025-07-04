@@ -11,7 +11,7 @@ const LogoIcon = () => {
 
   return (
     <div
-      className="w-24 sm:w-32 md:w-40 lg:w-48 xl:w-52 cursor-pointer"
+      className="w-14 sm:w-22 md:w-20 lg:w-28 xl:w-35 cursor-pointer"
       onClick={redirectToHome}
     >
       <Image

@@ -2,11 +2,10 @@
 import React from 'react';
 import Header from './Viuw/Components/Header/Header';
 import Footer from './Viuw/Components/Footer/Footer';
-import './Styles/globals.css'; // O cualquier otro CSS global
-import { UserProvider } from './Controller/Context/UserContext';
+import './Styles/globals.css';
 import { UserChannelsSheet } from './Viuw/Components/ShowFollowChannels/UserChannelsSheet';
 import RouteProgress from './Utils/LinksNavigation/RouteProgress';
-
+import { TokenProvider } from './Controller/Context/UserContext';
 
 export const metadata = {
   title: 'Next.js',
@@ -22,15 +21,15 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <UserProvider>
+        <TokenProvider> {/* <-- reemplazamos UserProvider */}
           <Header />
 
- <RouteProgress />
+          <RouteProgress />
 
           <div className="mx-[100px]">{children}</div>
 
           <Footer />
-        </UserProvider>
+        </TokenProvider>
       </body>
     </html>
   );

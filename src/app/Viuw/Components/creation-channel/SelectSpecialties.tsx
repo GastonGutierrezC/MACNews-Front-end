@@ -75,7 +75,7 @@ export function SelectSpecialties({ value, onChange }: SelectSpecialtiesProps) {
           >
             {value.length > 0
               ? `${value.length} especialidad(es) `
-              : "Selecciona hasta 5 especialidades"}
+              : "Selecciona tus especialidades"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

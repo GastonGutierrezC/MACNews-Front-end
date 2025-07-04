@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { createChannel } from '../../../Model/Services/ChannelService';
 import { ChannelRequest } from '../../../Model/Entities/Channel';
-import { useUser } from '@/app/Controller/Context/UserContext';
+
 
 export const useCreateChannel = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const { journalistID } = useUser(); // Usamos el string directamente
+
 
   const registerChannel = async (
     channelName: string,
@@ -22,12 +22,8 @@ export const useCreateChannel = () => {
     setSuccess(false);
 
     try {
-      if (!journalistID) {
-        throw new Error('No se encontró un JournalistID válido en el contexto.');
-      }
 
       const channelData: ChannelRequest = {
-        JournalistID: journalistID,
         ChannelName: channelName,
         DescriptionChannel: description,
         Specialties: specialties,
