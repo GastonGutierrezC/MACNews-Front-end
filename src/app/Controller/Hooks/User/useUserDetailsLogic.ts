@@ -1,16 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUser } from '@/app/Controller/Context/UserContext';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
+import { useToken } from '../../Context/UserContext';
+import { useUserProfile } from './useUserProfile';
+
 
 export const useUserDetailsLogic = () => {
-  const { user, setUser } = useUser();
+  const { token, setToken } = useToken();
+  const { profile: user } = useUserProfile(); // Renombramos profile a user para mantener compatibilidad visual
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Prefetch de la ruta HOME para acelerar la navegación
   useEffect(() => {
     router.prefetch(ROUTES.HOME);
   }, [router]);
@@ -20,8 +22,8 @@ export const useUserDetailsLogic = () => {
   };
 
   const handleLogout = async () => {
-    setUser(null);
-    localStorage.removeItem('user');
+    setToken(null);
+    localStorage.removeItem('token');
     await router.push(ROUTES.HOME);
   };
 

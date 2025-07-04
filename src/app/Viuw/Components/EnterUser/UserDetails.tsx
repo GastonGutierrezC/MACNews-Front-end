@@ -1,26 +1,20 @@
 'use client';
 
 import React from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import {
   Card,
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { UpdateUserData } from './UpdateUserData';
 import { useUserDetailsLogic } from '@/app/Controller/Hooks/User/useUserDetailsLogic';
 
-
-
 const UserDetails = () => {
   const {
     user,
-    passwordVisible,
-    togglePasswordVisibility,
     handleLogout,
   } = useUserDetailsLogic();
 
@@ -35,7 +29,6 @@ const UserDetails = () => {
   return (
     <div className="min-h-screen flex justify-center items-center pt-60 pb-30">
       <Card className="w-full max-w-xl bg-[#B8D1E7] p-6 space-y-6">
-
         <div className="flex justify-center">
           <Badge variant="title">Datos del Usuario</Badge>
         </div>
@@ -43,7 +36,6 @@ const UserDetails = () => {
         <CardContent className="flex flex-col items-center space-y-6">
           <div className="text-center">
             <Badge variant="text">Imagen de perfil</Badge>
-
             <img
               src={user.UserImageURL}
               alt="User Avatar"
@@ -55,28 +47,14 @@ const UserDetails = () => {
           <Badge variant="userData">Nombre: {user.UserFirstName}</Badge>
           <Badge variant="userData">Apellido: {user.UserLastName}</Badge>
           <Badge variant="userData">Email: {user.UserEmail}</Badge>
-          <Badge variant="userData">Contraseña:
-            <Input
-              type={passwordVisible ? 'text' : 'password'}
-              value={user.PasswordUser}
-              readOnly
-              className="w-40"
-            />
-            <Button
-              variant="ghost"
-              onClick={togglePasswordVisibility}
-              className="p-2"
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </Button>
-          </Badge>
         </CardContent>
 
         <CardFooter className="flex justify-center space-x-6">
           <Button onClick={handleLogout} variant="redhover">
             Logout
           </Button>
-          <UpdateUserData />
+        <UpdateUserData />
+
         </CardFooter>
       </Card>
     </div>

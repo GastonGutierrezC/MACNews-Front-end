@@ -8,114 +8,54 @@ import React, {
   useEffect,
 } from 'react';
 
-// Interface User
-export interface User {
-  id: string;
-  UserFirstName: string;
-  UserLastName: string;
-  UserEmail: string;
-  UserImageURL: string;
-  PasswordUser: string;
-  RoleAssigned: string;
-  JournalistID?: string;
-}
-
-export interface RawUserFromBackend {
-  UserID: string;
-  UserFirstName: string;
-  UserLastName: string;
-  UserEmail: string;
-  UserImageURL: string;
-  PasswordUser: string;
-  RoleAssigned: string;
-  JournalistID?: string;
-}
-
-type NormalizableUser = User | RawUserFromBackend;
-
-interface UserContextProps {
-  user: User | null;
-  setUser: (user: NormalizableUser | null) => void;
-  // Eliminamos promoteToJournalist para evitar confusión, usamos solo setJournalistAndPromote
-  setJournalistAndPromote: (journalist: { JournalistID: string }) => void;
-  journalistID?: string;
+interface TokenContextProps {
+  token: string | null;
+  setToken: (token: string | null) => void;
+  logout: () => void;
 }
 
 // Crear contexto
-const UserContext = createContext<UserContextProps | undefined>(undefined);
+const TokenContext = createContext<TokenContextProps | undefined>(undefined);
 
 // Provider
-export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUserState] = useState<User | null>(null);
+export const TokenProvider = ({ children }: { children: ReactNode }) => {
+  const [token, setTokenState] = useState<string | null>(null);
 
-  // Normalizar user (backend -> frontend)
-  const normalizeUser = (rawUser: RawUserFromBackend): User => ({
-    id: rawUser.UserID,
-    UserFirstName: rawUser.UserFirstName,
-    UserLastName: rawUser.UserLastName,
-    UserEmail: rawUser.UserEmail,
-    UserImageURL: rawUser.UserImageURL,
-    PasswordUser: rawUser.PasswordUser,
-    RoleAssigned: rawUser.RoleAssigned,
-    JournalistID: rawUser.JournalistID ?? undefined,
-  });
-
-  // setUser que normaliza y sincroniza localStorage
-  const setUser = (userData: NormalizableUser | null) => {
-    if (userData) {
-      const normalizedUser = 'UserID' in userData ? normalizeUser(userData) : userData;
-      setUserState(normalizedUser);
-      localStorage.setItem('user', JSON.stringify(normalizedUser));
-      console.log('[UserContext] Usuario guardado:', normalizedUser);
+  // Guardar token y sincronizar con localStorage
+  const setToken = (newToken: string | null) => {
+    if (newToken) {
+      setTokenState(newToken);
+      localStorage.setItem('token', newToken);
+      console.log('[TokenContext] Token guardado:', newToken);
     } else {
-      setUserState(null);
-      localStorage.removeItem('user');
-      console.log('[UserContext] Usuario limpiado');
+      setTokenState(null);
+      localStorage.removeItem('token');
+      console.log('[TokenContext] Token eliminado');
     }
   };
 
-  // Función combinada que actualiza JournalistID y cambia rol a Journalist
-  const setJournalistAndPromote = (journalist: { JournalistID: string }) => {
-    if (user) {
-      const updatedUser = {
-        ...user,
-        JournalistID: journalist.JournalistID,
-        RoleAssigned: 'Journalist',
-      };
-      setUser(updatedUser);
-    }
-  };
-
-  // Cargar usuario guardado en localStorage al montar
+  // Cargar token desde localStorage al iniciar
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const parsedUser: User = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (err) {
-        console.error('[UserContext] Error parsing stored user:', err);
-      }
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setTokenState(storedToken);
     }
   }, []);
 
+  const logout = () => {
+    setToken(null);
+  };
+
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser,
-        setJournalistAndPromote,
-        journalistID: user?.JournalistID,
-      }}
-    >
+    <TokenContext.Provider value={{ token, setToken, logout }}>
       {children}
-    </UserContext.Provider>
+    </TokenContext.Provider>
   );
 };
 
 // Hook personalizado
-export const useUser = (): UserContextProps => {
-  const context = useContext(UserContext);
-  if (!context) throw new Error('useUser must be used within a UserProvider');
+export const useToken = (): TokenContextProps => {
+  const context = useContext(TokenContext);
+  if (!context) throw new Error('useToken must be used within a TokenProvider');
   return context;
 };

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useEvaluateApplicationForm } from "./useEvaluateApplicationForm"
-import { useUser } from "@/app/Controller/Context/UserContext"
-import { useRouter } from "next/navigation"
-import { ROUTES } from "@/app/Utils/LinksNavigation/routes"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useEvaluateApplicationForm } from "./useEvaluateApplicationForm";
+
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/app/Utils/LinksNavigation/routes";
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Debe ingresar su nombre completo." }),
@@ -20,7 +20,7 @@ const formSchema = z.object({
   accepted: z.boolean().refine(val => val === true, {
     message: "Debe aceptar el reglamento para continuar.",
   }),
-})
+});
 
 export function useJournalistApplicationForm() {
   const form = useForm({
@@ -33,91 +33,88 @@ export function useJournalistApplicationForm() {
       certificate: undefined,
       accepted: false,
     },
-  })
+  });
 
-  const [uploading, setUploading] = useState(false)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [dialogType, setDialogType] = useState<'loading' | 'approved' | 'rejected' | 'error' | null>(null)
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [dialogType, setDialogType] = useState<'loading' | 'approved' | 'rejected' | 'error' | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { submitApplication, loading: sendingData } = useEvaluateApplicationForm()
-  const { user } = useUser()
-  const router = useRouter()
+  const { submitApplication, loading: sendingData } = useEvaluateApplicationForm();
+
+  const router = useRouter();
 
   // Prefetch para la ruta CHANNEL_CREATION
   useEffect(() => {
-    router.prefetch(ROUTES.CHANNEL_CREATION)
-  }, [router])
+    router.prefetch(ROUTES.CHANNEL_CREATION);
+  }, [router]);
 
   const openDialog = (type: typeof dialogType) => {
-    setDialogType(type)
-    setDialogOpen(true)
-  }
+    setDialogType(type);
+    setDialogOpen(true);
+  };
 
   const closeDialog = () => {
-    setDialogOpen(false)
-    setDialogType(null)
-  }
+    setDialogOpen(false);
+    setDialogType(null);
+  };
 
   const handleClickCreateChannel = () => {
-    router.push(ROUTES.CHANNEL_CREATION)
-  }
+    router.push(ROUTES.CHANNEL_CREATION);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const certificateFile = values.certificate[0]
+      const certificateFile = values.certificate[0];
       if (!["image/jpeg", "image/png"].includes(certificateFile.type)) {
-        alert("Solo se permiten imágenes en formato JPG o PNG.")
-        return
+        alert("Solo se permiten imágenes en formato JPG o PNG.");
+        return;
       }
 
-      setUploading(true)
-      openDialog("loading")
+      setUploading(true);
+      openDialog("loading");
 
-      const formData = new FormData()
-      formData.append("file", certificateFile)
+      const formData = new FormData();
+      formData.append("file", certificateFile);
 
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
-      })
+      });
 
-      const resultImage = await response.json()
-      setUploading(false)
+      const resultImage = await response.json();
+      setUploading(false);
 
       if (response.ok && resultImage.secure_url) {
-        if (!user?.id) {
-          alert("Debe iniciar sesión para enviar la solicitud.")
-          return
-        }
 
+
+        // Ya no enviamos UserID porque el backend usa el token para identificar al usuario
         const applicationData = {
-          UserID: user.id,
           BirthDate: values.birthDate,
           CardNumber: values.idNumber,
           Reason: values.reason,
           ImageCertificateURL: resultImage.secure_url,
-        }
+        };
 
-        const backendResponse = await submitApplication(applicationData)
+        const backendResponse = await submitApplication(applicationData);
 
         if (backendResponse?.VerificationStatus === "Approved") {
-          setDialogType("approved")
+          setDialogType("approved");
         } else if (backendResponse?.VerificationStatus === "Rejected") {
-          setDialogType("rejected")
+          setDialogType("rejected");
         } else {
-          setDialogType("error")
+          setDialogType("error");
         }
       } else {
-        console.error("Error al subir el archivo:", resultImage.error)
-        openDialog("error")
+        console.error("Error al subir el archivo:", resultImage.error);
+        openDialog("error");
       }
     } catch (error) {
-      console.error("Error al enviar el formulario:", error)
-      setUploading(false)
-      openDialog("error")
+      console.error("Error al enviar el formulario:", error);
+      setUploading(false);
+      openDialog("error");
     }
-  }
+  };
 
   return {
     form,
@@ -131,5 +128,5 @@ export function useJournalistApplicationForm() {
     openDialog,
     closeDialog,
     handleClickCreateChannel,
-  }
+  };
 }

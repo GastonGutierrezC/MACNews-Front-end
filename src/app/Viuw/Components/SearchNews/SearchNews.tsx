@@ -23,13 +23,14 @@ export const SearchNews: React.FC<SearchResultsProps> = ({ term }) => {
     <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-64">
       
       {/* Resultados de búsqueda */}
-      <div className="flex flex-col gap-5 pt-20">
+      <div className="flex flex-col gap-5 ">
         {loadingSearch && <p className="text-gray-600">Cargando noticias...</p>}
         {searchError && <p className="text-red-600">Error: {searchError}</p>}
 
         {searchResults.length === 0 && !loadingSearch && (
           <p className="text-gray-500">No se encontraron noticias.</p>
         )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
 
         {searchResults.map((news) => (
           <NewsCard
@@ -47,7 +48,7 @@ export const SearchNews: React.FC<SearchResultsProps> = ({ term }) => {
           />
         ))}
       </div>
-
+</div>
       {/* Top Noticias */}
       {topNews.length > 0 && (
         <div className="flex flex-col gap-5 pt-20 pl-25">

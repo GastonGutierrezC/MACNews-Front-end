@@ -1,5 +1,3 @@
-// src/Model/Services/ChannelService.ts
-
 import axios from 'axios';
 import { ChannelRequest, ChannelResponse } from '../Entities/Channel';
 
@@ -11,7 +9,14 @@ export const createChannel = async (
   try {
     console.log("Enviando datos del canal:", channelData);
 
-    const response = await axios.post<ChannelResponse>(API_URL, channelData);
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("Token de autenticación no disponible");
+
+    const response = await axios.post<ChannelResponse>(API_URL, channelData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     console.log("Respuesta del backend (Channel):", response.data);
 

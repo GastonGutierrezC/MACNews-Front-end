@@ -1,45 +1,44 @@
-// app/Controller/Hooks/ShowNews/useShowNews.ts
 import { useNews } from '@/app/Controller/Hooks/ShowNews/useNews';
 import { useTopNews } from '@/app/Controller/Hooks/ShowNews/useTopNews';
 import { useRecommendationsNews } from '@/app/Controller/Hooks/ShowNews/useRecommendationsNews';
-import { useUser } from '@/app/Controller/Context/UserContext';
+import { useToken } from '../../Context/UserContext';
+
 
 export const useShowNews = () => {
-  const { user } = useUser();
+  const { token } = useToken();
 
   const {
     news: defaultNews,
     loadingInitial,
     loadingMore,
     error,
-    loadMore
+    loadMore,
   } = useNews();
 
   const {
     news: recommendedNews,
     loading: loadingRecommended,
-    error: errorRecommended
-  } = useRecommendationsNews(user?.id);
+    error: errorRecommended,
+  } = useRecommendationsNews();
 
   const {
     news: topNews,
     loading: loadingTop,
-    error: errorTop
+    error: errorTop,
   } = useTopNews();
 
-  const newsToShow = user?.id && recommendedNews.length > 0
-    ? recommendedNews
-    : defaultNews;
+  // Si hay token y noticias recomendadas, mostrar recomendaciones; si no, noticias por defecto
+  const newsToShow = token && recommendedNews.length > 0 ? recommendedNews : defaultNews;
 
-  const isLoading = loadingInitial || loadingTop || (user?.id && loadingRecommended);
-  const hasError = error || errorTop || (user?.id && errorRecommended);
+  const isLoading = loadingInitial || loadingTop || (token ? loadingRecommended : false);
+  const hasError = error || errorTop || (token ? errorRecommended : null);
 
   return {
-    user,
     newsToShow,
     topNews,
+    recommendedNews,
     isLoading,
     hasError,
-    loadMore
+    loadMore,
   };
 };

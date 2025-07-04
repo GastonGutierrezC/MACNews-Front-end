@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/app/Controller/Context/UserContext';
+
 import { useSaveSearchHistory } from '@/app/Controller/Hooks/SearchNews/useSaveSearchHistory';
 import { useSearchHistory } from '@/app/Controller/Hooks/SearchNews/useSearchHistory';
 import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
+import { useToken } from '../../Context/UserContext';
 
 export const useSearchLogic = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,18 +14,18 @@ export const useSearchLogic = () => {
   const [isFocused, setIsFocused] = useState(false);
 
   const router = useRouter();
-  const { user } = useUser();
+  const { token } = useToken();
   const postSearch = useSaveSearchHistory();
-  const { history: userHistory } = useSearchHistory(user?.id ?? null);
+  const { history: userHistory } = useSearchHistory();
 
   useEffect(() => {
-    if (user && user.id && userHistory.length > 0) {
+    if (token && userHistory.length > 0) {
       const uniqueHistory = [...new Set(userHistory.map((item) => item.SearchWord))].slice(0, 10);
       setHistory(uniqueHistory);
-    } else if (!user || history.length === 0) {
+    } else {
       setHistory(['noticias']);
     }
-  }, [user, userHistory]);
+  }, [token, userHistory]);
 
   // Prefetch de la ruta de búsqueda (puedes hacerlo para la búsqueda actual o un patrón general)
   useEffect(() => {
@@ -46,8 +47,8 @@ export const useSearchLogic = () => {
     router.push(ROUTES.SEARCH(encodedQuery));
     setIsFocused(false);
 
-    if (user && user.id) {
-      postSearch.saveSearchHistory({ UserID: user.id, SearchWord: trimmedQuery });
+    if (token) {
+      postSearch.saveSearchHistory({ SearchWord: trimmedQuery });
     } else {
       console.log('[SearchBar] Usuario no logueado, no se guarda búsqueda.');
     }
@@ -69,3 +70,4 @@ export const useSearchLogic = () => {
     handleSelectHistory,
   };
 };
+

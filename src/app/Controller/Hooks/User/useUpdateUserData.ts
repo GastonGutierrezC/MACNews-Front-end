@@ -1,50 +1,59 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useUser } from '@/app/Controller/Context/UserContext';
 import { UserUpdate } from '@/app/Model/Entities/UserUpdate';
 import { useUpdateUser } from '@/app/Controller/Hooks/User/useUpdateUser';
+import { getUserProfile } from '@/app/Model/Services/getUserProfile';
 
 export const useUpdateUserData = () => {
-  const { user } = useUser();
   const { modifyUser, loading, error, success } = useUpdateUser();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
   const [imageURL, setImageURL] = useState('');
 
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (user) {
-      setFirstName(user.UserFirstName ?? '');
-      setLastName(user.UserLastName ?? '');
-      setEmail(user.UserEmail ?? '');
-      setPassword(user.PasswordUser ?? '');
-      setImageURL(user.UserImageURL ?? '');
-    }
-  }, [user]);
+  // Función para cargar perfil desde el token
+  const loadProfileFromToken = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
+    try {
+      const userProfile = await getUserProfile(token);
+      setFirstName(userProfile.UserFirstName ?? '');
+      setLastName(userProfile.UserLastName ?? '');
+      setEmail(userProfile.UserEmail ?? '');
+      setImageURL(userProfile.UserImageURL ?? '');
+    } catch (err) {
+      console.error('Error al cargar perfil desde token:', err);
+    }
+  };
+
+  // Cargar perfil al montar
   useEffect(() => {
-    if (success) setOpen(false);
+    loadProfileFromToken();
+  }, []);
+
+  // Si la actualización fue exitosa, cerrar modal y refrescar perfil
+  useEffect(() => {
+    if (success) {
+      setOpen(false);
+      loadProfileFromToken();
+    }
   }, [success]);
 
   const handleSave = async () => {
-    if (!user) return;
-
     const userData: UserUpdate = {
       user: {
         UserFirstName: firstName,
         UserLastName: lastName,
         UserEmail: email,
         UserImageURL: imageURL,
-      },
-      password: {
-        PasswordUser: password,
       },
     };
 
@@ -97,7 +106,7 @@ export const useUpdateUserData = () => {
     firstName,
     lastName,
     email,
-    password,
+
     imageURL,
     open,
     loading,
@@ -107,7 +116,7 @@ export const useUpdateUserData = () => {
     setFirstName,
     setLastName,
     setEmail,
-    setPassword,
+
     setOpen,
     handleSave,
     handleImageChange,

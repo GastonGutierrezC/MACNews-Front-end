@@ -1,7 +1,6 @@
 // src/Model/Entities/Channel.ts
 
 export interface ChannelRequest {
-    JournalistID: string;
     ChannelName: string;
     DescriptionChannel: string;
     Specialties: string[];

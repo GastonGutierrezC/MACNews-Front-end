@@ -4,23 +4,23 @@ import { useState, useEffect, FormEvent } from 'react'
 import { useCommentsByChannel } from '@/app/Controller/Hooks/CommmentPost/useCommentsByChannel'
 import { usePostComment } from '@/app/Controller/Hooks/CommmentPost/usePostComment'
 import { Comment, Subcomment } from '@/app/Model/Entities/CommentPost'
-import { useUser } from '../../Context/UserContext'
+import { useUserProfile } from '@/app/Controller/Hooks/User/useUserProfile'
 
 export interface CommentsListProps {
   channelId: string
   userId: string | null
 }
 
-export const useCommentsLogic = ({ channelId, userId }: CommentsListProps) => {
-  const { 
-    comments, 
-    loadingInitial, 
-    loadingMore, 
-    error, 
-    loadMore, 
+export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
+  const {
+    comments,
+    loadingInitial,
+    loadingMore,
+    error,
+    loadMore,
     canLoadMore,
-    page, 
-    limit 
+    page,
+    limit
   } = useCommentsByChannel(channelId)
 
   const { sendComment, loading: sending, error: sendError } = usePostComment()
@@ -29,9 +29,9 @@ export const useCommentsLogic = ({ channelId, userId }: CommentsListProps) => {
   const [textSubcomment, setTextSubcomment] = useState('')
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [localComments, setLocalComments] = useState<Comment[]>([])
-  const { user } = useUser()
 
-  // Acumula comentarios nuevos sin reemplazar los anteriores
+  const { profile: user } = useUserProfile()
+
   useEffect(() => {
     if (comments?.Comments) {
       setLocalComments((prev) => {
@@ -47,16 +47,16 @@ export const useCommentsLogic = ({ channelId, userId }: CommentsListProps) => {
     e.preventDefault()
     if (!textComment.trim()) return
 
-    if (!userId) {
+    if (!user) {
       alert('Debes registrarte para poder escribir un comentario.')
       return
     }
 
     try {
       const createdComment: Comment = await sendComment({
-        UserID: userId,
         ChannelID: channelId,
         TextComment: textComment.trim(),
+
       })
 
       setLocalComments((prev) => [createdComment, ...prev])
@@ -70,17 +70,17 @@ export const useCommentsLogic = ({ channelId, userId }: CommentsListProps) => {
     e.preventDefault()
     if (!textSubcomment.trim()) return
 
-    if (!userId) {
+    if (!user) {
       alert('Debes registrarte para poder escribir un comentario.')
       return
     }
 
     try {
       const createdSubcomment: Subcomment = await sendComment({
-        UserID: userId,
         ChannelID: channelId,
         TextComment: textSubcomment.trim(),
         ParentComment: parentId,
+
       })
 
       setLocalComments((prev) =>
@@ -100,10 +100,6 @@ export const useCommentsLogic = ({ channelId, userId }: CommentsListProps) => {
       console.error('Error enviando subcomentario:', error)
     }
   }
-
-  // Mostrar el botón "Ver más" solo si la cantidad de comentarios actuales es igual al límite, 
-  // asumiendo que si fuera menos no hay más para cargar
-
 
   return {
     localComments,

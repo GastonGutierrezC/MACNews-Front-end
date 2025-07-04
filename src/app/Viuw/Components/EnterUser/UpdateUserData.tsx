@@ -22,7 +22,6 @@ export function UpdateUserData() {
     firstName,
     lastName,
     email,
-    password,
     imageURL,
     open,
     loading,
@@ -32,7 +31,6 @@ export function UpdateUserData() {
     setFirstName,
     setLastName,
     setEmail,
-    setPassword,
     setOpen,
     handleSave,
     handleImageChange,
@@ -99,17 +97,6 @@ export function UpdateUserData() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">Contraseña</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               className="col-span-3"
             />
           </div>

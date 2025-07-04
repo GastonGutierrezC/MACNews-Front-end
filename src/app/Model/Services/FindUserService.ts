@@ -1,28 +1,36 @@
 // services/userService.ts
 import axios from 'axios';
-import { RawUserFromBackend } from '../Entities/RawUserFromBackend';
 
+interface LoginResponse {
+  token: string;
+}
 
-export const findUserByCredentials = async (
+export const loginAndGetToken = async (
   email: string,
   password: string
-): Promise<RawUserFromBackend> => {
+): Promise<LoginResponse> => {
   try {
-    const response = await axios.get<RawUserFromBackend>(
-      'http://localhost:3002/users/findByCredentials',
+    const response = await axios.post<LoginResponse>(
+      'http://localhost:3002/auth/login',
       {
-        params: { email, password },
+        UserEmail: email,
+        PasswordUser: password,
       }
     );
-    console.log('[findUserByCredentials] Response data:', response.data);
+
+    console.log('[loginAndGetToken] Token:', response.data.token);
+
+    // Podés guardar el token si querés:
+    localStorage.setItem('token', response.data.token);
+
     return response.data;
   } catch (error: any) {
-    console.error('[findUserByCredentials] Error:', error.response?.data || error.message);
+    console.error('[loginAndGetToken] Error:', error.response?.data || error.message);
     throw error.response?.data || { message: 'Unknown error' };
   }
 };
 
 
 
-// http://localhost:3002/followChannels/user/{userId}
+// http://localhost:3002/users/profile
 

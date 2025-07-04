@@ -9,7 +9,7 @@ const EnterUser = () => {
   const [currentView, setCurrentView] = useState<'login' | 'register'>('login');
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center   mt-36">
+    <div className="min-h-screen flex flex-col items-center justify-center   mt-16">
       <RegistrationChange onChangeView={setCurrentView} activeView={currentView} />
 
       {currentView === 'login' ? <LogIn /> : <CreateAccount />}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserRegistration } from '@/app/Model/Entities/User';
-import { useCreateUser } from '../Channels/useCreateUser';
+import { useCreateUser } from './useCreateUser';
 import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 
 export function useCreateAccountForm() {

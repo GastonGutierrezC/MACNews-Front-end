@@ -1,22 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChannelInformation from './ChannelInformation';
 import { useChannelByJournalist } from '@/app/Controller/Hooks/Channels/useChannelByJournalist';
 import { Button } from '@/components/ui/button';
 import CreationNews from './CreationNews/CreationNews';
 import ChannelNews from './ChannelNews/ChannelNews';
 import { CommentsList } from './ChannelPostComments/ChannelComments';
-import { useUser } from '@/app/Controller/Context/UserContext';
 import ChannelMetrics from './ChannelMetricts/ChannelMetrics';
 
 const ChannelJournalist: React.FC = () => {
-  const { user } = useUser();
-  const userId = user?.id ?? null;  // Aquí sacamos el userId del contexto
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  const { channelData, loading, error } = useChannelByJournalist(); // por ejemplo, si tu hook acepta el userId
+  const { channelData, loading, error } = useChannelByJournalist();
   const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
 
+  if (!token) return <p>No autorizado. Debes iniciar sesión.</p>;
   if (loading) return <p>Cargando información del canal...</p>;
   if (error) return <p>Error al obtener el canal: {error}</p>;
   if (!channelData) return <p>No se encontró información del canal.</p>;
@@ -43,14 +42,10 @@ const ChannelJournalist: React.FC = () => {
       <hr className="mt-4 border-t-2 border-black" />
 
       <div className="mt-8">
-        {selectedView === 'news' && (
-          <ChannelNews channelId={channelData.ChannelId} />
-        )}
-        {selectedView === 'comments' && <CommentsList channelId={channelData.ChannelId} userId={userId} />}
-        {selectedView === 'metrics' &&   <ChannelMetrics channelId={channelData.ChannelId} />}
-        {selectedView === 'create' && (
-          <CreationNews channelID={channelData.ChannelId} />
-        )}
+        {selectedView === 'news' && <ChannelNews channelId={channelData.ChannelId} />}
+        {selectedView === 'comments' && <CommentsList channelId={channelData.ChannelId} userId={token} />}
+        {selectedView === 'metrics' && <ChannelMetrics channelId={channelData.ChannelId} />}
+        {selectedView === 'create' && <CreationNews channelID={channelData.ChannelId} />}
       </div>
     </div>
   );

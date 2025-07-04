@@ -1,25 +1,31 @@
-// hooks/useSearchHistory.ts
-
 import { SearchHistoryUser } from '@/app/Model/Entities/SearchHistory';
-import { getSearchHistoryByUserId } from '@/app/Model/Services/searchHistoryService';
+import { getSearchHistoryByToken } from '@/app/Model/Services/searchHistoryService';
 import { useEffect, useState } from 'react';
+import { useToken } from '../../Context/UserContext';
 
-export const useSearchHistory = (userId: string | null) => {
+
+export const useSearchHistory = () => {
   const [history, setHistory] = useState<SearchHistoryUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { token } = useToken();
 
   useEffect(() => {
-    if (!userId) return;
+    if (!token) return;
 
     const fetchHistory = async () => {
       setLoading(true);
-      const result = await getSearchHistoryByUserId(userId);
-      setHistory(result);
-      setLoading(false);
+      try {
+        const result = await getSearchHistoryByToken(token);
+        setHistory(result);
+      } catch (error) {
+        console.error('[useSearchHistory] Error fetching history:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchHistory();
-  }, [userId]);
+  }, [token]);
 
   return { history, loading };
 };
