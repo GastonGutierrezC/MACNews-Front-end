@@ -20,7 +20,7 @@ const CategoriesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="bluehover">Categorías</Button>
+        <Button variant="bluehover">Categorías de Noticias</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Selecciona una categoría</DropdownMenuLabel>
