@@ -22,7 +22,7 @@ const SpecialtyDropdown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="bluehover">
-          Especialidades
+          Especialidades de Canales
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

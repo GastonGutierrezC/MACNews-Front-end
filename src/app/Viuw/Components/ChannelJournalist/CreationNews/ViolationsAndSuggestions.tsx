@@ -1,8 +1,11 @@
-// components/ViolationsAndSuggestions.tsx
 'use client';
 
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import React from 'react';
+import ApplyAISuggestionsButton from './ApplyAISuggestionsButton';
+import { News } from '@/app/Model/Entities/NewsCreation';
+import { UseFormSetValue } from 'react-hook-form';
+
 
 interface Violation {
   principle: string;
@@ -16,48 +19,61 @@ interface ResponseData {
 
 interface Props {
   response: ResponseData | true | null;
+  isOpen: boolean;
+  onToggle: () => void;
+  formWatchContent: string;
+ formSetValue: UseFormSetValue<News>;
 }
 
-export default function ViolationsAndSuggestions({ response }: Props) {
+export default function ViolationsAndSuggestions({
+  response,
+  isOpen,
+  onToggle,
+  formWatchContent,
+  formSetValue,
+}: Props) {
+  // No renderiza nada si aún no hay respuesta o si ya fue enviado con éxito
   if (!response || response === true) return null;
 
   return (
-    <div className="absolute left-300 ml-6 top-200 w-[300px] flex flex-col gap-4">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="bluehover">📜 Normas Incumplidas</Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="z-10 bg-[#C2D2E9] text-black w-[300px] max-h-[250px] overflow-y-auto"
-          align="start"
-        >
-          <p className="font-semibold mb-2">Estas son las normas éticas que se han incumplido:</p>
-          <ul className="list-disc pl-4 text-sm">
+    <div className="flex flex-col h-full w-full">
+      {/* Botón abrir/cerrar recomendaciones */}
+      <div className="mb-4">
+        <Button onClick={onToggle} variant="bluehover">
+          {isOpen ? '❌ Cerrar Recomendaciones' : '📜 Ver Recomendaciones'}
+        </Button>
+      </div>
+
+      {/* Panel visible solo si isOpen === true */}
+      {isOpen && (
+        <div className="flex-1 bg-[#C2D2E9] text-black shadow-lg overflow-y-auto p-6 rounded">
+          <h2 className="text-lg font-semibold mb-4">Normas Éticas Incumplidas</h2>
+          <ul className="list-disc pl-5 text-sm mb-6">
             {response.violations.map((v, i) => (
-              <li key={i}>
+              <li key={i} className="mb-2">
                 <strong>{v.principle}</strong>: {v.explanation}
               </li>
             ))}
           </ul>
-        </PopoverContent>
-      </Popover>
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="bluehover">💡 Sugerencias de Mejora</Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="z-10 bg-[#C2D2E9] text-black w-[300px] max-h-[250px] overflow-y-auto"
-          align="start"
-        >
-          <p className="font-semibold mb-2">Recomendaciones para mejorar el contenido:</p>
-          <ul className="list-disc pl-4 text-sm">
+          <h2 className="text-lg font-semibold mb-2">Sugerencias de Mejora</h2>
+          <ul className="list-disc pl-5 text-sm mb-4">
             {response.violations.map((v, i) => (
-              <li key={i}>{v.suggestion}</li>
+              <li key={i} className="mb-1">{v.suggestion}</li>
             ))}
           </ul>
-        </PopoverContent>
-      </Popover>
+
+<ApplyAISuggestionsButton
+  content={formWatchContent} // contenido actual del formulario
+  suggestions={response.violations.map((v) => v.suggestion)} // las sugerencias a enviar
+  onApplied={(updatedContent) => {
+    // Esto reemplaza el contenido del campo 'Content' con la noticia actualizada
+    formSetValue('Content', updatedContent);
+  }}
+/>
+
+        </div>
+      )}
     </div>
   );
 }

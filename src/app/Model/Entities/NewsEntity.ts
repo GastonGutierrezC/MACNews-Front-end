@@ -1,6 +1,3 @@
-// app/Model/Entities/NewsEntity.ts
-
-// app/Model/Entities/NewsEntity.ts
 
 export interface Channel {
     ChannelID: string;
