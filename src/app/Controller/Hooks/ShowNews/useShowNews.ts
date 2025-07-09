@@ -27,8 +27,14 @@ export const useShowNews = () => {
     error: errorTop,
   } = useTopNews();
 
+    const isAuthenticated = !!token; // ✅ Nuevo flag claro
+
   // Si hay token y noticias recomendadas, mostrar recomendaciones; si no, noticias por defecto
-  const newsToShow = token && recommendedNews.length > 0 ? recommendedNews : defaultNews;
+  const newsToShow = isAuthenticated && recommendedNews.length > 0
+    ? recommendedNews
+    : defaultNews;
+
+  // Si hay token y noticias recomendadas, mostrar recomendaciones; si no, noticias por defecto
 
   const isLoading = loadingInitial || loadingTop || (token ? loadingRecommended : false);
   const hasError = error || errorTop || (token ? errorRecommended : null);
@@ -40,5 +46,6 @@ export const useShowNews = () => {
     isLoading,
     hasError,
     loadMore,
+    isAuthenticated
   };
 };

@@ -25,6 +25,14 @@ const SearchBar = ({ className }: { className?: string }) => {
     handleSelectHistory,
   } = useSearchLogic();
 
+  // Maneja la tecla Enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearchClick();
+    }
+  };
+
   return (
     <div className={`w-full max-w-xs sm:max-w-md md:max-w-xl relative px-2 ${className}`}>
       <div className="flex items-center bg-white border border-black rounded-full px-3 py-2 sm:px-4 sm:py-2 w-full shadow gap-2">
@@ -34,6 +42,7 @@ const SearchBar = ({ className }: { className?: string }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 150)}
+          onKeyDown={handleKeyDown}
           className="bg-white text-black text-base sm:text-xl placeholder-black border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none flex-1"
         />
         <Button

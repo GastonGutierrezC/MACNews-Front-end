@@ -67,7 +67,7 @@ const NewsDetailCard = ({ news }: Props) => {
         <Badge variant="data">{news.CreatorFullName}</Badge>
       </div>
 
-      <Badge variant="text" className="max-w-full break-words whitespace-normal">
+      <Badge variant="text" className="max-w-full break-words whitespace-normal text-center">
         {news.ShortDescription}
       </Badge>
 

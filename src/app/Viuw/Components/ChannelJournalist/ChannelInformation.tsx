@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { FaInfoCircle } from 'react-icons/fa';
 import React from 'react';
 import { useFollowChannel } from '@/app/Controller/Hooks/User/useFollowChannel';
+import { Badge } from '@/components/ui/badge';
 
 interface ChannelInformationProps {
   channel: {
@@ -84,7 +85,16 @@ const ChannelInformation: React.FC<ChannelInformationProps> = ({ channel }) => {
           <p className="text-justify text-gray-700 whitespace-pre-line">
             {channel.DescriptionChannel}
           </p>
+            <div className="flex flex-wrap gap-2 mt-15">
+    
+              {channel.Specialties.map((spec) => (
+                <Badge key={spec} variant="default">
+                  {spec}
+                </Badge>
+              ))}
+            </div>
         </div>
+
       </div>
     </div>
   );

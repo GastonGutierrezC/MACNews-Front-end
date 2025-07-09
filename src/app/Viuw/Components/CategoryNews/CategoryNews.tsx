@@ -8,6 +8,7 @@ import { NewsCard } from '../ShowNews/NewsCard';
 import TopNews from '../ShowNews/TopNews';
 import WordNews from '../../../Images/wordNews.png';
 import { Button } from '@/components/ui/button';
+import { CategoryConverter } from '@/app/Utils/GeneralConvertions/CategoryConverter';
 
 interface CategoryNewsProps {
   category: string;
@@ -32,11 +33,15 @@ export const CategoryNews: React.FC<CategoryNewsProps> = ({ category }) => {
     decodeURIComponent(category);
   }, [category]);
 
+  const categorySpanish =  CategoryConverter.toSpanish(category);
+  
+
   return (
     <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-14">
       {/* Noticias por categoría */}
       <div className="flex flex-col gap-5 pt-20">
-        <h2 className="text-3xl font-bold mb-6">Noticias de la categoría: {category}</h2>
+        
+        <h2 className="text-3xl font-bold mb-6">Noticias de la categoría: {categorySpanish}</h2>
 
         {loadingInitial && <p className="text-gray-600">Cargando noticias...</p>}
         {error && <p className="text-red-600">Error: {error}</p>}

@@ -86,9 +86,6 @@ useEffect(() => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
 
-            <div className="text-center">
-              <FormLabel>Imagen de la Noticia</FormLabel>
-            </div>
 
             <div className="flex justify-center relative">
               <img
@@ -100,7 +97,6 @@ useEffect(() => {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 variant="imageIcon"
-                className="absolute bottom-4 right-4"
               >
                 <FaPencilAlt size={26} />
               </Button>
@@ -150,23 +146,28 @@ useEffect(() => {
               )}
             />
 
-            {/* Fecha */}
-            <FormField
-              control={form.control}
-              name="PublicationDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col sm:flex-row sm:items-start gap-y-2 sm:gap-x-3">
-                  <FormLabel className="sm:w-40 pt-2">Fecha de Publicación</FormLabel>
-                  <div className="flex-1">
-                    <FormControl variant="blueBackground">
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormDescription>Fecha en que se publicará la noticia.</FormDescription>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+{/* Fecha */}
+<FormField
+  control={form.control}
+  name="PublicationDate"
+  render={({ field }) => {
+    // Obtener fecha actual en formato yyyy-mm-dd
+    const today = new Date().toISOString().split('T')[0];
+    return (
+      <FormItem className="flex flex-col sm:flex-row sm:items-start gap-y-2 sm:gap-x-3">
+        <FormLabel className="sm:w-40 pt-2">Fecha de Publicación</FormLabel>
+        <div className="flex-1">
+          <FormControl variant="blueBackground">
+            <Input type="date" max={today} {...field} />
+          </FormControl>
+          <FormDescription>Fecha en que se publicará la noticia.</FormDescription>
+          <FormMessage />
+        </div>
+      </FormItem>
+    );
+  }}
+/>
+
 
             {/* Categoría */}
             <FormField
