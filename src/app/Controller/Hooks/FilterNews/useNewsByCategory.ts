@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { NewsEntity } from '@/app/Model/Entities/NewsEntity';
 import { getNewsByCategory } from '@/app/Model/Services/GetNewsByCategoryService';
+import { DateFormatter } from '@/app/Utils/GeneralConvertions/DateFormatter';
+import { CategoryConverter } from '@/app/Utils/GeneralConvertions/CategoryConverter';
+;
 
 export const useNewsByCategory = (category: string) => {
   const [news, setNews] = useState<NewsEntity[]>([]);
@@ -19,7 +22,14 @@ export const useNewsByCategory = (category: string) => {
   const fetchInitialNews = async (cat: string) => {
     try {
       const data = await getNewsByCategory(cat, 1);
-      const sorted = data.sort((a, b) => b.VisitCount - a.VisitCount);
+
+      const formatted = data.map((n) => ({
+        ...n,
+        PublicationDate: DateFormatter.formatDate(n.PublicationDate),
+        Categories: CategoryConverter.toSpanish(n.Categories)
+      }));
+
+      const sorted = formatted.sort((a, b) => b.VisitCount - a.VisitCount);
       setNews(sorted);
     } catch (err: any) {
       setError(err.message);
@@ -33,7 +43,14 @@ export const useNewsByCategory = (category: string) => {
       setLoadingMore(true);
       const nextPage = page + 1;
       const data = await getNewsByCategory(category, nextPage);
-      const sorted = data.sort((a, b) => b.VisitCount - a.VisitCount);
+
+      const formatted = data.map((n) => ({
+        ...n,
+        PublicationDate: DateFormatter.formatDate(n.PublicationDate),
+        Categories: CategoryConverter.toSpanish(n.Categories)
+      }));
+
+      const sorted = formatted.sort((a, b) => b.VisitCount - a.VisitCount);
       setNews(prev => [...prev, ...sorted]);
       setPage(nextPage);
     } catch (err: any) {

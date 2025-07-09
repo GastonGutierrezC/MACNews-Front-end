@@ -1,5 +1,3 @@
-// src/app/Controller/Hooks/PublicationNews/useNewsCreation.ts
-
 'use client'
 
 import { useEffect, useRef, useState } from 'react';
@@ -15,18 +13,22 @@ export const useNewsCreation = (channelID: string) => {
 
   const { submitNews, loading, response, error } = useSubmitNews();
 
-  const categories = [
-    "Politics",
-    "Economy",
-    "Sports",
-    "Entertainment",
-    "Technology",
-    "Health",
-    "Science",
-    "International",
-    "Society",
-    "Security",
-  ];
+  // Mapa para traducir categorías ES -> EN
+  const categoryMap: Record<string, string> = {
+    Política: "Politics",
+    Economía: "Economy",
+    Deportes: "Sports",
+    Entretenimiento: "Entertainment",
+    Tecnología: "Technology",
+    Salud: "Health",
+    Ciencia: "Science",
+    Internacional: "International",
+    Sociedad: "Society",
+    Seguridad: "Security",
+  };
+
+  // Mostrar categorías en español para el usuario
+  const categories = Object.keys(categoryMap);
 
   const form = useForm<News>({
     defaultValues: {
@@ -87,8 +89,15 @@ export const useNewsCreation = (channelID: string) => {
   };
 
   const onSubmit = (data: News) => {
-    console.log(data);
-    submitNews(data);
+    // Traducir categoría de ES a EN antes de enviar
+    const categoryEN = categoryMap[data.Categories] || data.Categories;
+    const dataToSend = {
+      ...data,
+      Categories: categoryEN,
+    };
+
+    console.log(dataToSend);
+    submitNews(dataToSend);
   };
 
   return {

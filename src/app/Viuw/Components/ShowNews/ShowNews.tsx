@@ -13,7 +13,7 @@ import TopChannelsList from './TopChannelsList';
 
 export const ShowNews: React.FC = () => {
   const {
-    user,
+    isAuthenticated,
     newsToShow,
     topNews,
     isLoading,
@@ -27,7 +27,7 @@ export const ShowNews: React.FC = () => {
 
   return (
 <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-center items-start pt-24">
-{user?.id && newsToShow === recommendedNews && recommendedNews.length > 0 && (
+{isAuthenticated && newsToShow === recommendedNews && recommendedNews.length > 0 && (
   <h2 className="text-3xl font-semibold w-full text-center">
     Tus noticias recomendadas
   </h2>
@@ -75,7 +75,7 @@ export const ShowNews: React.FC = () => {
           />
         ))}
 
-        {!user?.id && (
+        {!isAuthenticated && (
           <div className="flex justify-center pt-10">
             <Button variant="bluehover" onClick={loadMore}>Ver más noticias</Button>
           </div>

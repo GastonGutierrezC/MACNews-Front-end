@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NewsDetail } from '@/app/Model/Entities/NewsDetail';
 import { getNewsDetail } from '@/app/Model/Services/GetNewsDetailService';
+import { DateFormatter } from '@/app/Utils/GeneralConvertions/DateFormatter';
 
 export const useNewsDetail = (title: string | null, date: string | null) => {
   const [news, setNews] = useState<NewsDetail | null>(null);
@@ -14,7 +15,9 @@ export const useNewsDetail = (title: string | null, date: string | null) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getNewsDetail(title, date);
+        // Convierte la fecha al formato ISO completo antes de enviar
+        const isoDate = DateFormatter.toISODate(date);
+        const data = await getNewsDetail(title, isoDate);
         setNews(data);
       } catch (err: any) {
         setError(err.message || 'Error al obtener la noticia');
