@@ -1,15 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 import { useToken } from '../../Context/UserContext';
 import { useUserProfile } from './useUserProfile';
 
-
 export const useUserDetailsLogic = () => {
   const { token, setToken } = useToken();
-  const { profile: user } = useUserProfile(); // Renombramos profile a user para mantener compatibilidad visual
+  const { profile: user, refreshProfile } = useUserProfile(); 
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -27,10 +26,17 @@ export const useUserDetailsLogic = () => {
     await router.push(ROUTES.HOME);
   };
 
+  const refreshUserProfile = useCallback(() => {
+    if (refreshProfile) {
+      refreshProfile();
+    }
+  }, [refreshProfile]);
+
   return {
     user,
     passwordVisible,
     togglePasswordVisibility,
     handleLogout,
+    refreshUserProfile, 
   };
 };

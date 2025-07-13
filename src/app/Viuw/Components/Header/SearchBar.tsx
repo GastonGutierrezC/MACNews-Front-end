@@ -25,7 +25,7 @@ const SearchBar = ({ className }: { className?: string }) => {
     handleSelectHistory,
   } = useSearchLogic();
 
-  // Maneja la tecla Enter
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,8 @@ import { useEvaluateApplicationForm } from "./useEvaluateApplicationForm";
 
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/app/Utils/LinksNavigation/routes";
+import { useImageUploader } from "../Images/useImageUploader";
+
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Debe ingresar su nombre completo." }),
@@ -41,10 +43,10 @@ export function useJournalistApplicationForm() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { submitApplication, loading: sendingData } = useEvaluateApplicationForm();
+  const { uploadImage, uploading: uploadingImage, error: imageUploadError } = useImageUploader(); // ✅ usamos el hook
 
   const router = useRouter();
 
-  // Prefetch para la ruta CHANNEL_CREATION
   useEffect(() => {
     router.prefetch(ROUTES.CHANNEL_CREATION);
   }, [router]);
@@ -74,26 +76,15 @@ export function useJournalistApplicationForm() {
       setUploading(true);
       openDialog("loading");
 
-      const formData = new FormData();
-      formData.append("file", certificateFile);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const resultImage = await response.json();
+      const uploadedUrl = await uploadImage(certificateFile);
       setUploading(false);
 
-      if (response.ok && resultImage.secure_url) {
-
-
-        // Ya no enviamos UserID porque el backend usa el token para identificar al usuario
+      if (uploadedUrl) {
         const applicationData = {
           BirthDate: values.birthDate,
           CardNumber: values.idNumber,
           Reason: values.reason,
-          ImageCertificateURL: resultImage.secure_url,
+          ImageCertificateURL: uploadedUrl,
         };
 
         const backendResponse = await submitApplication(applicationData);
@@ -106,7 +97,7 @@ export function useJournalistApplicationForm() {
           setDialogType("error");
         }
       } else {
-        console.error("Error al subir el archivo:", resultImage.error);
+        console.error("Error al subir el archivo.");
         openDialog("error");
       }
     } catch (error) {
@@ -119,6 +110,7 @@ export function useJournalistApplicationForm() {
   return {
     form,
     uploading,
+    uploadingImage,
     sendingData,
     imagePreview,
     setImagePreview,
