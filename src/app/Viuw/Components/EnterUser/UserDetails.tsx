@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -11,12 +11,19 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { UpdateUserData } from './UpdateUserData';
 import { useUserDetailsLogic } from '@/app/Controller/Hooks/User/useUserDetailsLogic';
+import { useProfileUpdate } from '@/app/Controller/Context/ProfileUpdateContext';
 
 const UserDetails = () => {
-  const {
-    user,
-    handleLogout,
-  } = useUserDetailsLogic();
+  const { user, handleLogout, refreshUserProfile } = useUserDetailsLogic();
+  const { profileUpdated, setProfileUpdated } = useProfileUpdate();
+
+  // Cuando la bandera global indique un cambio de perfil, refrescamos y reseteamos
+  useEffect(() => {
+    if (profileUpdated) {
+      refreshUserProfile();
+      setProfileUpdated(false);
+    }
+  }, [profileUpdated, refreshUserProfile, setProfileUpdated]);
 
   if (!user) {
     return (
@@ -53,8 +60,7 @@ const UserDetails = () => {
           <Button onClick={handleLogout} variant="redhover">
             Logout
           </Button>
-        <UpdateUserData />
-
+          <UpdateUserData />
         </CardFooter>
       </Card>
     </div>

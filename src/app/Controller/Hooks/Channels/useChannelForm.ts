@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useEffect, useRef, useState } from "react"
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import { useCreateChannel } from "@/app/Controller/Hooks/Channels/useCreateChannel"
 import { ROUTES } from "@/app/Utils/LinksNavigation/routes"
+import { useImageUploader } from "../Images/useImageUploader"
 
 
 export const formSchema = z.object({
@@ -36,10 +37,14 @@ const specialtyMap: Record<string, string> = {
 export function useChannelForm() {
   const defaultImage = "https://cdn-icons-png.flaticon.com/512/861/861533.png"
   const [imageURL, setImageURL] = useState(defaultImage)
-  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
+  const {
+    uploadImage,
+    uploading: uploadingImage,
+    error: imageUploadError
+  } = useImageUploader() // ✅ usamos el servicio centralizado
 
   useEffect(() => {
     router.prefetch(ROUTES.CHANNEL_JOURNALIST)
@@ -74,7 +79,7 @@ export function useChannelForm() {
       specialtiesTransform,
       values.ChannelImageURL
     )
- 
+
     router.push(ROUTES.CHANNEL_JOURNALIST)
   }
 
@@ -85,27 +90,15 @@ export function useChannelForm() {
     }
 
     try {
-      setUploading(true)
-      const formData = new FormData()
-      formData.append("file", file)
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-
-      const resultImage = await response.json()
-      setUploading(false)
-
-      if (response.ok && resultImage.secure_url) {
-        setImageURL(resultImage.secure_url)
-        form.setValue("ChannelImageURL", resultImage.secure_url)
+      const uploadedUrl = await uploadImage(file)
+      if (uploadedUrl) {
+        setImageURL(uploadedUrl)
+        form.setValue("ChannelImageURL", uploadedUrl)
       } else {
-        console.error("Error al subir:", resultImage.error)
+        console.error("Error al subir la imagen.")
       }
     } catch (error) {
-      setUploading(false)
-      console.error("Error en subida:", error)
+      console.error("Error inesperado al subir imagen:", error)
     }
   }
 
@@ -122,7 +115,7 @@ export function useChannelForm() {
   return {
     form,
     imageURL,
-    uploading,
+    uploading: uploadingImage,
     fileInputRef,
     onSubmit,
     handleImageChange,

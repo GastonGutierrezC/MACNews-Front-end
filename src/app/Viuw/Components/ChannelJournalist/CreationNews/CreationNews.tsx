@@ -33,18 +33,19 @@ interface CreationNewsProps {
 const CreationNews: React.FC<CreationNewsProps> = ({ channelID }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(true);
-  const originalContentRef = useRef<string>(''); // Guarda el contenido original
+  const originalContentRef = useRef<string>(''); 
 
   const {
     form,
     imageURL,
-    uploading,
     loading,
     response,
     error,
     categories,
+    loadingImage,
     handleImageChange,
     onSubmit,
+
   } = useNewsCreation(channelID);
 
   useEffect(() => {
@@ -245,10 +246,19 @@ useEffect(() => {
 
             {/* Botón de envío */}
             <div className="flex justify-center">
-              <Button variant="bluehover" type="submit" disabled={loading} className="w-full sm:w-auto" >
-                
-                {loading ? 'Enviando...' : 'Crear Noticia'}
-              </Button>
+<Button
+  variant="bluehover"
+  type="submit"
+  disabled={loading || loadingImage}
+  className="w-full sm:w-auto"
+>
+  {loadingImage
+    ? 'Cargando imagen...'
+    : loading
+    ? 'Enviando...'
+    : 'Crear Noticia'}
+</Button>
+
             </div>
 
             {/* Mensajes */}

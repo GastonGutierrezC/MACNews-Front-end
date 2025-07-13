@@ -1,10 +1,9 @@
 // src/app/Controller/Hooks/User/useUserProfile.ts
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getUserProfile } from '@/app/Model/Services/getUserProfile';
 import { UserProfile } from '@/app/Model/Entities/UserProfile';
 import { useToken } from '../../Context/UserContext';
-
 
 export const useUserProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -12,26 +11,32 @@ export const useUserProfile = () => {
   const [error, setError] = useState<string | null>(null);
   const { token } = useToken();
 
-  useEffect(() => {
+  const fetchProfile = useCallback(async () => {
     if (!token) {
       setError('No token disponible');
       setLoading(false);
       return;
     }
-
-    const fetchProfile = async () => {
-      try {
-        const data = await getUserProfile(token);
-        setProfile(data);
-      } catch (err: any) {
-        setError(err.message || 'Error al obtener perfil');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getUserProfile(token);
+      setProfile(data);
+    } catch (err: any) {
+      setError(err.message || 'Error al obtener perfil');
+    } finally {
+      setLoading(false);
+    }
   }, [token]);
 
-  return { profile, loading, error };
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  return { 
+    profile, 
+    loading, 
+    error, 
+    refreshProfile: fetchProfile, 
+  };
 };

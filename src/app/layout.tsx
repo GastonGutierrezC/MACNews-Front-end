@@ -6,6 +6,7 @@ import './Styles/globals.css';
 import { UserChannelsSheet } from './Viuw/Components/ShowFollowChannels/UserChannelsSheet';
 import RouteProgress from './Utils/LinksNavigation/RouteProgress';
 import { TokenProvider } from './Controller/Context/UserContext';
+import { ProfileUpdateProvider } from './Controller/Context/ProfileUpdateContext';
 
 export const metadata = {
   title: 'Next.js',
@@ -21,7 +22,8 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <TokenProvider> {/* <-- reemplazamos UserProvider */}
+        <ProfileUpdateProvider>
+        <TokenProvider>
           <Header />
 
           <RouteProgress />
@@ -30,6 +32,7 @@ export default function RootLayout({
 
           <Footer />
         </TokenProvider>
+        </ProfileUpdateProvider>
       </body>
     </html>
   );

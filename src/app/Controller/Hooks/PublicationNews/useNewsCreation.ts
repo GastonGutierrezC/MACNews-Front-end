@@ -4,16 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmitNews } from '@/app/Controller/Hooks/PublicationNews/useSubmitNews';
 import { News } from '@/app/Model/Entities/NewsCreation';
+import { useImageUploader } from '../Images/useImageUploader';
+
 
 export const useNewsCreation = (channelID: string) => {
   const defaultImage = "https://cdn-icons-png.flaticon.com/512/861/861533.png";
   const [imageURL, setImageURL] = useState(defaultImage);
-  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { submitNews, loading, response, error } = useSubmitNews();
+  const {
+    uploadImage,
+    uploading: loadingImage,
+    error: imageUploadError,
+  } = useImageUploader();
 
-  // Mapa para traducir categorías ES -> EN
   const categoryMap: Record<string, string> = {
     Política: "Politics",
     Economía: "Economy",
@@ -27,7 +32,6 @@ export const useNewsCreation = (channelID: string) => {
     Seguridad: "Security",
   };
 
-  // Mostrar categorías en español para el usuario
   const categories = Object.keys(categoryMap);
 
   const form = useForm<News>({
@@ -46,50 +50,29 @@ export const useNewsCreation = (channelID: string) => {
     form.setValue("NewsImageURL", imageURL);
   }, [imageURL, form]);
 
-  const onSubmitImage = async (file: File) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
+
     if (!["image/jpeg", "image/png"].includes(file.type)) {
-      alert("Solo se permiten imágenes JPG o PNG.");
+      alert("Solo se permiten imágenes PNG o JPG.");
       return;
     }
 
-    try {
-      setUploading(true);
-      const formData = new FormData();
-      formData.append("file", file);
+    // Mostrar preview
+    const reader = new FileReader();
+    reader.onload = () => setImageURL(reader.result as string);
+    reader.readAsDataURL(file);
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const resultImage = await response.json();
-      setUploading(false);
-
-      if (response.ok && resultImage.secure_url) {
-        setImageURL(resultImage.secure_url);
-        form.setValue("NewsImageURL", resultImage.secure_url);
-      } else {
-        console.error("Error al subir:", resultImage.error);
-      }
-    } catch (error) {
-      setUploading(false);
-      console.error("Error en subida:", error);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => setImageURL(reader.result as string);
-      reader.readAsDataURL(file);
-      onSubmitImage(file);
+    // Subir imagen
+    const uploadedUrl = await uploadImage(file);
+    if (uploadedUrl) {
+      setImageURL(uploadedUrl);
+      form.setValue("NewsImageURL", uploadedUrl);
     }
   };
 
   const onSubmit = (data: News) => {
-    // Traducir categoría de ES a EN antes de enviar
     const categoryEN = categoryMap[data.Categories] || data.Categories;
     const dataToSend = {
       ...data,
@@ -103,7 +86,7 @@ export const useNewsCreation = (channelID: string) => {
   return {
     form,
     imageURL,
-    uploading,
+    loadingImage,
     loading,
     response,
     error,
