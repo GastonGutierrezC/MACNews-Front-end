@@ -14,14 +14,23 @@ interface TokenContextProps {
   logout: () => void;
 }
 
-// Crear contexto
+// Crear el contexto
 const TokenContext = createContext<TokenContextProps | undefined>(undefined);
 
-// Provider
+// Provider del contexto
 export const TokenProvider = ({ children }: { children: ReactNode }) => {
   const [token, setTokenState] = useState<string | null>(null);
 
-  // Guardar token y sincronizar con localStorage
+  // Al montar, intentar cargar el token desde localStorage
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setTokenState(storedToken);
+      console.log('[TokenContext] Token cargado desde localStorage:', storedToken);
+    }
+  }, []);
+
+  // Función para establecer o eliminar el token
   const setToken = (newToken: string | null) => {
     if (newToken) {
       setTokenState(newToken);
@@ -34,16 +43,9 @@ export const TokenProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Cargar token desde localStorage al iniciar
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setTokenState(storedToken);
-    }
-  }, []);
-
+  // Función para cerrar sesión
   const logout = () => {
-    setToken(null);
+    setToken(null); // Esto borra de estado y localStorage
   };
 
   return (
@@ -53,9 +55,11 @@ export const TokenProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Hook personalizado
+// Hook para consumir el contexto
 export const useToken = (): TokenContextProps => {
   const context = useContext(TokenContext);
-  if (!context) throw new Error('useToken must be used within a TokenProvider');
+  if (!context) {
+    throw new Error('useToken must be used within a TokenProvider');
+  }
   return context;
 };

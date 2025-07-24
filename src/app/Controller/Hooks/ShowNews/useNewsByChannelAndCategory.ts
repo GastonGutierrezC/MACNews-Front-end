@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getNewsByChannelAndCategory } from '@/app/Model/Services/getNewsByChannelAndCategory';
 import { NewsByChannelCategoryEntity } from '@/app/Model/Entities/News-by-channel-category.entity';
+import { CategoryConverter } from '@/app/Utils/GeneralConvertions/CategoryConverter';
 
 export const useNewsByChannelAndCategory = (
   channelId: string,
@@ -18,7 +19,8 @@ export const useNewsByChannelAndCategory = (
 
   const fetchNews = async () => {
     try {
-      const data = await getNewsByChannelAndCategory(channelId, category);
+      const categoryEN = CategoryConverter.toEnglish(category);
+      const data = await getNewsByChannelAndCategory(channelId, categoryEN);
       setNews(data);
     } catch (err: any) {
       setError(err.message || "Error fetching news by channel and category.");

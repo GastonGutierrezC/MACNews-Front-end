@@ -1,4 +1,3 @@
-// src/Entities/ApplicationFormEvaluationResult.ts
 
 export interface ApplicationFormEvaluationResult {
     ApplicationFormID: string

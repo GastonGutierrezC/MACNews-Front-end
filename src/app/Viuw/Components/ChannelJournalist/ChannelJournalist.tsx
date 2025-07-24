@@ -8,6 +8,7 @@ import CreationNews from './CreationNews/CreationNews';
 import ChannelNews from './ChannelNews/ChannelNews';
 import { CommentsList } from './ChannelPostComments/ChannelComments';
 import ChannelMetrics from './ChannelMetricts/ChannelMetrics';
+import CategoryMetricsChart from './ChannelMetricts/CategoryMetricsChart';
 
 const ChannelJournalist: React.FC = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -44,8 +45,14 @@ const ChannelJournalist: React.FC = () => {
       <div className="mt-8">
         {selectedView === 'news' && <ChannelNews channelId={channelData.ChannelId} />}
         {selectedView === 'comments' && <CommentsList channelId={channelData.ChannelId} userId={token} />}
-        {selectedView === 'metrics' && <ChannelMetrics channelId={channelData.ChannelId} />}
-        {selectedView === 'create' && <CreationNews channelID={channelData.ChannelId} />}
+        {selectedView === 'metrics' && (
+          <>
+            <ChannelMetrics channelId={channelData.ChannelId} />
+            <CategoryMetricsChart />
+          </>
+        )}
+        
+                {selectedView === 'create' && <CreationNews channelID={channelData.ChannelId} />}
       </div>
     </div>
   );

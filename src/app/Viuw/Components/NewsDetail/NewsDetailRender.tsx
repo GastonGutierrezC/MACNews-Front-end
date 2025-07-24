@@ -15,7 +15,6 @@ const NewsDetailRender: React.FC<NewsDetailRenderProps> = ({ title, date }) => {
   if (loading) return <p className="pt-24 text-center mt-10">Cargando noticia...</p>;
   if (error) return <p className="pt-24 text-center text-red-500 mt-10">{error}</p>;
 
-  // Validar que news y news.Channel existan antes de mostrar
   if (!news || !news.Channel) {
     return <p className="pt-24 text-center mt-10">No se encontró la noticia o canal asociado.</p>;
   }

@@ -1,5 +1,4 @@
-// services/NewsService.ts
-// services/NewsService.ts
+
 
 import axios from "axios";
 import { News, NewsResponse } from "../Entities/NewsCreation";
