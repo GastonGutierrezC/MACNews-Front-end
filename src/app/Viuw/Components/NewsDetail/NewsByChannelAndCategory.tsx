@@ -3,13 +3,7 @@
 import { useNewsByChannelAndCategory } from '@/app/Controller/Hooks/ShowNews/useNewsByChannelAndCategory';
 import React, { useEffect, useRef } from 'react';
 import { NewsCard } from '../ShowNews/NewsCard';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from '@/components/ui/carousel';
 
 interface NewsByChannelAndCategoryProps {
   channelId: string;

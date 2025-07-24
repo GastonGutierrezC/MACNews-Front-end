@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { createJournalist } from '../../../Model/Services/JournalistService';
 import { JournalistRequest } from '../../../Model/Entities/Journalist';
+import { useToken } from '../../Context/UserContext';
 
 
 export const useCreateJournalist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-
+ const { setToken } = useToken(); // ✅ usamos el contexto
 
   const registerJournalist = async (specialty: string, experience: string) => {
     setLoading(true);
@@ -23,6 +24,7 @@ export const useCreateJournalist = () => {
 
       const newToken = await createJournalist(journalistData);
       console.log('[useCreateJournalist] Nuevo token recibido:', newToken);
+       setToken(newToken);
 
       // Ya se guarda automáticamente el token en localStorage dentro del servicio
       setSuccess(true);

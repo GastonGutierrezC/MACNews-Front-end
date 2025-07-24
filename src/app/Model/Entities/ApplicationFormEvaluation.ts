@@ -1,7 +1,6 @@
-// src/Entities/ApplicationFormEvaluation.ts
 
 export interface ApplicationFormEvaluation {
-    BirthDate: string; // ISO format: "YYYY-MM-DD"
+    BirthDate: string;
     CardNumber: string;
     Reason: string;
     ImageCertificateURL: string;

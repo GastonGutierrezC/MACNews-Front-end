@@ -22,4 +22,11 @@ export class CategoryConverter {
   static toSpanish(categoryEN: string): string {
     return this.categoryMap[categoryEN] || categoryEN;
   }
+
+    static toEnglish(categoryES: string): string {
+    const entry = Object.entries(this.categoryMap).find(
+      ([, spanish]) => spanish.toLowerCase() === categoryES.toLowerCase()
+    );
+    return entry ? entry[0] : categoryES;
+  }
 }

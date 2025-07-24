@@ -37,7 +37,7 @@ export const useJournalistRedirect = () => {
 
   const handleRedirect = () => {
     if (isJournalist === null) {
-      router.push(ROUTES.LOGIN); // o cualquier ruta de error
+      router.push(ROUTES.LOGIN);
     } else if (isJournalist) {
       router.push(ROUTES.CHANNEL_JOURNALIST);
     } else {
