@@ -25,9 +25,9 @@ export const AllNewsPage: React.FC = () => {
   } = useTopNews();
 
   return (
-    <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-14">
+    <div className="min-h-screen p-6 flex flex-wrap gap-5 justify-start items-start pt-7">
       {/* Todas las noticias */}
-      <div className="flex flex-col gap-5 pt-20">
+      <div className="flex flex-col gap-5 pt-10">
         <h2 className="text-3xl font-bold mb-6">Ultimas Noticias</h2>
 
         {loadingInitial && <p className="text-gray-600">Cargando noticias...</p>}
@@ -37,7 +37,8 @@ export const AllNewsPage: React.FC = () => {
           <p className="text-gray-500">No se encontraron noticias.</p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-4">
+
           {news.map((item) => (
             <NewsCard
               key={item.NewsId}
@@ -70,7 +71,7 @@ export const AllNewsPage: React.FC = () => {
 
       {/* Top Noticias */}
       {topNews.length > 0 && (
-        <div className="flex flex-col gap-5 pt-20 pl-25">
+        <div className="flex flex-col gap-5 pt-20 pl-15">
           <h2 className="text-4xl font-bold text-center mb-8">Top 10 Noticias Más Populares</h2>
 
           {topNews.map((item) => (

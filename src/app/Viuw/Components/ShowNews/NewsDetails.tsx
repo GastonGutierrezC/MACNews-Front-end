@@ -1,3 +1,8 @@
+'use client';
+
+import { useChannelNavigation } from '@/app/Controller/Hooks/ShowNews/useChannelNavigation';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import React from 'react';
 
 interface NewsDetailsProps {
@@ -6,6 +11,9 @@ interface NewsDetailsProps {
   publicationDate: string;
   visitCount: number;
   ChannelID: string;
+  channelName: string;
+  channelImageUrl: string;
+  creatorFullName: string;
 }
 
 export const NewsDetails: React.FC<NewsDetailsProps> = ({
@@ -13,22 +21,52 @@ export const NewsDetails: React.FC<NewsDetailsProps> = ({
   title,
   publicationDate,
   visitCount,
-  ChannelID,
+  channelName,
+  channelImageUrl,
+  creatorFullName,
 }) => {
-  return (
-    <div className="w-full p-2 flex flex-col text-left">
+  const { navigateToChannel } = useChannelNavigation();
 
-      <h2 className="text-md font-semibold line-clamp-2 leading-snug break-words mb-1">
+  return (
+    <div className="w-full p-2 flex flex-col text-left bg-white rounded-lg shadow-sm">
+      
+      {/* Categoría y canal en extremos */}
+      <div className="flex justify-between items-center">
+
+        <div
+          role="button"
+          tabIndex={0}
+          className="flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+          onClick={() => navigateToChannel(channelName, creatorFullName)}
+          onKeyDown={(e) =>
+            e.key === 'Enter' && navigateToChannel(channelName, creatorFullName)
+          }
+        >
+          <Avatar className="w-9 h-9 border-2">
+            <AvatarImage src={channelImageUrl} alt={channelName} />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+
+
+          <span className="font-medium">{channelName}</span>
+          
+        </div>
+        <Badge variant="default" > {category}</Badge>
+
+      </div>
+      {/* Título */}
+      <h2 className="text-lg font-semibold line-clamp-2 leading-snug break-words mt-2">
         {title}
       </h2>
 
 
-      <span className="text-sm text-gray-600 ">Categoría: {category}</span>
 
-      <span className="text-sm text-gray-600">
-        {visitCount.toLocaleString()} vistas • {publicationDate}
-      </span>
-      
+            {/* Fecha y vistas en extremos */}
+      <div className="flex justify-between items-center text-sm text-gray-600">
+        <span>{publicationDate}</span>
+        <span>{visitCount.toLocaleString()} vistas</span>
+      </div>
+
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { useJournalistRedirect } from '@/app/Controller/Hooks/JournalistForm/use
 const FormIcon = () => {
   const { handleRedirect, isJournalist } = useJournalistRedirect();
 
-  const iconClassName = 'text-5xl sm:text-6xl md:text-7xl cursor-pointer text-white';
+  const iconClassName = 'text-2xl sm:text-3xl md:text-5xl cursor-pointer text-white';
 
   return isJournalist ? (
     <GiNewspaper

@@ -22,6 +22,9 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         bluehover: "h-10 px-4 py-1 text-base sm:h-11 sm:px-6 sm:text-xl bg-[#B8D1E7] text-[#2271B3] border-[#063346] border-4 rounded-md font-extrabold transition hover:bg-[#2271B3] hover:text-[#B8D1E7]",
 
+        filterNews:
+          "h-10 px-4 py-1 text-lg sm:h-11 sm:px-6 sm:text-xl bg-transparent border-none text-[#063346] font-black font-[UnifrakturCook] transition hover:text-[#2271B3]",
+
         redhover:
           "h-11 bg-[#FDECEC] text-[#D64545] border-[#B33A3A] border-4 px-6 py-1 rounded-md text-xl font-extrabold transition hover:bg-[#D64545] hover:text-[#FDECEC]",
         bluehover3:

@@ -25,7 +25,6 @@ const SearchBar = ({ className }: { className?: string }) => {
     handleSelectHistory,
   } = useSearchLogic();
 
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -34,8 +33,8 @@ const SearchBar = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={`w-full max-w-xs sm:max-w-md md:max-w-xl relative px-2 ${className}`}>
-      <div className="flex items-center bg-white border border-black rounded-full px-3 py-2 sm:px-4 sm:py-2 w-full shadow gap-2">
+    <div className={`w-full max-w-[200px] sm:max-w-xs md:max-w-sm relative px-1 ${className}`}>
+      <div className="flex items-center bg-white border border-black rounded-full px-2 py-[2px] w-full shadow gap-1">
         <Input
           placeholder="Buscar..."
           value={searchQuery}
@@ -43,29 +42,29 @@ const SearchBar = ({ className }: { className?: string }) => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 150)}
           onKeyDown={handleKeyDown}
-          className="bg-white text-black text-base sm:text-xl placeholder-black border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none flex-1"
+          className="bg-white text-black text-xs sm:text-sm placeholder-black border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none flex-1 h-7"
         />
         <Button
           variant="ghost"
           onClick={handleSearchClick}
           className="text-black p-0 hover:bg-transparent"
         >
-          <Search className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
+          <Search className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
       </div>
 
       {isFocused && history.length > 0 && (
-        <div className="absolute z-10 mt-2 w-full">
-          <Command className="rounded-xl border border-gray-300 bg-white shadow-lg max-h-64 overflow-y-auto">
+        <div className="absolute z-10 mt-1 w-full">
+          <Command className="rounded-md border border-gray-300 bg-white shadow-lg max-h-40 overflow-y-auto">
             <CommandInput placeholder="Últimas búsquedas..." disabled />
             <CommandList>
               <CommandEmpty>No hay búsquedas recientes.</CommandEmpty>
               <CommandGroup heading="Recientes">
-                {history.map((item, idx) => (
+                {history.map((item) => (
                   <CommandItem
-                    key={idx}
+                    key={item}
                     onSelect={() => handleSelectHistory(item)}
-                    className="cursor-pointer"
+                    className="cursor-pointer text-xs"
                   >
                     {item}
                   </CommandItem>
