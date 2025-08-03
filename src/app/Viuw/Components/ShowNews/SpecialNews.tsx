@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import React from 'react';
 import { useHandleSpecialNewsClick } from '@/app/Controller/Hooks/ShowNews/useHandleSpecialNewsClick';
 import { useChannelNavigation } from '@/app/Controller/Hooks/ShowNews/useChannelNavigation';
+import Image from 'next/image';
 
 interface SpecialNewsProps {
   imageUrl: string;
@@ -29,79 +30,91 @@ export const SpecialNews: React.FC<SpecialNewsProps> = ({
   publicationDate,
   visitCount,
   creatorFullName,
-  NewsID,
 }) => {
   const { handleSpecialNewsClick } = useHandleSpecialNewsClick();
   const { navigateToChannel } = useChannelNavigation();
 
   return (
-    <Card
-      className="
-        relative 
-        w-full 
-        max-w-[880px] 
-        sm:max-w-[720px] 
-        md:max-w-[640px] 
-        lg:max-w-[880px] 
-        h-[400px] 
-        sm:h-[520px] 
-        md:h-[600px] 
-        lg:h-[760px] 
-        rounded-xl 
-        overflow-hidden 
-        shadow-lg 
-        group
-        flex
-        flex-col
-      "
-    >
-      <Button onClick={() => handleSpecialNewsClick(title, publicationDate)} variant="imagebg">
-        {/* Fondo con imagen y efecto brillo al hacer hover */}
-        <span
-          className="absolute inset-0 bg-cover bg-center transition duration-300 group-hover:brightness-75"
+    <div className="relative flex items-center justify-center">
+      {/* Imagen decorativa izquierda */}
+      <div className="hidden sm:block relative w-[350px] h-[550px]">
+        <Image
+          src="https://res.cloudinary.com/dk2ycpyri/image/upload/v1753838205/certificados/Screenshot_from_2025-07-29_21-12-40-removebg-preview-Pica.png"
+          alt="Decoración izquierda"
+          fill
+          style={{ objectFit: 'contain', objectPosition: 'right center' }}
+        />
+      </div>
+
+      {/* Tarjeta principal */}
+      <Card
+        className="
+          relative
+          w-full
+          max-w-[1270px]
+          h-[550px]
+          rounded-xl
+          overflow-hidden
+          shadow-lg
+          group
+          z-10
+        "
+      >
+        {/* Imagen de fondo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${imageUrl})` }}
-        ></span>
+        />
 
-        {/* Texto encima, sin afectarse */}
-        <span className="relative z-10 text-white text-4xl font-bold drop-shadow-lg">
-          {title}
-        </span>
-      </Button>
+        {/* Degradado oscuro */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 text-white to-transparent"></div>
 
-      <div className="absolute top-4 left-4 flex">
-        <Badge variant="userData5" className="text-xs sm:text-sm">
-          {category}
-        </Badge>
-      </div>
+        {/* Contenido */}
+        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+          <Badge variant="split" className="mb-2 w-fit">
+            {category}
+          </Badge>
 
-      <div className="absolute bottom-5 left-5 flex flex-col items-start gap-1 sm:gap-2">
-        <Button
-          variant="channel"
-          onClick={() => navigateToChannel(channelName, creatorFullName)}
-          style={{ paddingLeft: '93px' }}
-          className="text-sm sm:text-base"
-        >
-          {channelName}
-        </Button>
+          <h2 className="text-2xl sm:text-3xl font-bold leading-snug drop-shadow-lg">
+            {title}
+          </h2>
 
-        <Avatar
-          className="border-4 cursor-pointer"
-          onClick={() => navigateToChannel(channelName, creatorFullName)}
-          style={{
-            width: 95,
-            height: 95,
-            marginTop: -95,
-          }}
-        >
-          <AvatarImage src={channelImageUrl} alt={channelName} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+          <div className="flex flex-wrap items-center gap-4 mt-3 text-sm sm:text-base">
+            <div className="flex gap-3">
+              <Badge variant="default">{publicationDate}</Badge>
+              <Badge variant="default">Vistas: {visitCount}</Badge>
+            </div>
 
-        <div className="flex items-center gap-x-2 mt-2">
-          <Badge variant="data">{publicationDate}</Badge>
-          <Badge variant="data">vistas: {visitCount}</Badge>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => navigateToChannel(channelName, creatorFullName)}
+            >
+              <Avatar className="w-10 h-10 border-2">
+                <AvatarImage src={channelImageUrl} alt={channelName} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className="font-medium">{channelName}</span>
+            </div>
+          </div>
         </div>
+
+        <Button
+          onClick={() => handleSpecialNewsClick(title, publicationDate)}
+          variant="ghost"
+          className="absolute inset-0 opacity-0"
+          aria-label={`Abrir noticia: ${title}`}
+        />
+      </Card>
+
+      {/* Imagen decorativa derecha */}
+      <div className="hidden sm:block relative w-[350px] h-[550px]">
+        <Image
+          src="https://res.cloudinary.com/dk2ycpyri/image/upload/v1753838227/certificados/Screenshot_from_2025-07-29_21-13-19-removebg-preview-Pica.png"
+          alt="Decoración derecha"
+          fill
+          style={{ objectFit: 'contain', objectPosition: 'right center' }}
+        />
       </div>
-    </Card>
+    </div>
   );
 };

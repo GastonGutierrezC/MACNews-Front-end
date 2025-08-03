@@ -37,26 +37,7 @@ export const NewsImage: React.FC<NewsImageProps> = ({
         className="absolute inset-0 w-full h-full bg-cover bg-center transition duration-300 group-hover:brightness-75 z-0"
       />
 
-      {/* Canal info sobre la imagen */}
-      <div className="absolute bottom-3 left-3 flex flex-col items-start gap-1 sm:gap-2">
-        <Button
-          variant="channel2"
-          onClick={() => navigateToChannel(channelName, creatorFullName)}
-          style={{ paddingLeft: '73px' }}
-          className="text-sm sm:text-base"
-        >
-          {channelName}
-        </Button>
 
-        <Avatar
-          onClick={() => navigateToChannel(channelName, creatorFullName)}
-          className="border-4 cursor-pointer"
-          style={{ width: 75, height: 75, marginTop: -85 }}
-        >
-          <AvatarImage src={channelImageUrl} alt={channelName} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ const LastNewsRedirectButton: React.FC = () => {
   const { redirectToLastNews } = useLastNewsRedirect();
 
   return (
-    <Button variant="bluehover" onClick={redirectToLastNews}>
+    <Button variant="filterNews" onClick={redirectToLastNews}>
       Últimas Noticias
     </Button>
   );

@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useFollowedChannels } from "@/app/Controller/Hooks/User/useFollowedChannels";
 import { TiThMenu } from "react-icons/ti";
-import Logo from '../../../Images/logo.png';
+import Logo from '../../../Images/logo2.png';
 import UserIcon from '../Header/UserIcon';
 import FormIcon from "../Header/FormIcon";
 import { useCheckAuth } from "@/app/Controller/Hooks/Channels/useCheckAuth";
@@ -34,7 +34,7 @@ export function UserChannelsSheet() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="bluehover"><TiThMenu /></Button>
+        <Button variant="filterNews"><TiThMenu /></Button>
       </SheetTrigger>
 
       <SheetContent side="left" className="w-60 bg-[#B8D1E7]">

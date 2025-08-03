@@ -6,7 +6,7 @@ import LoginIcon from './LoginIcon';
 import { useUserRedirect } from '@/app/Controller/Hooks/User/useUserRedirect';
 import { useUserProfile } from '@/app/Controller/Hooks/User/useUserProfile';
 import { useToken } from '@/app/Controller/Context/UserContext';
-import { useProfileUpdate } from '@/app/Controller/Context/ProfileUpdateContext'; // importa el contexto
+import { useProfileUpdate } from '@/app/Controller/Context/ProfileUpdateContext'; 
 
 const UserIcon = () => {
   const { token } = useToken();
@@ -15,7 +15,7 @@ const UserIcon = () => {
 
   const { profileUpdated, setProfileUpdated } = useProfileUpdate();
 
-  // Cuando profileUpdated cambie a true, recargamos perfil y luego reseteamos la bandera
+
   useEffect(() => {
     if (profileUpdated) {
       refreshProfile();
@@ -28,7 +28,7 @@ const UserIcon = () => {
   if (user) {
     return (
       <Avatar
-        className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 cursor-pointer"
+        className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 cursor-pointer"
         onClick={redirectToProfile}
       >
         <AvatarImage

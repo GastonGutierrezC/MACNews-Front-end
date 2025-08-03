@@ -3,10 +3,10 @@ import React from 'react';
 import Header from './Viuw/Components/Header/Header';
 import Footer from './Viuw/Components/Footer/Footer';
 import './Styles/globals.css';
-import { UserChannelsSheet } from './Viuw/Components/ShowFollowChannels/UserChannelsSheet';
 import RouteProgress from './Utils/LinksNavigation/RouteProgress';
 import { TokenProvider } from './Controller/Context/UserContext';
 import { ProfileUpdateProvider } from './Controller/Context/ProfileUpdateContext';
+
 
 export const metadata = {
   title: 'Next.js',
@@ -25,12 +25,11 @@ export default function RootLayout({
         <ProfileUpdateProvider>
         <TokenProvider>
           <Header />
-
           <RouteProgress />
 
           <div className="mx-[100px]">{children}</div>
 
-          <Footer />
+          
         </TokenProvider>
         </ProfileUpdateProvider>
       </body>

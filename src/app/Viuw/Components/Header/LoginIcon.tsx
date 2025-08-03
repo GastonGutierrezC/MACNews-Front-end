@@ -10,7 +10,7 @@ const LoginIcon = () => {
 
   return (
     <MdAccountCircle
-      className="text-5xl sm:text-6xl md:text-7xl cursor-pointer text-white"
+      className="text-2xl sm:text-3xl md:text-5xl cursor-pointer text-white"
       title="Login"
       onClick={redirectToLogin}
     />

@@ -21,12 +21,12 @@ const SpecialtyDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="bluehover">
-          Especialidades de Canales
+        <Button variant="filterNews">
+          Especialidades
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Selecciona una especialidad</DropdownMenuLabel>
+        <DropdownMenuLabel>Especialidades de canales</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={selected} onValueChange={handleSelect}>
           {specialtyES.map((categoria) => (

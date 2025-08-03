@@ -20,10 +20,10 @@ const CategoriesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="bluehover">Categorías de Noticias</Button>
+        <Button variant="filterNews">Categorías</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Selecciona una categoría</DropdownMenuLabel>
+        <DropdownMenuLabel>Categorías de noticias</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={selected}
