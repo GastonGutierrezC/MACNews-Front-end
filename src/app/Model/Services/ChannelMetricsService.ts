@@ -1,8 +1,9 @@
 // src/Model/Services/ChannelMetricsService.ts
 import axios from 'axios';
 import { ChannelMetric } from '../Entities/ChannelMetric';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/channel-metrics/channel';
+const API_URL = ENDPOINTS.GET_CHANNEL_METRICS;
 
 export const getChannelMetrics = async (
   channelId: string

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { SearchHistory } from '../Entities/SearchHistory';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const BASE_URL = 'http://localhost:3002/searchHistory';
+const BASE_URL = ENDPOINTS.USER_SEARCH_HISTORY;
 
 export const SaveSearchHistoryService = async (
   search: SearchHistory,

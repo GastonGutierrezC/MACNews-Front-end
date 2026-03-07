@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { FollowChannelPayload } from '../Entities/FollowChannelPayload';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/followChannels';
+const API_URL = ENDPOINTS.FOLLOW_CHANNEL;
 
 export const followChannel = async (payload: FollowChannelPayload): Promise<void> => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;

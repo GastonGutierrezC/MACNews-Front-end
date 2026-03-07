@@ -8,6 +8,7 @@ import TopNews from '../ShowNews/TopNews';
 import WordNews from '../../../Images/wordNews.png';
 import { Button } from '@/components/ui/button';
 import { useNews } from '@/app/Controller/Hooks/ShowNews/useNews';
+import { useNewsByDate } from '@/app/Controller/Hooks/ShowNews/useNewsByDate';
 
 export const AllNewsPage: React.FC = () => {
   const {
@@ -16,7 +17,7 @@ export const AllNewsPage: React.FC = () => {
     loadingMore,
     error,
     loadMore,
-  } = useNews();
+  } = useNewsByDate();
 
   const {
     news: topNews,

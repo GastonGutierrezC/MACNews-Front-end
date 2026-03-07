@@ -6,6 +6,7 @@ import { NewsCard } from '../ShowNews/NewsCard';
 import TopNews from '../ShowNews/TopNews';
 import WordNews from '../../../Images/wordNews.png';
 import { useSearchAndTopNews } from '@/app/Controller/Hooks/SearchNews/useSearchAndTopNews';
+import { DateFormatter } from '@/app/Utils/GeneralConvertions/DateFormatter';
 
 interface SearchResultsProps {
   term: string;
@@ -40,7 +41,7 @@ export const SearchNews: React.FC<SearchResultsProps> = ({ term }) => {
             channelName={news.Channel.ChannelName}
             category={news.Categories}
             title={news.Title}
-            publicationDate={news.PublicationDate}
+            publicationDate={DateFormatter.formatDate(news.PublicationDate) }
             visitCount={news.VisitCount}
             NewsID={news.NewsId}
             ChannelID={news.Channel.ChannelID}

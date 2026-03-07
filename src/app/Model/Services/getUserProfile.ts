@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { UserProfile } from '../Entities/UserProfile';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/users/profile';
+const API_URL = ENDPOINTS.USER_PROFILE;
 
 export const getUserProfile = async (token: string): Promise<UserProfile> => {
   try {

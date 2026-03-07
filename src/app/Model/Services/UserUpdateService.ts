@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { UserUpdate } from '../Entities/UserUpdate';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/users';
+const API_URL = ENDPOINTS.UPDATE_USER;
 
 export const updateUser = async (userData: UserUpdate): Promise<any> => {
   try {

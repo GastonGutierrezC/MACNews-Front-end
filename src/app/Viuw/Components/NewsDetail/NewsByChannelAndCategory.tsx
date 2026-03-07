@@ -4,6 +4,7 @@ import { useNewsByChannelAndCategory } from '@/app/Controller/Hooks/ShowNews/use
 import React, { useEffect, useRef } from 'react';
 import { NewsCard } from '../ShowNews/NewsCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from '@/components/ui/carousel';
+import { DateFormatter } from '@/app/Utils/GeneralConvertions/DateFormatter';
 
 interface NewsByChannelAndCategoryProps {
   channelId: string;
@@ -36,6 +37,7 @@ const NewsByChannelAndCategory: React.FC<NewsByChannelAndCategoryProps> = ({ cha
       >
         <CarouselContent className="flex">
           {news.map((item, index) => (
+            
             <CarouselItem
               key={item.NewsId}
               className="md:basis-1/2 lg:basis-1/3 mr-2"
@@ -46,7 +48,7 @@ const NewsByChannelAndCategory: React.FC<NewsByChannelAndCategoryProps> = ({ cha
                 channelName={item.Channel.ChannelName}
                 category={item.Categories}
                 title={item.Title}
-                publicationDate={item.PublicationDate}
+                publicationDate={DateFormatter.formatDate(item.PublicationDate) }
                 visitCount={item.VisitCount}
                 NewsID={item.NewsId}
                 ChannelID={item.Channel.ChannelID}

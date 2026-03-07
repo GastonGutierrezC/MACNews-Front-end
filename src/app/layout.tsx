@@ -6,6 +6,7 @@ import './Styles/globals.css';
 import RouteProgress from './Utils/LinksNavigation/RouteProgress';
 import { TokenProvider } from './Controller/Context/UserContext';
 import { ProfileUpdateProvider } from './Controller/Context/ProfileUpdateContext';
+import { Toaster } from 'sonner';
 
 
 export const metadata = {
@@ -26,10 +27,8 @@ export default function RootLayout({
         <TokenProvider>
           <Header />
           <RouteProgress />
-
+          <Toaster />
           <div className="mx-[100px]">{children}</div>
-
-          
         </TokenProvider>
         </ProfileUpdateProvider>
       </body>

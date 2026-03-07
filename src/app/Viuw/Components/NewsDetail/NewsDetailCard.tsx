@@ -4,9 +4,14 @@ import { NewsDetail } from '@/app/Model/Entities/NewsDetail';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
 import { useFollowChannel } from '@/app/Controller/Hooks/User/useFollowChannel';
+
+import { useFollowedChannels } from '@/app/Controller/Hooks/User/useFollowedChannels';
+
 import NewsByChannelAndCategory from './NewsByChannelAndCategory';
 import { useChannelNavigation } from '@/app/Controller/Hooks/ShowNews/useChannelNavigation';
+import { useUnfollowChannel } from '@/app/Controller/Hooks/Channels/useUnfollowChannel';
 
 interface Props {
   news: NewsDetail;
@@ -14,16 +19,36 @@ interface Props {
 
 const NewsDetailCard = ({ news }: Props) => {
   const channelId = news?.Channel?.ChannelID ?? null;
-  const { follow, loading, error } = useFollowChannel(channelId);
+
+  // Hooks
+  const { follow, loading: followLoading } = useFollowChannel(channelId);
+  const { removeFollow, loading: unfollowLoading } = useUnfollowChannel();
+  const { channels: followedChannels, loading: channelsLoading, refreshChannels } = useFollowedChannels();
+
   const { navigateToChannel } = useChannelNavigation();
 
-  if (!news) {
-    return <p>No hay información de la noticia.</p>;
-  }
+  if (!news) return <p>No hay información de la noticia.</p>;
+
+  // Saber si el usuario ya sigue este canal
+  const isFollowing = followedChannels.some(
+    (c) => c.ChannelID === channelId
+  );
 
   const handleChannelClick = () => {
     navigateToChannel(news.Channel.ChannelName, news.CreatorFullName);
   };
+
+  const handleFollow = async () => {
+    await follow();
+    refreshChannels(); // Recargar lista después de seguir
+  };
+
+  const handleUnfollow = async () => {
+    await removeFollow(channelId); // Aquí el hook ya sabe eliminar usando ChannelID
+    refreshChannels();         // Recargar lista después de dejar de seguir
+  };
+
+  const isLoading = followLoading || unfollowLoading || channelsLoading;
 
   return (
     <div className="pt-24 max-w-6xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-6">
@@ -39,10 +64,16 @@ const NewsDetailCard = ({ news }: Props) => {
           className="w-full h-140 object-cover rounded-lg"
         />
 
-        {/* Botón Suscribirse */}
-        <Button variant="bluehover2" onClick={follow} disabled={loading}>
-          {loading ? 'Suscribiendo...' : 'Suscribirse'}
-        </Button>
+        {/* Botón dinámico */}
+        {!isFollowing ? (
+          <Button variant="bluehover2" onClick={handleFollow} disabled={isLoading}>
+            {isLoading ? 'Procesando...' : 'Suscribirse'}
+          </Button>
+        ) : (
+          <Button variant="bluehover2" onClick={handleUnfollow} disabled={isLoading}>
+            {isLoading ? 'Procesando...' : 'Dejar de seguir'}
+          </Button>
+        )}
 
         {/* Canal: nombre + avatar */}
         <div className="absolute bottom-1 left-1 flex flex-col items-start gap-1">
@@ -82,9 +113,6 @@ const NewsDetailCard = ({ news }: Props) => {
           category={news.Categories}
         />
       </div>
-
-      {/* Mostrar error si lo hay */}
-      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 };

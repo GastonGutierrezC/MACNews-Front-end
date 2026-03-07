@@ -1,36 +1,48 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChannelInfo } from '@/app/Model/Entities/ChannelInfo';
 import { getChannelByJournalist } from '@/app/Model/Services/GetChannelByJournalistService';
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
 
 export const useChannelByJournalist = () => {
   const [channelData, setChannelData] = useState<ChannelInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchChannel = async () => {
       setLoading(true);
-      setError(null);
 
       try {
         const data = await getChannelByJournalist();
-        if (!data) {
-          throw new Error('No se encontró el canal para este periodista');
+
+        // ✔ Si hay canal → lo guardamos
+        if (data) {
+          setChannelData(data);
+          return;
         }
 
-        setChannelData(data);
+        // ❌ Si NO hay canal → redirigimos a crear canal
+        router.push(ROUTES.CHANNEL_CREATION);
+
       } catch (err: any) {
-        setError(err.message || 'Error al cargar el canal del periodista');
-        console.error('[useChannelByJournalist] Error:', err);
+        // ❌ Si el error indica que NO hay canal → redirige igual
+        if (err.message?.includes('No se encontró el canal')) {
+          router.push(ROUTES.CHANNEL_CREATION);
+          return;
+        }
+
+        console.error('[useChannelByJournalist] Error desconocido:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchChannel();
-  }, []);
+  }, [router]);
 
-  return { channelData, loading, error };
+  return { channelData, loading };
 };

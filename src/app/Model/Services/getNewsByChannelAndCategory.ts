@@ -2,12 +2,13 @@
 
 import axios from 'axios';
 import { NewsByChannelCategoryEntity } from '../Entities/News-by-channel-category.entity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
 export async function getNewsByChannelAndCategory(
   channelId: string,
   category: string
 ): Promise<NewsByChannelCategoryEntity[]> {
-  const API_URL = `http://localhost:3002/news/channel/${channelId}/category/${category}`;
+  const API_URL = ENDPOINTS.NEWS_BY_CHANNEL_CATEGORY + `/${channelId}/${category}`;
 
   try {
     const response = await axios.get<NewsByChannelCategoryEntity[]>(API_URL);

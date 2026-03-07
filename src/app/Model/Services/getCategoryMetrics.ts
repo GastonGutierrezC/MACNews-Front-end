@@ -1,8 +1,9 @@
 
 import axios from 'axios';
 import { CategoryMetrics } from '../Entities/CategoryMetrics.entity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/news/metrics/categories';
+const API_URL = ENDPOINTS.GET_METRICTS_CATEGORY;
 
 export const getCategoryMetrics = async (): Promise<CategoryMetrics[]> => {
   try {

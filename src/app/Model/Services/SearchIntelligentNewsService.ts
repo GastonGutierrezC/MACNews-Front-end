@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { NewsEntity } from '../Entities/NewsEntity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const BASE_URL = 'http://localhost:3002/news/searchIntelligent';
+const BASE_URL = ENDPOINTS.NEWS_SEARCH;
 
 export const searchIntelligentNews = async (text: string): Promise<NewsEntity[]> => {
   if (!text || text.trim() === '') return [];

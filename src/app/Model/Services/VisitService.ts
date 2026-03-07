@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Visit } from '../Entities/Visit';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/visits';
+const API_URL = ENDPOINTS.USER_VISIT_HISTORY;
 
 export const createVisit = async (visitData: Visit): Promise<boolean> => {
   try {

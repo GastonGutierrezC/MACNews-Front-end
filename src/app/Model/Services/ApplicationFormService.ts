@@ -1,7 +1,8 @@
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 import { ApplicationFormEvaluation } from '../Entities/ApplicationFormEvaluation';
 import { ApplicationFormEvaluationResult } from '../Entities/ApplicationFormEvaluationResult';
 
-const API_URL = 'http://localhost:3002/applicationForm/evaluate-with-agent';
+const API_URL = ENDPOINTS.CREATE_APPLICATION;
 
 export const evaluateApplicationForm = async (
   formData: ApplicationFormEvaluation

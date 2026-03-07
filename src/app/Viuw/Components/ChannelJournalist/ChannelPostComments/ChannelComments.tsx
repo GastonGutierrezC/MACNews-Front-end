@@ -14,7 +14,7 @@ export const CommentsList: React.FC<CommentsListProps> = (props) => {
     loadingMore,
     error,
     sending,
-    sendError,
+    error: sendError,
     textComment,
     setTextComment,
     textSubcomment,

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ChannelRequest, ChannelResponse } from '../Entities/Channel';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/channels';
+const API_URL = ENDPOINTS.CREATE_CHANNEL;
 
 export const createChannel = async (
   channelData: ChannelRequest

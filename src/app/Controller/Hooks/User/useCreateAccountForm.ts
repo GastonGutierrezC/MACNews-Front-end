@@ -37,14 +37,22 @@ export function useCreateAccountForm() {
     await registerUser(userData);
   };
 
-useEffect(() => {
-  if (success) {
-    console.log('Usuario creado con éxito');
-    router.prefetch(ROUTES.HOME);
-    router.push(ROUTES.HOME);
-  }
-}, [success, router]);
+  // ✅ Redirigir en caso de éxito
+  useEffect(() => {
+    if (success) {
+      console.log('Usuario creado con éxito');
+      router.prefetch(ROUTES.HOME);
+      router.push(ROUTES.HOME);
+    }
+  }, [success, router]);
 
+  // ✅ Redirigir en caso de error desconocido
+  useEffect(() => {
+    if (error && error === 'Error al crear el usuario') {
+      // mensaje genérico -> lo tratamos como error desconocido
+      router.push(ROUTES.HOME);
+    }
+  }, [error, router]);
 
   return {
     formData,
