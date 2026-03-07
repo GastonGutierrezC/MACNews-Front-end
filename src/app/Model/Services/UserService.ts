@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { UserRegistration } from '../Entities/User';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/auth/register';
+const API_URL = ENDPOINTS.CREATE_USER;
 
 export const createUser = async (userData: UserRegistration): Promise<string> => {
   try {

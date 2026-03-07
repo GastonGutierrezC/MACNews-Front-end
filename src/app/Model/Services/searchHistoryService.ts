@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { SearchHistoryUser } from '../Entities/SearchHistory';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/searchHistory';
+const API_URL = ENDPOINTS.GET_USER_SEARCH_HISTORY;
 
 export const getSearchHistoryByToken = async (token: string): Promise<SearchHistoryUser[]> => {
   try {

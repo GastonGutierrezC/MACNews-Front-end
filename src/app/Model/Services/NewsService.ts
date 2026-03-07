@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { News, NewsResponse } from "../Entities/NewsCreation";
+import { ENDPOINTS } from "@/app/Utils/EnpointsBackEnd/enpoints";
 
 export const NewsService = {
   async submitNews(newsData: News): Promise<NewsResponse | true> {
@@ -12,7 +13,7 @@ export const NewsService = {
       }
 
       const response = await axios.post<NewsResponse>(
-        "http://localhost:3002/news",
+        ENDPOINTS.CREATE_NEWS,
         newsData,
         {
           headers: {

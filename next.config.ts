@@ -8,14 +8,14 @@ const nextConfig: NextConfig = {
       ...config.resolve.alias,
       "@Controller": path.resolve(__dirname, "Controller"),
       "@Model": path.resolve(__dirname, "Model"),
-      "@Viuw": path.resolve(__dirname, "Viuw"),  // Asegúrate de usar "Viuw" en mayúscula si así está en tu estructura de carpetas.
+      "@Viuw": path.resolve(__dirname, "Viuw"),  
     };
     return config;
   },
   images: {
     domains: ['cdn-icons-png.flaticon.com',
 
-      'res.cloudinary.com', // ✅ Agregado para permitir imágenes desde Cloudinary
+      'res.cloudinary.com',
     ],  
   },
 };

@@ -2,15 +2,14 @@
 
 import axios from 'axios';
 import { ChannelDetail } from '../Entities/ChannelDetailEntity';
-
-const BASE_URL = 'http://localhost:3002/channels';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
 export const getChannelByNameAndCreator = async (
   channelName: string,
   creatorFullName: string
 ): Promise<ChannelDetail | null> => {
   try {
-    const response = await axios.get(`${BASE_URL}/by-channel-name-and-creator`, {
+    const response = await axios.get(ENDPOINTS.GET_CHANNEL_BY_NAME_AND_CREATOR, {
       params: {
         channelName,
         creatorFullName,

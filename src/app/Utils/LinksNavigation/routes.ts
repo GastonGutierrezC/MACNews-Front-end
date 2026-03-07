@@ -13,6 +13,6 @@ export const ROUTES = {
   LOGIN: "/pages/enterUser",
   PROFILE_USER: "/pages/userData",
   CHANNEL_NEWS: (channelName: string, creatorFullName: string) => `/pages/channel-news/${encodeURIComponent(channelName)}/${encodeURIComponent(creatorFullName)}`,
-
+  ADMIN_REPORTS: "/pages/report",
 
 }

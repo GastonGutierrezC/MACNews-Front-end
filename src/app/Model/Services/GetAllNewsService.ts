@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { NewsEntity } from '../Entities/NewsEntity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const BASE_URL = 'http://localhost:3002/news/card';
+const BASE_URL = ENDPOINTS.NEWS_ALL_CARD;
 
 export const getAllNews = async (page: number = 1, limit: number = 10): Promise<NewsEntity[]> => {
   try {

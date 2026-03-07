@@ -3,8 +3,9 @@
 
 import axios from 'axios'
 import { CommentPostResponse } from '../Entities/CommentPost'
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints'
 
-const BASE_URL = 'http://localhost:3002/comment-post/channel'
+const BASE_URL = ENDPOINTS.GET_COMMENTS_POST
 
 export const getCommentsByChannel = async (
   channelId: string,

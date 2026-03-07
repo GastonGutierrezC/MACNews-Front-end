@@ -7,6 +7,9 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/app/Utils/LinksNavigation/routes';
+import { jwtDecode } from 'jwt-decode';
 
 interface TokenContextProps {
   token: string | null;
@@ -14,39 +17,74 @@ interface TokenContextProps {
   logout: () => void;
 }
 
-// Crear el contexto
+interface DecodedToken {
+  exp: number; // Fecha de expiración en segundos
+  [key: string]: any;
+}
+
 const TokenContext = createContext<TokenContextProps | undefined>(undefined);
 
-// Provider del contexto
 export const TokenProvider = ({ children }: { children: ReactNode }) => {
   const [token, setTokenState] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const router = useRouter();
 
-  // Al montar, intentar cargar el token desde localStorage
+  // Función para verificar si el token expiró
+  const isTokenExpired = (token: string) => {
+    try {
+      const decoded: DecodedToken = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000); // segundos
+      return decoded.exp <= currentTime;
+    } catch (err) {
+      console.error('[TokenProvider] Error decodificando token:', err);
+      return true; // si hay error al decodificar, consideramos expirado
+    }
+  };
+
+  // Al montar, cargar token desde localStorage y validar expiración
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
-      setTokenState(storedToken);
-      console.log('[TokenContext] Token cargado desde localStorage:', storedToken);
+      if (isTokenExpired(storedToken)) {
+        console.log('[TokenProvider] Token expirado, eliminando...');
+        setTokenState(null);
+        localStorage.removeItem('token');
+      } else {
+        setTokenState(storedToken);
+        console.log('[TokenProvider] Token cargado desde localStorage:', storedToken);
+      }
     }
+    setLoading(false); // Terminó la carga inicial
   }, []);
 
   // Función para establecer o eliminar el token
   const setToken = (newToken: string | null) => {
     if (newToken) {
-      setTokenState(newToken);
-      localStorage.setItem('token', newToken);
-      console.log('[TokenContext] Token guardado:', newToken);
+      if (isTokenExpired(newToken)) {
+        console.log('[TokenProvider] Token recibido ya expirado, eliminando...');
+        setTokenState(null);
+        localStorage.removeItem('token');
+        router.push(ROUTES.LOGIN);
+      } else {
+        setTokenState(newToken);
+        localStorage.setItem('token', newToken);
+        console.log('[TokenProvider] Token guardado:', newToken);
+      }
     } else {
       setTokenState(null);
       localStorage.removeItem('token');
-      console.log('[TokenContext] Token eliminado');
+      console.log('[TokenProvider] Token eliminado');
     }
   };
 
-  // Función para cerrar sesión
+  // Logout
   const logout = () => {
-    setToken(null); // Esto borra de estado y localStorage
+    setToken(null);
+    router.push(ROUTES.LOGIN);
   };
+
+  // Mientras cargamos token, no renderizamos hijos
+  if (loading) return null;
 
   return (
     <TokenContext.Provider value={{ token, setToken, logout }}>

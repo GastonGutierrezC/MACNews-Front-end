@@ -1,3 +1,4 @@
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 import { ChannelInfo } from '../Entities/ChannelInfo';
 
 export async function getChannelByJournalist(): Promise<ChannelInfo | null> {
@@ -8,7 +9,7 @@ export async function getChannelByJournalist(): Promise<ChannelInfo | null> {
       return null;
     }
 
-    const response = await fetch(`http://localhost:3002/channels/journalist`, {
+    const response = await fetch(ENDPOINTS.GET_CHANNEL_JOURNALIST, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

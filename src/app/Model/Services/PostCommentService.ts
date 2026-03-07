@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { CommentPostRequest } from '../Entities/CommentPostRequest';
 import { Comment } from '../Entities/CommentPost';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/comment-post';
+const API_URL = ENDPOINTS.CREATE_COMMENT;
 
 export const postComment = async (commentData: CommentPostRequest): Promise<Comment> => {
   try {

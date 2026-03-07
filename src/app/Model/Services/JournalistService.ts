@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { JournalistRequest } from '../Entities/Journalist';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/journalist';
+const API_URL = ENDPOINTS.CREATE_JOURNALIST_CHANNEL;
 
 export const createJournalist = async (
   journalistData: JournalistRequest

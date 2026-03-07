@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { NewsEntity } from '../Entities/NewsEntity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = "http://localhost:3002/news/channel";
+const API_URL = ENDPOINTS.NEWS_CHANNEL;
 
 export async function getAllNewsByChannel(channelId: string): Promise<NewsEntity[]> {
   try {

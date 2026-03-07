@@ -1,4 +1,5 @@
 // services/userService.ts
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 import axios from 'axios';
 
 interface LoginResponse {
@@ -11,10 +12,10 @@ export const loginAndGetToken = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await axios.post<LoginResponse>(
-      'http://localhost:3002/auth/login',
+      ENDPOINTS.USER_LOGIN,
       {
         UserEmail: email,
-        PasswordUser: password,
+        PasswordUser: password, 
       }
     );
 

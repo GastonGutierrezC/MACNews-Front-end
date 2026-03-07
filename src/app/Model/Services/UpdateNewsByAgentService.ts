@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { NewsUpdateRequest, NewsUpdateResponse } from '../Entities/NewsUpdateRequest';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
 
-const API_URL = 'http://localhost:3002/news/update-by-agent';
+const API_URL = ENDPOINTS.NEWS_UPDATE_BY_AGENT;
 
 export const updateNewsByAgent = async (
   data: NewsUpdateRequest

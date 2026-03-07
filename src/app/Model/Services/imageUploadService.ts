@@ -1,7 +1,8 @@
 // src/Services/imageUploadService.ts
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3002/upload/image';
+const API_URL = ENDPOINTS.UPLOAD_IMAGE;
 
 export const uploadImage = async (file: File): Promise<string> => {
   // Validar tipo de archivo

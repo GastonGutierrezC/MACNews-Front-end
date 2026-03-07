@@ -5,6 +5,7 @@ import { useCommentsByChannel } from '@/app/Controller/Hooks/CommmentPost/useCom
 import { usePostComment } from '@/app/Controller/Hooks/CommmentPost/usePostComment'
 import { Comment, Subcomment } from '@/app/Model/Entities/CommentPost'
 import { useUserProfile } from '@/app/Controller/Hooks/User/useUserProfile'
+import { toast } from 'sonner' // <-- Sonner import
 
 export interface CommentsListProps {
   channelId: string
@@ -19,11 +20,9 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
     error,
     loadMore,
     canLoadMore,
-    page,
-    limit
   } = useCommentsByChannel(channelId)
 
-  const { sendComment, loading: sending, error: sendError } = usePostComment()
+  const { sendComment, loading: sending } = usePostComment()
 
   const [textComment, setTextComment] = useState('')
   const [textSubcomment, setTextSubcomment] = useState('')
@@ -32,6 +31,7 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
 
   const { profile: user } = useUserProfile()
 
+  // Sincroniza comentarios del backend con los locales
   useEffect(() => {
     if (comments?.Comments) {
       setLocalComments((prev) => {
@@ -43,12 +43,13 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
     }
   }, [comments])
 
+  // Crear comentario principal
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!textComment.trim()) return
 
     if (!user) {
-      alert('Debes registrarte para poder escribir un comentario.')
+      toast.error("Debes registrarte para poder escribir un comentario.")
       return
     }
 
@@ -56,22 +57,23 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
       const createdComment: Comment = await sendComment({
         ChannelID: channelId,
         TextComment: textComment.trim(),
-
       })
 
       setLocalComments((prev) => [createdComment, ...prev])
       setTextComment('')
-    } catch (error) {
-      console.error('Error enviando comentario:', error)
+      toast.success("Comentario publicado con éxito")
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Error enviando comentario")
     }
   }
 
+  // Crear subcomentario
   const handleSubmitSubcomment = (parentId: string) => async (e: FormEvent) => {
     e.preventDefault()
     if (!textSubcomment.trim()) return
 
     if (!user) {
-      alert('Debes registrarte para poder escribir un comentario.')
+      toast.error("Debes registrarte para poder escribir un comentario.")
       return
     }
 
@@ -80,24 +82,21 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
         ChannelID: channelId,
         TextComment: textSubcomment.trim(),
         ParentComment: parentId,
-
       })
 
       setLocalComments((prev) =>
         prev.map((comment) =>
           comment.CommentPostID === parentId
-            ? {
-                ...comment,
-                Subcomments: [...(comment.Subcomments ?? []), createdSubcomment],
-              }
+            ? { ...comment, Subcomments: [...(comment.Subcomments ?? []), createdSubcomment] }
             : comment
         )
       )
 
       setTextSubcomment('')
       setReplyingTo(null)
-    } catch (error) {
-      console.error('Error enviando subcomentario:', error)
+      toast.success("Respuesta publicada con éxito")
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Error enviando subcomentario")
     }
   }
 
@@ -107,7 +106,6 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
     loadingMore,
     error,
     sending,
-    sendError,
     textComment,
     setTextComment,
     textSubcomment,
@@ -121,3 +119,4 @@ export const useCommentsLogic = ({ channelId }: CommentsListProps) => {
     canLoadMore,
   }
 }
+

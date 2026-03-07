@@ -2,8 +2,9 @@
 
 import axios from 'axios';
 import { TopChannelEntity } from '../Entities/TopChannelEntity';
+import { ENDPOINTS } from '@/app/Utils/EnpointsBackEnd/enpoints';
 
-const API_URL = 'http://localhost:3002/channels/top';
+const API_URL = ENDPOINTS.GET_TOP_CHANNELS;
 
 export async function getTopChannels(): Promise<TopChannelEntity[]> {
   try {
