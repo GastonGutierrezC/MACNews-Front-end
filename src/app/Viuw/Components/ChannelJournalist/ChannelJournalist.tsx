@@ -13,12 +13,12 @@ import CategoryMetricsChart from './ChannelMetricts/CategoryMetricsChart';
 const ChannelJournalist: React.FC = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  const { channelData, loading, error } = useChannelByJournalist();
+  const { channelData, loading } = useChannelByJournalist();
   const [selectedView, setSelectedView] = useState<'news' | 'comments' | 'metrics' | 'create'>('news');
 
   if (!token) return <p>No autorizado. Debes iniciar sesión.</p>;
   if (loading) return <p>Cargando información del canal...</p>;
-  if (error) return <p>Error al obtener el canal: {error}</p>;
+  //if (error) return <p>Error al obtener el canal: {error}</p>;
   if (!channelData) return <p>No se encontró información del canal.</p>;
 
   return (

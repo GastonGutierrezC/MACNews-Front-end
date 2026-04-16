@@ -2,64 +2,87 @@
 
 import { useCreateAccountForm } from '@/app/Controller/Hooks/User/useCreateAccountForm';
 import React from 'react';
-
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const CreateAccount = () => {
-  const {
-    formData,
-    handleChange,
-    handleSubmit,
-    loading,
-    error,
-    success,
-  } = useCreateAccountForm();
+const {
+  formData,
+  handleChange,
+  handleSubmit,
+  loading,
+  error,
+  errors, // 👈 nuevo
+  success,
+} = useCreateAccountForm();
 
-  const renderField = (name: keyof typeof formData, label: string, type = 'text') => {
-    const isActive = formData[name] !== '';
-    const bgColor = isActive ? '#C2D2E9' : '#B8D1E7';
 
-    return (
-      <div className="relative mb-9" style={{ width: '25rem' }}>
-        {isActive && (
-          <span className="absolute -top-0 left-2 bg-[#B8D1E7] px-1 text-sm font-bold text-[#EA580C]">
-            {label}
-          </span>
-        )}
-        <div
-          className="p-1 rounded"
-          style={{
-            backgroundColor: bgColor,
-            width: '100%',
-            border: '14px solid #B8D1E7',
-            borderRadius: '8px',
-          }}
-        >
-          <div
-            className="p-1 rounded"
+const [showPassword, setShowPassword] = React.useState(false);
+
+const renderField = (name: keyof typeof formData, label: string, type = 'text') => {
+  const isActive = formData[name] !== '';
+  const bgColor = isActive ? '#C2D2E9' : '#B8D1E7';
+
+return (
+  <div className="relative mb-6" style={{ width: '25rem' }}>
+    {isActive && (
+      <span className="absolute -top-0 left-2 bg-[#B8D1E7] px-1 text-sm font-bold text-[#EA580C]">
+        {label}
+      </span>
+    )}
+
+    <div
+      className="p-1 rounded"
+      style={{
+        backgroundColor: bgColor,
+        width: '100%',
+        border: '14px solid #B8D1E7',
+        borderRadius: '8px',
+      }}
+    >
+      <div
+        className="p-1 rounded"
+        style={{
+          backgroundColor: 'transparent',
+          border: '2px solid black',
+          borderRadius: '6px',
+        }}
+      >
+        {/* 🔥 ESTE ES EL CONTENEDOR CLAVE */}
+        <div className="relative">
+          <input
+            name={name}
+            type={name === 'password' ? (showPassword ? 'text' : 'password') : type}
+            placeholder={label}
+            value={formData[name]}
+            onChange={handleChange}
+            className="py-2 rounded border-none bg-transparent"
             style={{
-              backgroundColor: 'transparent',
-              border: '2px solid black',
-              borderRadius: '6px',
+              width: '100%',
+              paddingLeft: '1.25rem',
+              paddingRight: '2.5rem',
             }}
-          >
-            <input
-              name={name}
-              type={type}
-              placeholder={label}
-              value={formData[name]}
-              onChange={handleChange}
-              className="py-2 rounded border-none bg-transparent"
-              style={{
-                width: '100%',
-                paddingLeft: '1.25rem',
-                paddingRight: '1.25rem',
-              }}
-            />
-          </div>
+          />
+
+          {/* 👁️ ICONO DENTRO DEL MISMO CONTENEDOR */}
+          {name === 'password' && (
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700 hover:text-black"
+            >
+              {showPassword ? <FiEye size={20} /> : <FiEyeOff size={20} />}
+            </span>
+          )}
         </div>
       </div>
-    );
-  };
+    </div>
+
+    {/* 🔥 ERROR POR CAMPO */}
+    {errors[name] && (
+      <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+    )}
+  </div>
+);
+};
 
   return (
     <div className="flex flex-col justify-center items-center mx-auto p-4 rounded shadow" style={{ width: '25rem' }}>
@@ -78,7 +101,6 @@ const CreateAccount = () => {
         {loading ? 'Cargando...' : 'Crear Cuenta'}
       </button>
 
-      {error && <p className="text-red-500 mt-4">{error}</p>}
       {success && <p className="text-green-500 mt-4">Usuario creado con éxito</p>}
     </div>
   );

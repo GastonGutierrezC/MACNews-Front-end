@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#  MAC News - Frontend
 
-## Getting Started
+## Description
 
-First, run the development server:
+**MAC News** is a **responsive web application** for:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> **"News Publishing and Consumption Using Artificial Intelligence Based on the UNESCO International Code of Journalistic Ethics (Case Study: El Elector)"**
+
+This frontend provides the user interface for interacting with the platform, enabling different types of users to consume, create, and manage news content efficiently.
+
+---
+
+##  User Roles
+
+The platform supports three main types of users:
+
+###  Readers
+- Browse and search news
+- Receive personalized recommendations
+- Follow channels
+- View categorized content
+- Interact with content (comments, visits)
+
+---
+
+###  Journalists
+- Create and manage news
+- Manage channels
+- Submit journalist applications
+- View performance metrics
+- Improve content using AI-powered features
+
+---
+
+### Administrators
+- Manage users and roles
+- Monitor system activity
+- Review reports and analytics
+- Oversee content approval workflows
+
+---
+
+##  AI Integration (Frontend Perspective)
+
+The frontend integrates AI-powered features by consuming backend services:
+
+-  Personalized news recommendations
+- AI-based comment analysis (user interest metrics)
+-  AI-assisted content improvements
+-  Ethical validation feedback
+
+These features enhance user experience and decision-making for both readers and journalists.
+
+---
+
+##  Features
+
+Based on the current application routes:
+
+-  Latest news view (`last-news`)
+-  News listing and detail (`news`)
+-  Intelligent search (`search`)
+-  Category filtering (`category`)
+-  Specialty-based filtering (`speciality`)
+-  Channel-based news (`channel-news`)
+-  Journalist channels (`channel-journalist`)
+-  Channel creation (`creation-channel`)
+-  Journalist application form (`journalistForm`)
+-  User profile management (`userData`)
+-  Reports and analytics (`report`)
+-  Authentication (`enterUser`)
+
+---
+
+## 🛠️ Technologies
+
+- **React** `^19.0.0`
+- **Next.js** `15.3.0`
+- **Tailwind CSS** `^4.1.4`
+- **Axios** `^1.8.4`
+
+---
+
+## 🔗 Backend Integration
+
+The frontend communicates with the backend API using **Axios** and **JWT authentication**.
+
+###  Authentication
+
+- Uses JWT tokens stored in `localStorage`
+- Sends token via `Authorization` header:
+
+```ts
+Authorization: Bearer <token>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Example API Call
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```tsx
+import axios from 'axios';
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+const token = localStorage.getItem('token');
 
-## Learn More
+const response = await axios.get(API_URL, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Endpoint Management
+API endpoints are centralized using:
+* Utils/EnpointsBackEnd/enpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Installation & Setup
+### Install dependencies
+* npm install
+* npm update
 
-## Deploy on Vercel
+### Run development server
+* npm run 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
+* src/app/
+ * ├── Controller       # Handles API calls and logic
+ * ├── Images           # Static assets
+ * ├── Model            # Data models / entities
+ * ├── pages            # Application routes (Next.js)
+ * ├── Styles           # Styling (Tailwind / CSS)
+ * ├── Utils            # Utilities and helpers
+ * ├── Viuw             # UI components (Views)
+ * ├── layout.tsx       # Main layout
+ * └── favicon.ico
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Author
+
+Gaston Gutierrez Condori
